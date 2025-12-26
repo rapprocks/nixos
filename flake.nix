@@ -1,0 +1,40 @@
+{
+  description = "FLAKES3000";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixvim.url = "github:rapprocks/nixvim/main";
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixvim,
+      ...
+    }@inputs:
+    {
+      nixosConfigurations = {
+        nix = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            {
+              nixpkgs.hostPlatform = "x86_64-linux";
+              nixpkgs.config.allowUnfree = true;
+            }
+            ./machines/nixlab/configuration.nix
+          ];
+        };
+        apollo = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            {
+              nixpkgs.hostPlatform = "x86_64-linux";
+              nixpkgs.config.allowUnfree = true;
+            }
+            ./machines/apollo/configuration.nix
+          ];
+        };
+      };
+    };
+}
