@@ -31,21 +31,6 @@
     extraPackages = [ pkgs.vpl-gpu-rt ];
   };
 
-  # Set your time zone.
-  time.timeZone = "Europe/Stockholm";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "se";
-    variant = "nodeadkeys";
-  };
-
-  # Configure console keymap
-  console.keyMap = "sv-latin1";
-
   services = {
     gnome.gcr-ssh-agent.enable = false;
     pcscd.enable = true;

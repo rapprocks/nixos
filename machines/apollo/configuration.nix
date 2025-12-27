@@ -1,14 +1,14 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../hyprland.nix
   ];
+
+  my.nfs.shares = ["documents" "downloads/torrents" "media/movies" "media/tv"];
 
   programs.steam.enable = true;
 
@@ -17,7 +17,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.amdgpu.initrd.enable = true;
-  services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver.videoDrivers = ["modesetting"];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -32,21 +32,6 @@
     enable = true;
     enable32Bit = true;
   };
-
-  # Set your time zone.
-  time.timeZone = "Europe/Stockholm";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "se";
-    variant = "nodeadkeys";
-  };
-
-  # Configure console keymap
-  console.keyMap = "sv-latin1";
 
   services = {
     gnome.gcr-ssh-agent.enable = false;
@@ -164,6 +149,7 @@
     obsidian
     gnome-calculator
     inputs.nixvim.packages.${pkgs.system}.default
+    #inputs.pvetui.packages.${pkgs.system}.default
   ];
 
   fonts = {
@@ -177,9 +163,9 @@
     ];
     fontconfig = {
       defaultFonts = {
-        serif = [ "Noto Serif" ];
-        sansSerif = [ "Noto Sans" ];
-        monospace = [ "JetBrainsMono Nerd Font Mono" ];
+        serif = ["Noto Serif"];
+        sansSerif = ["Noto Sans"];
+        monospace = ["JetBrainsMono Nerd Font Mono"];
       };
     };
   };
@@ -238,7 +224,7 @@
   systemd.user.services.kanshi = {
     enable = true;
     description = "Kanshi monitor service";
-    bindsTo = [ "graphical-session.target" ];
+    bindsTo = ["graphical-session.target"];
     #wantedBy = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
