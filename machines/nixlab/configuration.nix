@@ -1,10 +1,8 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../hyprland.nix
@@ -15,8 +13,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = [ "i915.force_probe=a7a1" ];
-  boot.initrd.kernelModules = [ "i915" ];
+  boot.kernelParams = ["i915.force_probe=a7a1"];
+  boot.initrd.kernelModules = ["i915"];
 
   networking.hostName = "nix"; # Define your hostname.
 
@@ -28,7 +26,7 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages = [ pkgs.vpl-gpu-rt ];
+    extraPackages = [pkgs.vpl-gpu-rt];
   };
 
   services = {
@@ -96,8 +94,8 @@
     config = {
       hyprland = {
         "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-        "org.freedesktop.impl.portal.ScreenCast" = "gnome";
-        "org.freedesktop.impl.portal.Screenshot" = "gnome";
+        "org.freedesktop.impl.portal.ScreenCast" = ["gtk" "hyprland"];
+        "org.freedesktop.impl.portal.Screenshot" = "gtk";
       };
     };
   };
@@ -185,9 +183,9 @@
     ];
     fontconfig = {
       defaultFonts = {
-        serif = [ "Noto Serif" ];
-        sansSerif = [ "Noto Sans" ];
-        monospace = [ "JetBrainsMono Nerd Font Mono" ];
+        serif = ["Noto Serif"];
+        sansSerif = ["Noto Sans"];
+        monospace = ["JetBrainsMono Nerd Font Mono"];
       };
     };
   };
@@ -198,13 +196,13 @@
     syntaxHighlighting.enable = true;
     enableCompletion = true;
     enableLsColors = true;
-    #interactiveShellInit = ''
-    #  source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-    #'';
     ohMyZsh.enable = true;
     ohMyZsh.plugins = [
       "colored-man-pages"
     ];
+    shellInit = ''
+      export PATH="$HOME/.npm-global/bin:$PATH"
+    '';
     shellAliases = {
       ip = "ip --color";
       cp = "rsync -ah --progress";
@@ -246,7 +244,7 @@
   systemd.user.services.kanshi = {
     enable = true;
     description = "Kanshi monitor service";
-    bindsTo = [ "graphical-session.target" ];
+    bindsTo = ["graphical-session.target"];
     #wantedBy = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
