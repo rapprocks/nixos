@@ -1,7 +1,5 @@
-{pkgs, ...}: {
-  imports = [
-    ../nfs-module.nix
-  ];
+{ pkgs, ... }:
+{
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
 

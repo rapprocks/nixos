@@ -2,13 +2,20 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     ../../hyprland.nix
+    ../../nfs-module.nix
   ];
 
-  my.nfs.shares = ["documents" "downloads/torrents" "media/movies" "media/tv"];
+  my.nfs.shares = [
+    "documents"
+    "downloads/torrents"
+    "media/movies"
+    "media/tv"
+  ];
 
   programs.steam.enable = true;
 
@@ -17,7 +24,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.amdgpu.initrd.enable = true;
-  services.xserver.videoDrivers = ["modesetting"];
+  services.xserver.videoDrivers = [ "modesetting" ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -163,9 +170,9 @@
     ];
     fontconfig = {
       defaultFonts = {
-        serif = ["Noto Serif"];
-        sansSerif = ["Noto Sans"];
-        monospace = ["JetBrainsMono Nerd Font Mono"];
+        serif = [ "Noto Serif" ];
+        sansSerif = [ "Noto Sans" ];
+        monospace = [ "JetBrainsMono Nerd Font Mono" ];
       };
     };
   };
@@ -224,7 +231,7 @@
   systemd.user.services.kanshi = {
     enable = true;
     description = "Kanshi monitor service";
-    bindsTo = ["graphical-session.target"];
+    bindsTo = [ "graphical-session.target" ];
     #wantedBy = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
