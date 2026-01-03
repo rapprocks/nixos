@@ -6,28 +6,17 @@
   imports = [
     ./hardware-configuration.nix
     ../../hyprland.nix
-    ../../nfs-module.nix
   ];
-
-  my.nfs.shares = [
-    "documents"
-    "downloads/torrents"
-    "media/movies"
-    "media/tv"
-  ];
-
-  programs.steam.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  hardware.amdgpu.initrd.enable = true;
-  services.xserver.videoDrivers = ["modesetting"];
-
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = ["i915.force_probe=a7a1"];
+  boot.initrd.kernelModules = ["i915"];
 
-  networking.hostName = "apollo"; # Define your hostname.
+  networking.hostName = "nix"; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -37,11 +26,21 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = [pkgs.vpl-gpu-rt];
   };
 
   services = {
     gnome.gcr-ssh-agent.enable = false;
     pcscd.enable = true;
+    logind = {
+      settings = {
+        Login = {
+          HandleLidSwitchDocked = "ignore";
+          HandleLidSwitch = "suspend";
+          HandleLidSwitchExternalPower = "lock";
+        };
+      };
+    };
     fstrim.enable = true;
     upower.enable = true;
     pipewire = {
@@ -53,6 +52,21 @@
       };
       # Enable WirePlumber for session management
       wireplumber.enable = true;
+    };
+    # Disable power-profiles-daemon (pulled in by COSMIC) in favor of auto-cpufreq
+    power-profiles-daemon.enable = false;
+    auto-cpufreq = {
+      enable = true;
+      settings = {
+        battery = {
+          governor = "powersave";
+          turbo = "auto";
+        };
+        charger = {
+          governor = "performance";
+          turbo = "auto";
+        };
+      };
     };
     gnome.gnome-keyring.enable = true;
     displayManager.ly = {
@@ -80,8 +94,8 @@
     config = {
       hyprland = {
         "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-        "org.freedesktop.impl.portal.ScreenCast" = "gnome";
-        "org.freedesktop.impl.portal.Screenshot" = "gnome";
+        "org.freedesktop.impl.portal.ScreenCast" = ["gtk" "hyprland"];
+        "org.freedesktop.impl.portal.Screenshot" = "gtk";
       };
     };
   };
@@ -97,9 +111,9 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.earn = {
+  users.users.philip = {
     isNormalUser = true;
-    description = "earn";
+    description = "philip";
     shell = pkgs.zsh;
     extraGroups = [
       "networkmanager"
@@ -111,10 +125,8 @@
   # Enable automatic login for the user.
   services.getty.autologinUser = "philip";
 
-  # Enable tailscale
-  services.tailscale.enable = true;
-
   environment.systemPackages = with pkgs; [
+    helix
     code-cursor
     wget
     curl
@@ -158,7 +170,6 @@
     obsidian
     gnome-calculator
     inputs.nixvim.packages.${pkgs.system}.default
-    #inputs.pvetui.packages.${pkgs.system}.default
   ];
 
   fonts = {
@@ -185,13 +196,13 @@
     syntaxHighlighting.enable = true;
     enableCompletion = true;
     enableLsColors = true;
-    #interactiveShellInit = ''
-    #  source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-    #'';
     ohMyZsh.enable = true;
     ohMyZsh.plugins = [
       "colored-man-pages"
     ];
+    shellInit = ''
+      export PATH="$HOME/.npm-global/bin:$PATH"
+    '';
     shellAliases = {
       ip = "ip --color";
       cp = "rsync -ah --progress";
@@ -251,7 +262,7 @@
     settings = {
       trusted-users = [
         "root"
-        "earn"
+        "philip"
       ];
       experimental-features = [
         "nix-command"
@@ -269,7 +280,7 @@
   system.stateVersion = "25.05"; # Did you read the comment?
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/earn/.dotfiles#apollo";
+    flake = "/home/philip/.dotfiles#nixlab";
     flags = [
       "--update-input"
       "nixpkgs"

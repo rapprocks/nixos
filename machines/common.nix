@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
 
@@ -20,5 +19,6 @@
     mpv
     feh
     bluetui
+    obsidian
   ];
 }
