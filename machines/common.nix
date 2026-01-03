@@ -20,5 +20,6 @@
     feh
     bluetui
     obsidian
+    stow
   ];
 }
