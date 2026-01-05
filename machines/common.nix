@@ -21,5 +21,8 @@
     bluetui
     obsidian
     stow
+    slurp
+    wf-recorder
+    satty
   ];
 }

@@ -6,17 +6,29 @@
   imports = [
     ./hardware-configuration.nix
     ../../hyprland.nix
+    ../../nfs-module.nix
   ];
+
+  my.nfs.shares = [
+    "documents"
+    "downloads/torrents"
+    "media/movies"
+    "media/tv"
+  ];
+
+  services.tailscale.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.initrd.luks.devices."luks-dace8e36-8066-4406-b113-a93b047bf55d".device = "/dev/disk/by-uuid/dace8e36-8066-4406-b113-a93b047bf55d";
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = ["i915.force_probe=a7a1"];
+  boot.kernelParams = ["i915.force_probe=46a8"];
   boot.initrd.kernelModules = ["i915"];
 
-  networking.hostName = "nix"; # Define your hostname.
+  networking.hostName = "zeus"; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -111,9 +123,9 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.philip = {
+  users.users.earn = {
     isNormalUser = true;
-    description = "philip";
+    description = "earn";
     shell = pkgs.zsh;
     extraGroups = [
       "networkmanager"
@@ -123,9 +135,10 @@
   };
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = "philip";
+  services.getty.autologinUser = "earn";
 
   environment.systemPackages = with pkgs; [
+    kitty
     helix
     code-cursor
     wget
@@ -170,6 +183,8 @@
     obsidian
     gnome-calculator
     inputs.nixvim.packages.${pkgs.system}.default
+    (pkgs.writeShellScriptBin "screenrec"
+      (builtins.readFile ../../scripts/screen-recording.sh))
   ];
 
   fonts = {
@@ -277,10 +292,10 @@
   };
   nixpkgs.config.allowUnfree = true;
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/philip/.dotfiles#nixlab";
+    flake = "/home/earn/.dotfiles#zeus";
     flags = [
       "--update-input"
       "nixpkgs"

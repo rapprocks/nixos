@@ -45,7 +45,7 @@
             nixpkgs.config.allowUnfree = true;
           }
           ./machines/common.nix
-          #./machines/zeus/configuration.nix
+          ./machines/zeus/configuration.nix
         ];
       };
     };
