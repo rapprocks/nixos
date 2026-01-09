@@ -24,5 +24,6 @@
     slurp
     wf-recorder
     satty
+    antigravity
   ];
 }
