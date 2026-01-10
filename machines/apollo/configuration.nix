@@ -1,13 +1,10 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../hyprland.nix
     ../../nfs-module.nix
   ];
+
+  networking.hostName = "apollo"; # Define your hostname.
 
   my.nfs.shares = [
     "documents"
@@ -18,83 +15,8 @@
 
   programs.steam.enable = true;
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   hardware.amdgpu.initrd.enable = true;
   services.xserver.videoDrivers = ["modesetting"];
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  networking.hostName = "apollo"; # Define your hostname.
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
-  networking.wireless.iwd.enable = true;
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  services = {
-    gnome.gcr-ssh-agent.enable = false;
-    pcscd.enable = true;
-    fstrim.enable = true;
-    upower.enable = true;
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      # Enable WirePlumber for session management
-      wireplumber.enable = true;
-    };
-    gnome.gnome-keyring.enable = true;
-    displayManager.ly = {
-      enable = true;
-      settings = {
-        bg = "0xFF000000";
-      };
-    };
-    desktopManager = {
-      cosmic = {
-        enable = true;
-        xwayland.enable = true;
-      };
-    };
-  };
-
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
-      xdg-desktop-portal-wlr
-    ];
-    config = {
-      hyprland = {
-        "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-        "org.freedesktop.impl.portal.ScreenCast" = "gnome";
-        "org.freedesktop.impl.portal.Screenshot" = "gnome";
-      };
-    };
-  };
-
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-
-  security = {
-    polkit.enable = true;
-    tpm2.enable = true;
-  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.earn = {
@@ -107,172 +29,13 @@
       "input"
     ];
   };
-
-  # Enable automatic login for the user.
-  services.getty.autologinUser = "philip";
-
   # Enable tailscale
   services.tailscale.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    code-cursor
-    wget
-    curl
-    git
-    eza
-    fzf
-    tmux
-    alacritty
-    firefox
-    chromium
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-    xdg-utils
-    nwg-look
-    adwaita-icon-theme
-    kanshi
-    remmina
-    cameractrls-gtk4
-    swayosd
-    libnotify
-    mako
-    pavucontrol # PulseAudio Volume Control
-    pamixer # Command-line mixer for PulseAudio
-    bluez # Bluetooth support
-    bluez-tools # Bluetooth tools
-    bluetuith
-    wl-clipboard
-    brightnessctl
-    fuzzel
-    waybar
-    nixd
-    yazi
-    bat
-    tldr
-    jq
-    zoxide
-    ripgrep
-    typescript
-    nodejs
-    signal-desktop
-    obsidian
-    gnome-calculator
-    inputs.nixvim.packages.${pkgs.system}.default
-    #inputs.pvetui.packages.${pkgs.system}.default
-  ];
-
-  fonts = {
-    fontDir.enable = true;
-    fontconfig.enable = true;
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-color-emoji
-      nerd-fonts.jetbrains-mono
-      font-awesome_5
-    ];
-    fontconfig = {
-      defaultFonts = {
-        serif = ["Noto Serif"];
-        sansSerif = ["Noto Sans"];
-        monospace = ["JetBrainsMono Nerd Font Mono"];
-      };
-    };
+  services.syncthing = {
+    user = "earn"; # Change per-host if needed, or use a variable
+    dataDir = "/home/earn";
   };
 
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-    enableCompletion = true;
-    enableLsColors = true;
-    #interactiveShellInit = ''
-    #  source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-    #'';
-    ohMyZsh.enable = true;
-    ohMyZsh.plugins = [
-      "colored-man-pages"
-    ];
-    shellAliases = {
-      ip = "ip --color";
-      cp = "rsync -ah --progress";
-      dot = "cd ~/.dotfiles";
-      dev = "cd ~/Development";
-      tree = "tree -C";
-      weather = "curl -S 'https://wttr.in/Stockholm?1F'";
-      cat = "bat --style plain";
-      ga = "git add";
-      gst = "git status";
-      gcm = "git commit -m";
-      gpum = "git push -u origin main";
-      ta = "tmux attach";
-      vim = "nvim";
-      vi = "nvim";
-      nsp = "nix-shell -p";
-      rb = "sudo nixos-rebuild switch --flake ~/.dotfiles#";
-      conf = "~/.config";
-      # eza
-      ls = "eza --group-directories-first";
-      ll = "eza -l --group-directories-first";
-      la = "eza -a --group-directories-first";
-      lt = "eza --tree --group-directories-first";
-      lla = "eza -la --group-directories-first";
-    };
-  };
-
-  programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = false;
-      character = {
-        success_symbol = "[➜](bold green)";
-        error_symbol = "[➜](bold red)";
-      };
-    };
-  };
-
-  systemd.user.services.kanshi = {
-    enable = true;
-    description = "Kanshi monitor service";
-    bindsTo = ["graphical-session.target"];
-    #wantedBy = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.kanshi}/bin/kanshi";
-    };
-  };
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  programs.ssh.startAgent = true;
-
-  networking.firewall.enable = false;
-
-  nix = {
-    settings = {
-      trusted-users = [
-        "root"
-        "earn"
-      ];
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-  };
-  nixpkgs.config.allowUnfree = true;
-
-  system.stateVersion = "25.05"; # Did you read the comment?
-  system.autoUpgrade = {
-    enable = true;
-    flake = "/home/earn/.dotfiles#apollo";
-    flags = [
-      "--update-input"
-      "nixpkgs"
-    ];
-  };
+  system.stateVersion = "25.05";
 }

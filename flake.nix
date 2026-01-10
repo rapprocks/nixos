@@ -20,8 +20,8 @@
             nixpkgs.hostPlatform = "x86_64-linux";
             nixpkgs.config.allowUnfree = true;
           }
-          ./machines/common2.nix
-          ./machines/nixlab/config.nix
+          ./machines/common.nix
+          ./machines/nixlab/configuration.nix
         ];
       };
       apollo = nixpkgs.lib.nixosSystem {
@@ -31,8 +31,8 @@
             nixpkgs.hostPlatform = "x86_64-linux";
             nixpkgs.config.allowUnfree = true;
           }
-          ./machines/common2.nix
-          ./machines/apollo/config.nix
+          ./machines/common.nix
+          ./machines/apollo/configuration.nix
         ];
       };
       zeus = nixpkgs.lib.nixosSystem {
