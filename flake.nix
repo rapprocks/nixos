@@ -7,9 +7,9 @@
   };
 
   outputs = {
-    self,
+    #self,
     nixpkgs,
-    nixvim,
+    #nixvim,
     ...
   } @ inputs: {
     nixosConfigurations = {
@@ -31,8 +31,8 @@
             nixpkgs.hostPlatform = "x86_64-linux";
             nixpkgs.config.allowUnfree = true;
           }
-          ./machines/common.nix
-          ./machines/apollo/configuration.nix
+          ./machines/common2.nix
+          ./machines/apollo/config.nix
         ];
       };
       zeus = nixpkgs.lib.nixosSystem {

@@ -86,8 +86,6 @@
   # ──────────────────────────────────────────────────────────────
   services.syncthing = {
     enable = true;
-    user = "philip"; # Change per-host if needed, or use a variable
-    dataDir = "/home/philip";
     openDefaultPorts = true; # Opens 22000/tcp and 21027/udp
   };
 

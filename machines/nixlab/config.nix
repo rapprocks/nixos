@@ -1,12 +1,18 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   imports = [./hardware-configuration.nix];
 
-  networking.hostName = "nix";  # ← matches flake definition
+  networking.hostName = "nix"; # ← matches flake definition
 
   # Hardware-specific
   boot.kernelParams = ["i915.force_probe=a7a1"];
   boot.initrd.kernelModules = ["i915"];
   hardware.graphics.extraPackages = [pkgs.vpl-gpu-rt];
+
+  # Syncthing
+  services.syncthing = {
+    user = "philip";
+    dataDir = "/home/philip";
+  };
 
   # Laptop power management
   services.logind.settings.Login = {
@@ -18,8 +24,14 @@
   services.auto-cpufreq = {
     enable = true;
     settings = {
-      battery = { governor = "powersave"; turbo = "auto"; };
-      charger = { governor = "performance"; turbo = "auto"; };
+      battery = {
+        governor = "powersave";
+        turbo = "auto";
+      };
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
     };
   };
 
@@ -32,3 +44,4 @@
 
   system.stateVersion = "25.05";
 }
+

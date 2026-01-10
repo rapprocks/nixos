@@ -110,11 +110,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1767948445,
-        "narHash": "sha256-RX79XjAckrGPvpt38W3btILulPoqEF38YxBpZJte6lI=",
+        "lastModified": 1767968636,
+        "narHash": "sha256-n2Gc3ovcrMOygJTRjM6aKL0/yK5rQTtClhrcbOoQsQs=",
         "owner": "rapprocks",
         "repo": "nixvim",
-        "rev": "25e21f854aee674823a91c58e4efa636b053ff8e",
+        "rev": "250e81c0d7fb314268922434cc3ef464955b2ea4",
         "type": "github"
       },
       "original": {
