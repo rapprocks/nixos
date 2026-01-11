@@ -75,7 +75,7 @@
     openssh = {
       enable = true;
       settings = {
-        PasswordAuthentication = true; # ← SECURITY
+        PasswordAuthentication = false; # ← SECURITY
         PermitRootLogin = "no"; # ← SECURITY
       };
     };
@@ -102,7 +102,10 @@
     ];
     config.hyprland = {
       "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-      "org.freedesktop.impl.portal.ScreenCast" = ["gtk" "hyprland"];
+      "org.freedesktop.impl.portal.ScreenCast" = [
+        "gtk"
+        "hyprland"
+      ];
       "org.freedesktop.impl.portal.Screenshot" = "gtk";
     };
   };
@@ -137,6 +140,8 @@
     zoxide
     ripgrep
     yazi
+    htop
+    btop
 
     # Editors
     helix
@@ -148,6 +153,7 @@
     alacritty
 
     # Browsers
+    brave
     firefox
     chromium
 
@@ -292,7 +298,10 @@
   # NIX SETTINGS
   # ──────────────────────────────────────────────────────────────
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     gc = {
       automatic = true;
       dates = "weekly";
