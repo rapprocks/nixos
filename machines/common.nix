@@ -48,7 +48,6 @@
   services = {
     tailscale.enable = true;
     gnome.gcr-ssh-agent.enable = false;
-    pcscd.enable = true;
     fstrim.enable = true;
     upower.enable = true;
     gnome.gnome-keyring.enable = true;
@@ -119,9 +118,32 @@
   # ──────────────────────────────────────────────────────────────
   # SECURITY
   # ──────────────────────────────────────────────────────────────
-  security.polkit.enable = true;
-  security.tpm2.enable = true;
+  security = {
+    polkit.enable = true;
+    tpm2.enable = true;
+    pam = {
+      u2f = {
+        enable = true;
+        settings = {
+          cue = true;
+          pinverification = 1;
+        };
+      };
+      services = {
+        login.u2fAuth = true;
+        login.fprintAuth = true;
+        sudo.u2fAuth = true;
+        sudo.fprintAuth = true;
+      };
+    };
+  };
+
   programs.ssh.startAgent = true;
+
+  services = {
+    pcscd.enable = true;
+    fprintd.enable = true;
+  };
 
   # Udev rules for FIDO2 hardware (allows non-root access to the key)
   services.udev.packages = with pkgs; [
@@ -150,6 +172,7 @@
     yazi
     htop
     btop
+    fastfetch
 
     # Editors
     helix
@@ -216,6 +239,7 @@
     antigravity
     yubikey-manager
     libfido2
+    hyprshot
 
     # Screen recording script
     (writeShellScriptBin "screenrec" (builtins.readFile ../scripts/screen-recording.sh))
