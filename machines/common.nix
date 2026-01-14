@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  username,
   ...
 }: {
   # ──────────────────────────────────────────────────────────────
@@ -64,7 +65,12 @@
 
     displayManager.ly = {
       enable = true;
-      settings.bg = "0xFF000000";
+      settings = {
+        auto_login_service = "ly-autologin";
+        auto_login_session = "Hyprland";
+        auto_login_user = "${username}";
+        box_title = "whatsup my man";
+      };
     };
 
     desktopManager.cosmic = {
@@ -122,6 +128,8 @@
     libfido2
     yubikey-personalization
   ];
+
+  users.groups.plugdev = {};
 
   # ──────────────────────────────────────────────────────────────
   # PACKAGES (unified list)
@@ -196,6 +204,7 @@
     remmina
     cameractrls-gtk4
     yubioath-flutter
+    bitwarden-desktop
 
     # Dev
     nixd

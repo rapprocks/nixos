@@ -9,7 +9,10 @@
   outputs = {nixpkgs, ...} @ inputs: {
     nixosConfigurations = {
       nix = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+          username = "philip";
+        };
         modules = [
           {
             nixpkgs.hostPlatform = "x86_64-linux";
@@ -20,7 +23,10 @@
         ];
       };
       nixwrk = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+          username = "philip";
+        };
         modules = [
           {
             nixpkgs.hostPlatform = "x86_64-linux";
@@ -31,7 +37,10 @@
         ];
       };
       apollo = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+          username = "earn";
+        };
         modules = [
           {
             nixpkgs.hostPlatform = "x86_64-linux";
@@ -42,7 +51,10 @@
         ];
       };
       zeus = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+          username = "earn";
+        };
         modules = [
           {
             nixpkgs.hostPlatform = "x86_64-linux";

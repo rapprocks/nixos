@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [./hardware-configuration.nix];
 
   networking.hostName = "nix"; # ← matches flake definition
@@ -10,8 +14,8 @@
 
   # Syncthing
   services.syncthing = {
-    user = "philip";
-    dataDir = "/home/philip";
+    user = "${username}";
+    dataDir = "/home/${username}";
   };
 
   # Laptop power management
@@ -36,7 +40,7 @@
   };
 
   # User
-  users.users.philip = {
+  users.users.${username} = {
     isNormalUser = true;
     shell = pkgs.zsh;
     extraGroups = ["networkmanager" "wheel" "input"];
@@ -44,4 +48,3 @@
 
   system.stateVersion = "25.05";
 }
-

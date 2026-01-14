@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../nfs-module.nix
@@ -19,9 +23,9 @@
   services.xserver.videoDrivers = ["modesetting"];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.earn = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "earn";
+    description = "${username}";
     shell = pkgs.zsh;
     extraGroups = [
       "networkmanager"
@@ -36,8 +40,8 @@
   services.tailscale.enable = true;
 
   services.syncthing = {
-    user = "earn"; # Change per-host if needed, or use a variable
-    dataDir = "/home/earn";
+    user = "${username}"; # Change per-host if needed, or use a variable
+    dataDir = "/home/${username}";
   };
 
   # Virtualisation
