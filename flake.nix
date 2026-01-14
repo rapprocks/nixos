@@ -6,12 +6,7 @@
     nixvim.url = "github:rapprocks/nixvim/main";
   };
 
-  outputs = {
-    #self,
-    nixpkgs,
-    #nixvim,
-    ...
-  } @ inputs: {
+  outputs = {nixpkgs, ...} @ inputs: {
     nixosConfigurations = {
       nix = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
@@ -22,6 +17,17 @@
           }
           ./machines/common.nix
           ./machines/nixlab/configuration.nix
+        ];
+      };
+      nixwrk = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = [
+          {
+            nixpkgs.hostPlatform = "x86_64-linux";
+            nixpkgs.config.allowUnfree = true;
+          }
+          ./machines/common.nix
+          ./machines/nixwrk/configuration.nix
         ];
       };
       apollo = nixpkgs.lib.nixosSystem {

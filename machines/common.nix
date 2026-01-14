@@ -195,6 +195,7 @@
     gnome-calculator
     remmina
     cameractrls-gtk4
+    yubioath-flutter
 
     # Dev
     nixd
@@ -320,4 +321,9 @@
   };
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
+
+  # ──────────────────────────────────────────────────────────────
+  # NIRI
+  # ──────────────────────────────────────────────────────────────
+  programs.niri.enable = true;
 }
