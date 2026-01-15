@@ -16,7 +16,7 @@
   console.keyMap = "sv-latin1";
 
   # ──────────────────────────────────────────────────────────────
-  # BOOT
+  # BOOT (common settings, machines override kernel params)
   # ──────────────────────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -28,7 +28,7 @@
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.backend = "iwd";
   networking.wireless.iwd.enable = true;
-  networking.firewall.enable = true;
+  networking.firewall.enable = true; # ← SECURITY: Enable firewall
 
   # ──────────────────────────────────────────────────────────────
   # HARDWARE (shared)
@@ -67,7 +67,7 @@
       settings = {
         auto_login_service = "ly-autologin";
         auto_login_session = "Hyprland";
-        auto_login_user = username;
+        auto_login_user = "${username}";
         box_title = "whatsup my man";
       };
     };
@@ -80,17 +80,18 @@
     openssh = {
       enable = true;
       settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "no";
+        PasswordAuthentication = true; # ← SECURITY
+        PermitRootLogin = "no"; # ← SECURITY
       };
     };
+  };
 
-    syncthing = {
-      enable = true;
-      openDefaultPorts = true;
-      user = username;
-      dataDir = "/home/${username}";
-    };
+  # ──────────────────────────────────────────────────────────────
+  # SYNCTHING
+  # ──────────────────────────────────────────────────────────────
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true; # Opens 22000/tcp and 21027/udp
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -106,29 +107,54 @@
     ];
     config.hyprland = {
       "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-      "org.freedesktop.impl.portal.ScreenCast" = ["gtk" "hyprland"];
+      "org.freedesktop.impl.portal.ScreenCast" = [
+        "gtk"
+        "hyprland"
+      ];
       "org.freedesktop.impl.portal.Screenshot" = "gtk";
     };
   };
 
   # ──────────────────────────────────────────────────────────────
-  # CORE SECURITY
+  # SECURITY
   # ──────────────────────────────────────────────────────────────
-  security.polkit.enable = true;
-  security.tpm2.enable = true;
-  programs.ssh.startAgent = true;
-
-  # ──────────────────────────────────────────────────────────────
-  # USER (shared definition)
-  # ──────────────────────────────────────────────────────────────
-  users.users.${username} = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    extraGroups = ["networkmanager" "wheel" "input" "plugdev"];
+  security = {
+    polkit.enable = true;
+    tpm2.enable = true;
+    pam = {
+      u2f = {
+        enable = true;
+        settings = {
+          cue = true;
+          pinverification = 1;
+        };
+      };
+      services = {
+        login.u2fAuth = true;
+        login.fprintAuth = true;
+        sudo.u2fAuth = true;
+        sudo.fprintAuth = true;
+      };
+    };
   };
 
+  programs.ssh.startAgent = true;
+
+  services = {
+    pcscd.enable = true;
+    fprintd.enable = true;
+  };
+
+  # Udev rules for FIDO2 hardware (allows non-root access to the key)
+  services.udev.packages = with pkgs; [
+    libfido2
+    yubikey-personalization
+  ];
+
+  users.groups.plugdev = {};
+
   # ──────────────────────────────────────────────────────────────
-  # PACKAGES
+  # PACKAGES (unified list)
   # ──────────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     # Core CLI
@@ -176,7 +202,7 @@
     brightnessctl
     fuzzel
     waybar
-    hyprcursor
+    hyprcursor # from hyprland.nix
 
     # Media & recording
     ueberzugpp
@@ -200,6 +226,7 @@
     gnome-calculator
     remmina
     cameractrls-gtk4
+    yubioath-flutter
     bitwarden-desktop
 
     # Dev
@@ -210,10 +237,13 @@
     # Utils
     stow
     antigravity
+    yubikey-manager
+    libfido2
     hyprshot
 
     # Screen recording script
-    (writeShellScriptBin "screenrec" (builtins.readFile ../scripts/screenrecording.sh))
+    (writeShellScriptBin "screenrecording" (builtins.readFile ../scripts/screenrecording.sh))
+    (writeShellScriptBin "screenrecording-indicator" (builtins.readFile ../scripts/screenrecording-indicator.sh))
   ];
 
   # ──────────────────────────────────────────────────────────────
@@ -303,7 +333,10 @@
   # NIX SETTINGS
   # ──────────────────────────────────────────────────────────────
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     gc = {
       automatic = true;
       dates = "weekly";
@@ -313,7 +346,7 @@
   nixpkgs.config.allowUnfree = true;
 
   # ──────────────────────────────────────────────────────────────
-  # DESKTOP ENVIRONMENTS
+  # HYPRLAND (inline, remove separate file)
   # ──────────────────────────────────────────────────────────────
   programs.hyprland = {
     enable = true;
@@ -322,5 +355,9 @@
   };
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
+
+  # ──────────────────────────────────────────────────────────────
+  # NIRI
+  # ──────────────────────────────────────────────────────────────
   programs.niri.enable = true;
 }

@@ -6,63 +6,36 @@
     nixvim.url = "github:rapprocks/nixvim/main";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: {
+  outputs = {nixpkgs, ...} @ inputs: let
+    mkHost = {
+      hostname,
+      username,
+    }:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs username;};
+        modules = [
+          {
+            nixpkgs.hostPlatform = "x86_64-linux";
+            nixpkgs.config.allowUnfree = true;
+          }
+          ./modules
+          ./machines/common.nix
+          ./machines/${hostname}/configuration.nix
+        ];
+      };
+  in {
     nixosConfigurations = {
-      nix = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          username = "philip";
-        };
-        modules = [
-          {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            nixpkgs.config.allowUnfree = true;
-          }
-          ./machines/common.nix
-          ./machines/nixlab/configuration.nix
-        ];
+      nixwrk = mkHost {
+        hostname = "nixwrk";
+        username = "philip";
       };
-      nixwrk = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          username = "philip";
-        };
-        modules = [
-          {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            nixpkgs.config.allowUnfree = true;
-          }
-          ./machines/common.nix
-          ./machines/nixwrk/configuration.nix
-        ];
+      apollo = mkHost {
+        hostname = "apollo";
+        username = "earn";
       };
-      apollo = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          username = "earn";
-        };
-        modules = [
-          {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            nixpkgs.config.allowUnfree = true;
-          }
-          ./machines/common.nix
-          ./machines/apollo/configuration.nix
-        ];
-      };
-      zeus = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          username = "earn";
-        };
-        modules = [
-          {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            nixpkgs.config.allowUnfree = true;
-          }
-          ./machines/common.nix
-          ./machines/zeus/configuration.nix
-        ];
+      zeus = mkHost {
+        hostname = "zeus";
+        username = "earn";
       };
     };
   };
