@@ -49,10 +49,19 @@ in {
 
       services.fwupd.enable = true;
 
-      security.pam.services = {
-        login.fprintAuth = true;
-        sudo.fprintAuth = true;
-      };
+      #security.pam.services = {
+      #  login.fprintAuth = true;
+      #  sudo.fprintAuth = true;
+      #};
+
+      services.udev.extraRules = ''
+        # Disable USB autosuspend for Synaptics Fingerprint Reader
+        ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="06cb", ATTR{idProduct}=="00f0", ATTR{power/control}="on"
+      '';
+
+      security.pam.services.fprintd.enable = true;
+      security.pam.services.hyprlock.fprintAuth = true;
+      systemd.services.fprintd.serviceConfig.RuntimeMaxSec = "infinity";
     })
   ];
 }
