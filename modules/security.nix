@@ -47,6 +47,8 @@ in {
     (lib.mkIf cfg.fingerprint.enable {
       services.fprintd.enable = true;
 
+      services.fwupd.enable = true;
+
       security.pam.services = {
         login.fprintAuth = true;
         sudo.fprintAuth = true;
