@@ -7,6 +7,7 @@
 
   profiles = {
     laptop.enable = true;
+    virtualization.enable = true;
     intelGpu = {
       enable = true;
       forceProbe = "46a8";
