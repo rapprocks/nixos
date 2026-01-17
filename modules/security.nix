@@ -23,7 +23,7 @@ in {
       };
 
       security.pam.services = {
-        login.u2fAuth = true;
+        login.u2fAuth = false;
         sudo.u2fAuth = true;
       };
 
@@ -47,21 +47,18 @@ in {
     (lib.mkIf cfg.fingerprint.enable {
       services.fprintd.enable = true;
 
-      services.fwupd.enable = true;
-
-      #security.pam.services = {
-      #  login.fprintAuth = true;
-      #  sudo.fprintAuth = true;
-      #};
-
+      # udev rule to prevent USB autosuspend on the fingerprint reader
       services.udev.extraRules = ''
-        # Disable USB autosuspend for Synaptics Fingerprint Reader
         ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="06cb", ATTR{idProduct}=="00f0", ATTR{power/control}="on"
       '';
 
-      security.pam.services.fprintd.enable = true;
+      security.pam.services.ly.fprintAuth = false;
+      security.pam.services.login.fprintAuth = false;
+
+      # Only enable fingerprint auth for specific services - NOT login/display manager
       security.pam.services.hyprlock.fprintAuth = true;
-      systemd.services.fprintd.serviceConfig.RuntimeMaxSec = "infinity";
+      # Optionally for sudo (can be slow if reader doesn't respond):
+      security.pam.services.sudo.fprintAuth = true;
     })
   ];
 }
