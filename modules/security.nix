@@ -3,9 +3,11 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.profiles.security;
-in {
+in
+{
   options.profiles.security = {
     yubikey.enable = lib.mkEnableOption "YubiKey U2F/FIDO2 authentication";
     fingerprint.enable = lib.mkEnableOption "fingerprint authentication";
@@ -34,7 +36,7 @@ in {
         yubikey-personalization
       ];
 
-      users.groups.plugdev = {};
+      users.groups.plugdev = { };
 
       environment.systemPackages = with pkgs; [
         yubikey-manager

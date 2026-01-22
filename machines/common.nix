@@ -3,7 +3,8 @@
   inputs,
   username,
   ...
-}: {
+}:
+{
   # ──────────────────────────────────────────────────────────────
   # LOCALE & TIME
   # ──────────────────────────────────────────────────────────────
@@ -46,7 +47,7 @@
   # SERVICES
   # ──────────────────────────────────────────────────────────────
   services = {
-    tailscale.enable = true;
+    #tailscale.enable = true;
     gnome.gcr-ssh-agent.enable = false;
     fstrim.enable = true;
     upower.enable = true;
@@ -107,7 +108,10 @@
     ];
     config.hyprland = {
       "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-      "org.freedesktop.impl.portal.ScreenCast" = ["gtk" "hyprland"];
+      "org.freedesktop.impl.portal.ScreenCast" = [
+        "gtk"
+        "hyprland"
+      ];
       "org.freedesktop.impl.portal.Screenshot" = "gtk";
     };
   };
@@ -117,13 +121,13 @@
   # ──────────────────────────────────────────────────────────────
   security.polkit.enable = true;
   security.tpm2.enable = true;
-  programs.ssh.startAgent = true;
+  #programs.ssh.startAgent = true;
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
-    wantedBy = ["graphical-session.target"];
-    wants = ["graphical-session.target"];
-    after = ["graphical-session.target"];
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
@@ -139,7 +143,12 @@
   users.users.${username} = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = ["networkmanager" "wheel" "input" "plugdev"];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "input"
+      "plugdev"
+    ];
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -162,6 +171,9 @@
     htop
     btop
     fastfetch
+    screen
+
+    wireguard-tools
 
     # Editors
     helix
@@ -244,9 +256,9 @@
       font-awesome_5
     ];
     fontconfig.defaultFonts = {
-      serif = ["Noto Serif"];
-      sansSerif = ["Noto Sans"];
-      monospace = ["JetBrainsMono Nerd Font Mono"];
+      serif = [ "Noto Serif" ];
+      sansSerif = [ "Noto Sans" ];
+      monospace = [ "JetBrainsMono Nerd Font Mono" ];
     };
   };
 
@@ -261,7 +273,7 @@
     enableLsColors = true;
     ohMyZsh = {
       enable = true;
-      plugins = ["colored-man-pages"];
+      plugins = [ "colored-man-pages" ];
     };
     shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
     shellAliases = {
@@ -281,7 +293,7 @@
       vi = "nvim";
       nsp = "nix-shell -p";
       rb = "sudo nixos-rebuild switch --flake ~/.dotfiles#";
-      conf = "~/.config";
+      conf = "~/personal/git/dotfiles";
       ls = "eza --group-directories-first";
       ll = "eza -l --group-directories-first";
       la = "eza -a --group-directories-first";
@@ -307,7 +319,7 @@
   systemd.user.services.kanshi = {
     enable = true;
     description = "Kanshi monitor service";
-    bindsTo = ["graphical-session.target"];
+    bindsTo = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.kanshi}/bin/kanshi";
@@ -318,7 +330,10 @@
   # NIX SETTINGS
   # ──────────────────────────────────────────────────────────────
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     gc = {
       automatic = true;
       dates = "weekly";
