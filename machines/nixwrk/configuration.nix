@@ -14,6 +14,8 @@
     export GPG_TTY=$(tty)
   '';
 
+  programs.zsh.shellInit = ''eval "$(aw autocomplete:script zsh)"'';
+
   boot.initrd.luks.devices."luks-59f0c2b6-2617-42dc-884a-35acdd0c44c6".device =
     "/dev/disk/by-uuid/59f0c2b6-2617-42dc-884a-35acdd0c44c6";
 
