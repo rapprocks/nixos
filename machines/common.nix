@@ -66,9 +66,9 @@
     displayManager.ly = {
       enable = true;
       settings = {
-        auto_login_service = "ly-autologin";
-        auto_login_session = "Hyprland";
-        auto_login_user = username;
+        #auto_login_service = "ly-autologin";
+        #auto_login_session = "Hyprland";
+        #auto_login_user = username;
         box_title = "whatsup my man";
       };
     };
@@ -204,6 +204,8 @@
     fuzzel
     waybar
     hyprcursor
+    hyprpaper
+    swaybg
 
     # Media & recording
     ueberzugpp
