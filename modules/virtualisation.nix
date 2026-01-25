@@ -2,10 +2,13 @@
   lib,
   config,
   pkgs,
+  username,
   ...
-}: let
+}:
+let
   cfg = config.profiles.virtualization;
-in {
+in
+{
   options.profiles.virtualization.enable = lib.mkEnableOption "libvirt/QEMU virtualization with virt-manager";
 
   config = lib.mkIf cfg.enable {
@@ -20,7 +23,13 @@ in {
       qemu.swtpm.enable = true;
     };
 
+    users.users.${username}.extraGroups = [
+      "libvirtd"
+      "kvm"
+    ];
+
     programs.virt-manager.enable = true;
     virtualisation.spiceUSBRedirection.enable = true;
   };
 }
+
