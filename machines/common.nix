@@ -281,7 +281,10 @@
       plugins = [ "colored-man-pages" ];
     };
     shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
-    interactiveShellInit = ''export GPG_TTY=$(tty)'';
+    interactiveShellInit = ''
+      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      export GPG_TTY=$(tty)
+    '';
     shellAliases = {
       ip = "ip --color";
       cp = "rsync -ah --progress";
