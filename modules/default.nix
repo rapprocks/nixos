@@ -5,7 +5,6 @@
     ./security.nix
     ./virtualisation.nix
     ./nfs.nix
-    ./dms.nix
+    #./dms.nix
   ];
 }
-

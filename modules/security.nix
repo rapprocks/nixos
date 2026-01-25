@@ -57,6 +57,7 @@ in
       security.pam.services.ly.fprintAuth = false;
       security.pam.services.login.fprintAuth = false;
 
+      security.pam.services.fprintd.enable = true;
       # Only enable fingerprint auth for specific services - NOT login/display manager
       security.pam.services.hyprlock.fprintAuth = true;
       # Optionally for sudo (can be slow if reader doesn't respond):

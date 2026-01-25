@@ -121,7 +121,13 @@
   # ──────────────────────────────────────────────────────────────
   security.polkit.enable = true;
   security.tpm2.enable = true;
-  #programs.ssh.startAgent = true;
+
+  # Unified GPG Agent configuration for all hosts
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-gnome3;
+    enableSSHSupport = true;
+  };
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
@@ -181,7 +187,6 @@
     inputs.nixvim.packages.${pkgs.system}.default
 
     # Terminals
-    kitty
     alacritty
 
     # Browsers
@@ -237,8 +242,6 @@
     nodejs
 
     # Utils
-    stow
-    antigravity
     hyprshot
 
     # Screen recording script
@@ -278,6 +281,7 @@
       plugins = [ "colored-man-pages" ];
     };
     shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
+    interactiveShellInit = ''export GPG_TTY=$(tty)'';
     shellAliases = {
       ip = "ip --color";
       cp = "rsync -ah --progress";

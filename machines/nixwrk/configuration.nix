@@ -1,18 +1,8 @@
-{ pkgs, username, ... }:
+{ pkgs, ... }:
 {
   imports = [ ./hardware-configuration.nix ];
 
   networking.hostName = "nixwrk";
-
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-gnome3;
-    enableSSHSupport = true;
-  };
-
-  programs.zsh.interactiveShellInit = ''
-    export GPG_TTY=$(tty)
-  '';
 
   programs.zsh.shellInit = ''eval "$(aw autocomplete:script zsh)"'';
 
