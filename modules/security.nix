@@ -49,9 +49,17 @@ in
     (lib.mkIf cfg.fingerprint.enable {
       services.fprintd.enable = true;
 
+      systemd.services.fprintd = {
+        serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = "2s";
+          StartLimitIntervalSec = 0;
+        };
+      };
+
       # udev rule to prevent USB autosuspend on the fingerprint reader
       services.udev.extraRules = ''
-        ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="06cb", ATTR{idProduct}=="00f0", ATTR{power/control}="on"
+        ACTION=="add|change", SUBSYSTEM=="usb", ATTR{idVendor}=="06cb", ATTR{idProduct}=="00f0", ATTR{power/control}="on", ATTR{power/autosuspend}="-1"
       '';
 
       security.pam.services.ly.fprintAuth = false;

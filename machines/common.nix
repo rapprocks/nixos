@@ -66,9 +66,6 @@
     displayManager.ly = {
       enable = true;
       settings = {
-        #auto_login_service = "ly-autologin";
-        #auto_login_session = "Hyprland";
-        #auto_login_user = username;
         box_title = "whatsup my man";
       };
     };
@@ -312,6 +309,8 @@
       la = "eza -a --group-directories-first";
       lt = "eza --tree --group-directories-first";
       lla = "eza -la --group-directories-first";
+      wwup = "sudo wg-quick up ~/work/wg-work.conf";
+      wwdown = "sudo wg-quick down ~/work/wg-work.conf";
     };
   };
 
