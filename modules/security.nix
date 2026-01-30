@@ -50,10 +50,12 @@ in
       services.fprintd.enable = true;
 
       systemd.services.fprintd = {
+        unitConfig = {
+          StartLimitIntervalSec = 0;
+        };
         serviceConfig = {
           Restart = "on-failure";
           RestartSec = "2s";
-          StartLimitIntervalSec = 0;
         };
       };
 
