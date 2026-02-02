@@ -122,7 +122,7 @@
   # Unified GPG Agent configuration for all hosts
   programs.gnupg.agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-gnome3;
+    pinentryPackage = pkgs.pinentry-all;
     enableSSHSupport = true;
   };
 
@@ -179,6 +179,7 @@
     btop
     fastfetch
     screen
+    cursor-cli
 
     wireguard-tools
 
