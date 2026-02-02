@@ -1,5 +1,10 @@
-{...}: {
-  imports = [./hardware-configuration.nix];
+{ pkgs, ... }:
+{
+  imports = [ ./hardware-configuration.nix ];
+
+  environment.systemPackages = with pkgs; [
+    hypnotix
+  ];
 
   networking.hostName = "zeus";
 
@@ -12,11 +17,17 @@
       enable = true;
       forceProbe = "a7a1";
     };
-    nfs.shares = ["documents" "downloads/torrents" "media/movies" "media/tv"];
+    nfs.shares = [
+      "documents"
+      "downloads/torrents"
+      "media/movies"
+      "media/tv"
+    ];
     security = {
       yubikey.enable = true;
       fingerprint.enable = true;
     };
+    tailnet.enable = true;
   };
 
   system.stateVersion = "25.11";
