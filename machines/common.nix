@@ -245,6 +245,7 @@
 
     # Utils
     hyprshot
+    xwayland-satellite
 
     # Screen recording script
     (writeShellScriptBin "screenrec" (builtins.readFile ../scripts/screenrecording.sh))

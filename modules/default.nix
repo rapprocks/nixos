@@ -5,6 +5,6 @@
     ./security.nix
     ./virtualisation.nix
     ./nfs.nix
-    #./dms.nix
+    ./tailscale.nix
   ];
 }
