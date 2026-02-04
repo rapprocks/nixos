@@ -41,6 +41,23 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
+    settings.General.Enable = "Source,Sink,Media,Socket";
+  };
+  services.blueman.enable = true;
+
+  # ──────────────────────────────────────────────────────────────
+  # Audio
+  # ──────────────────────────────────────────────────────────────
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    wireplumber.enable = true;
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -52,23 +69,6 @@
     fstrim.enable = true;
     upower.enable = true;
     gnome.gnome-keyring.enable = true;
-
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      wireplumber.enable = true;
-    };
-
-    displayManager.ly = {
-      enable = true;
-      settings = {
-        box_title = "whatsup my man";
-      };
-    };
 
     desktopManager.cosmic = {
       enable = true;
@@ -103,14 +103,6 @@
       xdg-desktop-portal-gnome
       xdg-desktop-portal-wlr
     ];
-    config.hyprland = {
-      "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-      "org.freedesktop.impl.portal.ScreenCast" = [
-        "gtk"
-        "hyprland"
-      ];
-      "org.freedesktop.impl.portal.Screenshot" = "gtk";
-    };
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -122,7 +114,7 @@
   # Unified GPG Agent configuration for all hosts
   programs.gnupg.agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-all;
+    pinentryPackage = pkgs.pinentry-gnome3;
     enableSSHSupport = true;
   };
 
@@ -209,6 +201,7 @@
     wl-clipboard
     brightnessctl
     fuzzel
+    rofi
     waybar
     hyprcursor
     hyprpaper
@@ -359,11 +352,6 @@
   # ──────────────────────────────────────────────────────────────
   # DESKTOP ENVIRONMENTS
   # ──────────────────────────────────────────────────────────────
-  programs.hyprland = {
-    enable = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-    xwayland.enable = true;
-  };
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
   programs.niri.enable = true;

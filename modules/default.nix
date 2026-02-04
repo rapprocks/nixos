@@ -6,5 +6,7 @@
     ./virtualisation.nix
     ./nfs.nix
     ./tailscale.nix
+    ./dms.nix
+    ./display-manager.nix
   ];
 }
