@@ -21,19 +21,19 @@ in
     services.greetd = {
       enable = true;
       settings = {
-        default_session =
+        initial_session =
           if cfg.autoLogin then
             {
-              # LUKS hosts: skip greeter, go straight to Niri
               command = "niri-session";
               user = username;
             }
           else
-            {
-              # Non-LUKS hosts: show tuigreet for authentication
-              command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
-              user = "greeter";
-            };
+            null;
+        default_session = {
+          # LUKS hosts: skip greeter, go straight to Niri
+          command = "niri-session";
+          user = username;
+        };
       };
     };
 
