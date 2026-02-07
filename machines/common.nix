@@ -41,7 +41,10 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
-    settings.General.Enable = "Source,Sink,Media,Socket";
+    settings.General = {
+      Experimental = false;
+      FastConnectable = true;
+    };
   };
   services.blueman.enable = true;
 
@@ -50,6 +53,7 @@
   # ──────────────────────────────────────────────────────────────
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     pulse.enable = true;
@@ -57,7 +61,28 @@
       enable = true;
       support32Bit = true;
     };
-    wireplumber.enable = true;
+    wireplumber = {
+      enable = true;
+      extraConfig = {
+        "50-bluez" = {
+          "monitor.bluez.properties" = {
+            "bluez5.enable-sbc-xq" = true;
+            "bluez5.enable-msbc" = true;
+            "bluez5.enable-hw-volume" = true;
+            "bluez5.roles" = [
+              "a2dp_sink"
+              "a2dp_source"
+              "bap_sink"
+              "bap_source"
+              "hsp_hs"
+              "hsp_ag"
+              "hfp_hf"
+              "hfp_ag"
+            ];
+          };
+        };
+      };
+    };
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -101,8 +126,22 @@
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
       xdg-desktop-portal-gnome
-      xdg-desktop-portal-wlr
+      #xdg-desktop-portal-wlr
     ];
+    config = {
+      common = {
+        default = [ "gnome" ];
+      };
+      niri = {
+        #default = [
+        # "gtk"
+        #  "gnome"
+        #];
+        "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
+        "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+        "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+      };
+    };
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -235,6 +274,7 @@
     nixd
     typescript
     nodejs
+    temporal-cli
 
     # Utils
     hyprshot

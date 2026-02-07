@@ -20,6 +20,7 @@
     displayManager.autoLogin = true;
     laptop.enable = true;
     virtualization.enable = true;
+    docker.enable = true;
     intelGpu = {
       enable = true;
       forceProbe = "46a8";
