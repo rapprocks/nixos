@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   username,
   ...
 }:
@@ -30,14 +29,12 @@ in
           else
             null;
         default_session = {
-          # LUKS hosts: skip greeter, go straight to Niri
           command = "niri-session";
           user = username;
         };
       };
     };
 
-    # Suppress greetd errors in journal (optional, cleaner logs)
     systemd.services.greetd.serviceConfig = {
       Type = "idle";
       StandardInput = "tty";
