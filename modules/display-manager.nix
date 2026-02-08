@@ -20,15 +20,13 @@ in
     services.greetd = {
       enable = true;
       settings = {
-        initial_session =
-          if cfg.autoLogin then
-            {
-              command = "niri-session";
-              user = username;
-            }
-          else
-            null;
         default_session = {
+          command = "niri-session";
+          user = username;
+        };
+      }
+      // lib.optionalAttrs cfg.autoLogin {
+        initial_session = {
           command = "niri-session";
           user = username;
         };
