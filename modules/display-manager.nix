@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   username,
   ...
 }:
@@ -21,11 +22,10 @@ in
       enable = true;
       settings = {
         default_session = {
-          command = "niri-session";
-          user = username;
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
+          user = "greeter";
         };
-      }
-      // lib.optionalAttrs cfg.autoLogin {
+      } // lib.optionalAttrs cfg.autoLogin {
         initial_session = {
           command = "niri-session";
           user = username;
