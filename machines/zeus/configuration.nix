@@ -2,6 +2,8 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  services.automatic-timezoned.enable = true;
+
   environment.systemPackages = with pkgs; [
     hypnotix
   ];

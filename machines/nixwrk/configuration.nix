@@ -2,6 +2,8 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  services.automatic-timezoned.enable = true;
+
   networking.hostName = "nixwrk";
 
   programs.zsh.shellInit = ''eval "$(aw autocomplete:script zsh)"'';

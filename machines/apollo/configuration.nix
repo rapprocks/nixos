@@ -1,6 +1,8 @@
-{ username, ... }:
+{ ... }:
 {
   imports = [ ./hardware-configuration.nix ];
+
+  time.timeZone = "Europe/Stockholm";
 
   networking.hostName = "apollo";
 
@@ -9,7 +11,17 @@
 
   programs.steam.enable = true;
 
+  programs.ssh.extraConfig = ''
+    	Host prod-hel-vps-1.duckdns.org
+        User admin
+        Port 33001
+        ControlMaster auto
+        ControlPath ~/.ssh/cm-%r@%h:%p
+        ControlPersist 15m
+  '';
+
   profiles = {
+    displayManager.autoLogin = false;
     nfs.shares = [
       "documents"
       "downloads/torrents"
