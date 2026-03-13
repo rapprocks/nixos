@@ -4,6 +4,9 @@
   username,
   ...
 }:
+let
+  waybarConfig = "/home/${username}/personal/git/dotfiles/waybar/niri-config.jsonc";
+in
 {
   # ──────────────────────────────────────────────────────────────
   # LOCALE & TIME
@@ -210,8 +213,10 @@
     fastfetch
     screen
     cursor-cli
+    speedtest-cli
 
     wireguard-tools
+    ntfs3g
 
     # Editors
     helix
@@ -225,6 +230,7 @@
     brave
     firefox
     chromium
+    qutebrowser
 
     # Wayland/Desktop
     xdg-desktop-portal-wlr
@@ -268,6 +274,7 @@
     remmina
     cameractrls-gtk4
     bitwarden-desktop
+    beeper
 
     # Dev
     nixd
@@ -317,8 +324,38 @@
     };
     shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
     interactiveShellInit = ''
-      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-      export GPG_TTY=$(tty)
+      	export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        export GPG_TTY=$(tty)
+
+
+        cff() {
+          local target="$1"
+          local file
+
+          # No argument → fuzzy in current directory
+          if [[ -z "$target" ]]; then
+            file=$(fzf)
+            [[ -n "$file" ]] && wl-copy < "$file"
+            return
+          fi
+
+          # If argument is a file → copy directly
+          if [[ -f "$target" ]]; then
+            wl-copy < "$target"
+            echo "Copied $target to clipboard."
+            return
+          fi
+
+          # If argument is a directory → fuzzy inside it
+          if [[ -d "$target" ]]; then
+            file=$(find "$target" -type f | fzf)
+            [[ -n "$file" ]] && wl-copy < "$file"
+            return
+          fi
+
+          echo "Not a valid file or directory: $target"
+          return 1
+        }
     '';
     shellAliases = {
       ip = "ip --color";
@@ -369,6 +406,19 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.kanshi}/bin/kanshi";
+    };
+  };
+
+  systemd.user.services.waybar = {
+    description = "Waybar status bar";
+    partOf = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.waybar}/bin/waybar -c ${waybarConfig}";
+      ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+      Restart = "on-failure";
+      RestartSec = 3;
     };
   };
 

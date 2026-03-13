@@ -31,6 +31,17 @@
       fingerprint.enable = true;
     };
     tailnet.enable = true;
+    borgbackup = {
+      enable = true;
+      storagebox.user = "u399565-sub1"; # your Hetzner Storage Box user
+      sshKeyFile = "/home/earn/.ssh/rapprocks";
+      passphraseFile = "/home/earn/personal/.borg-passphrase";
+      paths = [
+        "/home"
+        "/etc/nixos"
+        "/var/lib"
+      ];
+    };
   };
 
   # Remaps for tenforty laptop keyboard

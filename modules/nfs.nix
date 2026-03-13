@@ -3,23 +3,28 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.profiles.nfs;
   nasHost = "10.100.0.4";
   remoteBase = "/mnt/tank";
   localBase = "/mnt/nas";
-in {
+in
+{
   options.profiles.nfs = {
     shares = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
-      example = ["documents" "media/movies"];
+      default = [ ];
+      example = [
+        "documents"
+        "media/movies"
+      ];
       description = "List of TrueNAS shares to mount";
     };
   };
 
-  config = lib.mkIf (cfg.shares != []) {
-    environment.systemPackages = [pkgs.nfs-utils];
+  config = lib.mkIf (cfg.shares != [ ]) {
+    environment.systemPackages = [ pkgs.nfs-utils ];
 
     fileSystems = lib.genAttrs cfg.shares (share: {
       device = "${nasHost}:${remoteBase}/${share}";
@@ -27,10 +32,13 @@ in {
       mountPoint = "${localBase}/${share}";
       options = [
         "x-systemd.automount"
+        "nfsvers=4.2"
+        "proto=tcp"
+        "hard"
         "noauto"
         "x-systemd.idle-timeout=600"
-        "x-systemd.device-timeout=5s"
-        "x-systemd.mount-timeout=5s"
+        #"x-systemd.device-timeout=5s"
+        #"x-systemd.mount-timeout=5s"
         "noatime"
       ];
     });

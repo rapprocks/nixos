@@ -8,5 +8,6 @@
     ./tailscale.nix
     ./dms.nix
     ./display-manager.nix
+    ./borgbackup.nix
   ];
 }
