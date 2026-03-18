@@ -2,12 +2,8 @@
   description = "FLAKES3000";
 
   inputs = {
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.url = "github:rapprocks/nixvim/main";
-
-    dms.url = "github:AvengeMedia/DankMaterialShell/stable";
-    dms.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
