@@ -250,6 +250,7 @@ in
     hyprcursor
     hyprpaper
     swaybg
+    noctalia-shell
 
     # Media & recording
     ueberzugpp
@@ -410,6 +411,7 @@ in
   };
 
   systemd.user.services.waybar = {
+    enable = false;
     description = "Waybar status bar";
     partOf = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
