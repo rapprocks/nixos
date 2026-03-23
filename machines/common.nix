@@ -42,10 +42,8 @@ in
   };
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;
     settings.General = {
-      Experimental = false;
-      FastConnectable = true;
+      Enable = "Source,Sink,Media,Socket";
     };
   };
   services.blueman.enable = true;
@@ -63,44 +61,17 @@ in
       enable = true;
       support32Bit = true;
     };
-    wireplumber = {
-      enable = true;
-      extraConfig = {
-        "50-bluez" = {
-          "monitor.bluez.properties" = {
-            "bluez5.enable-sbc-xq" = true;
-            "bluez5.enable-msbc" = true;
-            "bluez5.enable-hw-volume" = true;
-            "bluez5.roles" = [
-              "a2dp_sink"
-              "a2dp_source"
-              "bap_sink"
-              "bap_source"
-              "hsp_hs"
-              "hsp_ag"
-              "hfp_hf"
-              "hfp_ag"
-            ];
-          };
-        };
-      };
-    };
+    wireplumber.enable = true;
   };
 
   # ──────────────────────────────────────────────────────────────
   # SERVICES
   # ──────────────────────────────────────────────────────────────
   services = {
-    #tailscale.enable = true;
     gnome.gcr-ssh-agent.enable = false;
     fstrim.enable = true;
     upower.enable = true;
     gnome.gnome-keyring.enable = true;
-
-    desktopManager.cosmic = {
-      enable = true;
-      xwayland.enable = true;
-    };
 
     openssh = {
       enable = true;
@@ -214,6 +185,7 @@ in
     screen
     cursor-cli
     speedtest-cli
+    ngrok
 
     wireguard-tools
     ntfs3g
