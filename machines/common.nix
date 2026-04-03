@@ -258,6 +258,7 @@ in
     # Utils
     hyprshot
     xwayland-satellite
+    nautilus
 
     # Screen recording script
     (writeShellScriptBin "screenrec" (builtins.readFile ../scripts/screenrecording.sh))
