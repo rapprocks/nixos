@@ -197,6 +197,7 @@ in
 
     # Terminals
     alacritty
+    ghostty
 
     # Browsers
     brave
@@ -383,7 +384,7 @@ in
   };
 
   systemd.user.services.waybar = {
-    enable = false;
+    enable = true;
     description = "Waybar status bar";
     partOf = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
