@@ -1,6 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [ ./hardware-configuration.nix ];
+
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "sshSwitch" (builtins.readFile ../../scripts/sshSwitch.sh))
+  ];
 
   services.automatic-timezoned.enable = true;
 
@@ -8,11 +12,16 @@
 
   programs.zsh.shellInit = ''eval "$(aw autocomplete:script zsh)"'';
   programs.ssh.extraConfig = ''
-    	Host tolerant-backup-2
-      	HostName tolerant-backup-2.akind.tech
-        User root
-        Port 2222
-        IdentityFile ~/.ssh/id_ed25519_sk_rk
+        	Host tolerant-backup-2
+          	HostName tolerant-backup-2.akind.tech
+            User root
+            Port 2222
+            IdentityFile ~/.ssh/id_ed25519_sk_rk
+    			Host docker-0-lab
+          	HostName 192.168.241.18
+            User awadmin
+            IdentityFile ~/.ssh/id_ed25519_sk_rk
+
   '';
 
   boot.initrd.luks.devices."luks-59f0c2b6-2617-42dc-884a-35acdd0c44c6".device =
