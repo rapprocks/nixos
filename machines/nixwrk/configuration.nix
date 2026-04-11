@@ -3,12 +3,14 @@
   imports = [ ./hardware-configuration.nix ];
 
   environment.systemPackages = with pkgs; [
+    opencode
     (writeShellScriptBin "sshSwitch" (builtins.readFile ../../scripts/sshSwitch.sh))
   ];
 
   services.automatic-timezoned.enable = true;
 
   networking.hostName = "nixwrk";
+  networking.firewall.allowedTCPPorts = [ 32320 ]; # TEMP TO RUN OTA FLASH FOR ESP OVER VLAN 50
 
   programs.zsh.shellInit = ''eval "$(aw autocomplete:script zsh)"'';
   programs.ssh.extraConfig = ''
