@@ -187,6 +187,8 @@ in
     speedtest-cli
     ngrok
 
+    opencode
+
     wireguard-tools
     ntfs3g
 

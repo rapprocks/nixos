@@ -3,7 +3,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   environment.systemPackages = with pkgs; [
-    opencode
     (writeShellScriptBin "sshSwitch" (builtins.readFile ../../scripts/sshSwitch.sh))
   ];
 
