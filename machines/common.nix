@@ -92,30 +92,30 @@ in
   # ──────────────────────────────────────────────────────────────
   # XDG PORTALS
   # ──────────────────────────────────────────────────────────────
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
-      #xdg-desktop-portal-wlr
-    ];
-    config = {
-      common = {
-        default = [ "gnome" ];
-      };
-      niri = {
-        #default = [
-        # "gtk"
-        #  "gnome"
-        #];
-        "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-        "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-        "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
-      };
-    };
-  };
+  #xdg.portal = {
+  #enable = true;
+  #xdgOpenUsePortal = true;
+  #wlr.enable = true;
+  #extraPortals = with pkgs; [
+  #  xdg-desktop-portal-gtk
+  #  xdg-desktop-portal-gnome
+  #xdg-desktop-portal-wlr
+  #];
+  #config = {
+  #common = {
+  #  default = [ "gnome" ];
+  #};
+  #niri = {
+  #default = [
+  # "gtk"
+  #  "gnome"
+  #];
+  # "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
+  # "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+  #  "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+  #};
+  #};
+  #};
 
   # ──────────────────────────────────────────────────────────────
   # CORE SECURITY
@@ -195,6 +195,7 @@ in
     # Editors
     helix
     code-cursor
+    vscodium
     inputs.nixvim.packages.${pkgs.system}.default
 
     # Terminals
@@ -262,6 +263,7 @@ in
     hyprshot
     xwayland-satellite
     nautilus
+    unzip
 
     # Screen recording script
     (writeShellScriptBin "screenrec" (builtins.readFile ../scripts/screenrecording.sh))
