@@ -155,6 +155,7 @@ in
       "wheel"
       "input"
       "plugdev"
+      "dialout"
     ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6as2zca8RwzzgbXxP066ZFx/sTrKnK6Jx1VQU9AIUzt9jFDfpp+y7aMz8uTAgfQHgLMKHEsZs2dtVyCYsp/U7KsGjowcQxPZxMEsLehJCApLv0K/y7A1agZNCjL5h+TzK0mvG+7kLl3VxBngt/SqBlB59+2piDSLfuqsceaTLFNsYnt5W++ruogv++g+Nn+g4HVtcTfsyI4rVdIYznYGFguJtvN0VzkWczut0hXqHaaBapvnPnyEaNXoPn/UqKH71HBvCFBAMJ49M8meeTHqqiXDWGDv0osoyn/JHAvwu56tS5Wqz3/+yU37SiLVmd8fZY/+OGttiyf39AJE6zQ/j cardno:18_288_270
@@ -228,6 +229,7 @@ in
     swaybg
     noctalia-shell
     cliphist
+    nirius
 
     # Media & recording
     ueberzugpp
@@ -426,4 +428,5 @@ in
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
   programs.niri.enable = true;
+  services.desktopManager.gnome.enable = true;
 }
