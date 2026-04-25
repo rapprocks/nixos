@@ -227,6 +227,7 @@ in
     hyprpaper
     swaybg
     noctalia-shell
+    cliphist
 
     # Media & recording
     ueberzugpp
@@ -254,6 +255,7 @@ in
     beeper
 
     # Dev
+    ansible
     nixd
     typescript
     nodejs
