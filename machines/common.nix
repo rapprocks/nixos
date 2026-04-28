@@ -220,6 +220,8 @@ in
     hyprcursor
     hyprpaper
     swaybg
+    noctalia-shell
+    cliphist
     nirius
 
     # Media & recording
@@ -248,6 +250,7 @@ in
     beeper
 
     # Dev
+    ansible
     nixd
     typescript
     nodejs
