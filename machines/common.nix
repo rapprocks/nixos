@@ -94,21 +94,21 @@ in
   # ──────────────────────────────────────────────────────────────
   # XDG PORTALS
   # ──────────────────────────────────────────────────────────────
-  xdg.portal = {
-    enable = true;
-    #xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
-    ];
-    config.niri.default = [
-      "gtk"
-      "gnome"
-    ];
-    #"org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-    "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-    "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
-  };
+  #xdg.portal = {
+  #enable = true;
+  #xdgOpenUsePortal = true;
+  #extraPortals = with pkgs; [
+  #  xdg-desktop-portal-gtk
+  #  xdg-desktop-portal-gnome
+  #];
+  #config.niri.default = [
+  #  "gtk"
+  #  "gnome"
+  #];
+  #"org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
+  #"org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+  #"org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+  #};
 
   # ──────────────────────────────────────────────────────────────
   # CORE SECURITY
