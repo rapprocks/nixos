@@ -33,6 +33,8 @@ in
   networking.wireless.iwd.enable = true;
   networking.firewall.enable = true;
 
+  #services.dnsmasq.enable = true;
+
   # ──────────────────────────────────────────────────────────────
   # HARDWARE (shared)
   # ──────────────────────────────────────────────────────────────
@@ -92,30 +94,21 @@ in
   # ──────────────────────────────────────────────────────────────
   # XDG PORTALS
   # ──────────────────────────────────────────────────────────────
-  #xdg.portal = {
-  #enable = true;
-  #xdgOpenUsePortal = true;
-  #wlr.enable = true;
-  #extraPortals = with pkgs; [
-  #  xdg-desktop-portal-gtk
-  #  xdg-desktop-portal-gnome
-  #xdg-desktop-portal-wlr
-  #];
-  #config = {
-  #common = {
-  #  default = [ "gnome" ];
-  #};
-  #niri = {
-  #default = [
-  # "gtk"
-  #  "gnome"
-  #];
-  # "org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-  # "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-  #  "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
-  #};
-  #};
-  #};
+  xdg.portal = {
+    enable = true;
+    #xdgOpenUsePortal = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+    ];
+    config.niri.default = [
+      "gtk"
+      "gnome"
+    ];
+    #"org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
+    "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+    "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+  };
 
   # ──────────────────────────────────────────────────────────────
   # CORE SECURITY
