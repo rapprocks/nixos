@@ -428,5 +428,6 @@ in
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
   programs.niri.enable = true;
+  programs.niri.useNautilus = true;
   services.desktopManager.gnome.enable = true;
 }
