@@ -254,7 +254,7 @@ in
     nixd
     typescript
     nodejs
-    temporal-cli
+    #temporal-cli
 
     # Utils
     hyprshot
