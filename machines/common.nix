@@ -110,6 +110,25 @@ in
   #"org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
   #};
 
+  xdg.portal = {
+    enable = true;
+
+    config.niri = {
+      default = [
+        "gnome"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Access" = "gtk";
+      "org.freedesktop.impl.portal.FileChooser" = "gtk";
+      "org.freedesktop.impl.portal.Notification" = "gtk";
+      "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
+    };
+
+    # Recommended by upstream, required for screencast support
+    # https://github.com/YaLTeR/niri/wiki/Important-Software#portals
+    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+  };
+
   # ──────────────────────────────────────────────────────────────
   # CORE SECURITY
   # ──────────────────────────────────────────────────────────────
@@ -421,6 +440,6 @@ in
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
   programs.niri.enable = true;
-  programs.niri.useNautilus = true;
+  programs.niri.useNautilus = false;
   services.desktopManager.gnome.enable = true;
 }
