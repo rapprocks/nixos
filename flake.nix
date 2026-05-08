@@ -2,8 +2,7 @@
   description = "FLAKES3000";
 
   inputs = {
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/4bd9165a9165d7b5e33ae57f3eecbcb28fb231c9";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.url = "github:rapprocks/nixvim/main";
   };
 

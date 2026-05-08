@@ -94,22 +94,6 @@ in
   # ──────────────────────────────────────────────────────────────
   # XDG PORTALS
   # ──────────────────────────────────────────────────────────────
-  #xdg.portal = {
-  #enable = true;
-  #xdgOpenUsePortal = true;
-  #extraPortals = with pkgs; [
-  #  xdg-desktop-portal-gtk
-  #  xdg-desktop-portal-gnome
-  #];
-  #config.niri.default = [
-  #  "gtk"
-  #  "gnome"
-  #];
-  #"org.freedesktop.impl.portal.FileChooser" = "cosmic-files";
-  #"org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-  #"org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
-  #};
-
   xdg.portal = {
     enable = true;
 
@@ -124,8 +108,6 @@ in
       "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
     };
 
-    # Recommended by upstream, required for screencast support
-    # https://github.com/YaLTeR/niri/wiki/Important-Software#portals
     extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
   };
 
@@ -441,5 +423,12 @@ in
   services.hypridle.enable = true;
   programs.niri.enable = true;
   programs.niri.useNautilus = false;
+  programs.thunar = {
+    enable = true;
+    plugins = [
+      pkgs.thunar-archive-plugin
+      pkgs.thunar-volman
+    ];
+  };
   services.desktopManager.gnome.enable = true;
 }
