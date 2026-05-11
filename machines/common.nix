@@ -430,5 +430,6 @@ in
       pkgs.thunar-volman
     ];
   };
+  services.tumbler.enable = true; # Thumbnail support for images
   services.desktopManager.gnome.enable = true;
 }
