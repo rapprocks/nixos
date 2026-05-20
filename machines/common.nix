@@ -94,22 +94,22 @@ in
   # ──────────────────────────────────────────────────────────────
   # XDG PORTALS
   # ──────────────────────────────────────────────────────────────
-  xdg.portal = {
-    enable = true;
+  #xdg.portal = {
+  #enable = true;
+  #
+  #config.niri = {
+  #  default = [
+  #    "gnome"
+  #    "gtk"
+  #  ];
+  #  "org.freedesktop.impl.portal.Access" = "gtk";
+  #  "org.freedesktop.impl.portal.FileChooser" = "gtk";
+  #  "org.freedesktop.impl.portal.Notification" = "gtk";
+  #  "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
+  #};
 
-    config.niri = {
-      default = [
-        "gnome"
-        "gtk"
-      ];
-      "org.freedesktop.impl.portal.Access" = "gtk";
-      "org.freedesktop.impl.portal.FileChooser" = "gtk";
-      "org.freedesktop.impl.portal.Notification" = "gtk";
-      "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
-    };
-
-    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
-  };
+  #extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+  #};
 
   # ──────────────────────────────────────────────────────────────
   # CORE SECURITY
@@ -423,14 +423,7 @@ in
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
   programs.niri.enable = true;
-  programs.niri.useNautilus = false;
-  programs.thunar = {
-    enable = true;
-    plugins = [
-      pkgs.thunar-archive-plugin
-      pkgs.thunar-volman
-    ];
-  };
+  programs.niri.useNautilus = true;
   services.tumbler.enable = true; # Thumbnail support for images
   services.desktopManager.gnome.enable = true;
 }
