@@ -9,7 +9,10 @@
   services.automatic-timezoned.enable = true;
 
   networking.hostName = "nixwrk";
-  networking.firewall.allowedTCPPorts = [ 32320 ]; # TEMP TO RUN OTA FLASH FOR ESP OVER VLAN 50
+  networking.firewall.allowedTCPPorts = [
+    32320
+    # 5500 # USED TO TEST TOUCHPAD ON GOOGLE MEET CTP
+  ]; # TEMP TO RUN OTA FLASH FOR ESP OVER VLAN 50
 
   programs.zsh.shellInit = ''eval "$(aw autocomplete:script zsh)"'';
   programs.ssh.extraConfig = ''

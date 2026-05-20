@@ -181,6 +181,7 @@ in
     cursor-cli
     speedtest-cli
     ngrok
+    devenv
 
     opencode
 
@@ -255,7 +256,7 @@ in
     nixd
     typescript
     nodejs
-    #temporal-cli
+    temporal-cli
 
     # Utils
     hyprshot
