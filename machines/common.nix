@@ -94,7 +94,18 @@ in
   # ──────────────────────────────────────────────────────────────
   # XDG PORTALS
   # ──────────────────────────────────────────────────────────────
-  xdg.portal.config.common.default = "gtk";
+
+  xdg.portal = {
+    enable = true;
+    config.niri = {
+      default = [ "gtk" ]; # Remove "gnome" from the default fallback
+      # Keep your specific overrides if needed, but ensure they point to gtk
+      "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
+    };
+    # Temporarily comment out the GNOME portal
+    # extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
 
   # ──────────────────────────────────────────────────────────────
   # CORE SECURITY
