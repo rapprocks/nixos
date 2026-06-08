@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   inputs,
   username,
@@ -8,6 +9,14 @@ let
   waybarConfig = "/home/${username}/personal/git/dotfiles/waybar/niri-config.jsonc";
 in
 {
+  # -------------------------------------------------------------
+  # TEMPORARY
+  # -------------------------------------------------------------
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
+
   # ──────────────────────────────────────────────────────────────
   # LOCALE & TIME
   # ──────────────────────────────────────────────────────────────
@@ -97,14 +106,24 @@ in
 
   xdg.portal = {
     enable = true;
+    wlr.enable = true;
     config.niri = {
-      default = [ "gtk" ]; # Remove "gnome" from the default fallback
+      default = lib.mkForce [
+        "gtk"
+        "wlr"
+      ]; # Remove "gnome" from the default fallback
       # Keep your specific overrides if needed, but ensure they point to gtk
+      "org.freedesktop.impl.portal.Access" = "gtk";
+      "org.freedesktop.impl.portal.FileChooser" = "gtk";
+      "org.freedesktop.impl.portal.Notification" = "gtk";
       "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
     };
     # Temporarily comment out the GNOME portal
     # extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-wlr
+    ];
   };
 
   # ──────────────────────────────────────────────────────────────
@@ -202,7 +221,7 @@ in
 
     # Wayland/Desktop
     xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
+    #xdg-desktop-portal-gtk
     xdg-utils
     nwg-look
     adwaita-icon-theme
@@ -401,10 +420,15 @@ in
   # NIX SETTINGS
   # ──────────────────────────────────────────────────────────────
   nix = {
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        username
+      ];
+    };
     gc = {
       automatic = true;
       dates = "weekly";
