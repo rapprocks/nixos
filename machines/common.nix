@@ -193,7 +193,6 @@ in
     btop
     fastfetch
     screen
-    cursor-cli
     speedtest-cli
     ngrok
     devenv
@@ -204,9 +203,6 @@ in
     ntfs3g
 
     # Editors
-    helix
-    code-cursor
-    vscodium
     inputs.nixvim.packages.${pkgs.system}.default
 
     # Terminals
@@ -217,11 +213,8 @@ in
     brave
     firefox
     chromium
-    qutebrowser
 
     # Wayland/Desktop
-    xdg-desktop-portal-wlr
-    #xdg-desktop-portal-gtk
     xdg-utils
     nwg-look
     adwaita-icon-theme
@@ -233,11 +226,11 @@ in
     brightnessctl
     fuzzel
     rofi
+    rofimoji
     waybar
     hyprcursor
     hyprpaper
     swaybg
-    noctalia-shell
     cliphist
     nirius
 
@@ -264,7 +257,6 @@ in
     remmina
     cameractrls-gtk4
     bitwarden-desktop
-    beeper
 
     # Dev
     ansible
