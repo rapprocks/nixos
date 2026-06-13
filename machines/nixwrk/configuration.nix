@@ -35,6 +35,10 @@
     displayManager.autoLogin = true;
     laptop.enable = true;
     virtualization.enable = true;
+    ollama = {
+      enable = true;
+      models = [ "deepseek-r1:1.5b" ];
+    };
     docker.enable = true;
     intelGpu = {
       enable = true;
