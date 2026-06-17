@@ -13,10 +13,6 @@ in
   # TEMPORARY
   # -------------------------------------------------------------
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-39.8.10"
-  ];
-
   # ──────────────────────────────────────────────────────────────
   # LOCALE & TIME
   # ──────────────────────────────────────────────────────────────
@@ -259,7 +255,6 @@ in
     gnome-calculator
     remmina
     cameractrls-gtk4
-    bitwarden-desktop
 
     # Dev
     ansible
