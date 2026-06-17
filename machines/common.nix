@@ -226,13 +226,16 @@ in
     brightnessctl
     fuzzel
     rofi
+    rofi-rbw-wayland
     rofimoji
+    rbw
     waybar
     hyprcursor
     hyprpaper
     swaybg
     cliphist
     nirius
+    pinentry-gnome3
 
     # Media & recording
     ueberzugpp
