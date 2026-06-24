@@ -6,10 +6,11 @@
   ...
 }:
 let
-  cfg = config.profiles.displayManager;
+  cfg = config.profiles.greetd;
 in
 {
-  options.profiles.displayManager = {
+  options.profiles.greetd = {
+    enable = lib.mkEnableOption "greetd";
     autoLogin = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -17,7 +18,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf config.profiles.greetd.enable {
     services.greetd = {
       enable = true;
       settings = {

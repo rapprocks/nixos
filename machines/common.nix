@@ -182,6 +182,7 @@ in
     bat
     tldr
     jq
+    yq
     zoxide
     ripgrep
     yazi
@@ -192,6 +193,7 @@ in
     speedtest-cli
     ngrok
     devenv
+    pass
 
     opencode
 

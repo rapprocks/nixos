@@ -8,6 +8,7 @@
     ./nfs.nix
     ./tailscale.nix
     ./display-manager.nix
+    ./gdm.nix
     ./borgbackup.nix
   ];
 }
