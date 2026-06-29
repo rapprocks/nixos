@@ -211,6 +211,7 @@ in
     brave
     firefox
     chromium
+    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # Wayland/Desktop
     xdg-utils
