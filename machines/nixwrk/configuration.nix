@@ -32,7 +32,8 @@
     "/dev/disk/by-uuid/59f0c2b6-2617-42dc-884a-35acdd0c44c6";
 
   profiles = {
-    displayManager.autoLogin = true;
+    gdm.enable = true;
+    gdm.autoLogin = true;
     laptop.enable = true;
     virtualization.enable = true;
     ollama = {
