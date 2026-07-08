@@ -83,7 +83,7 @@ in
     openssh = {
       enable = true;
       settings = {
-        PasswordAuthentication = false;
+        PasswordAuthentication = true;
         PermitRootLogin = "no";
       };
     };
@@ -179,6 +179,7 @@ in
     eza
     fzf
     tmux
+    herdr
     bat
     tldr
     jq
@@ -235,6 +236,7 @@ in
     cliphist
     nirius
     pinentry-gnome3
+    thunderbird
 
     # Media & recording
     ueberzugpp
