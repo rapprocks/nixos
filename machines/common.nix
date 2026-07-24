@@ -195,6 +195,8 @@ in
     ngrok
     devenv
     pass
+    sops
+    ssh-to-age
 
     opencode
 

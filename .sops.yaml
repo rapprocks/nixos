@@ -1,0 +1,8 @@
+keys:
+  - &apollo age17xnrmdpaaf6fe3xe6amr64zj6zd03ntkvtfurmmsg8rsrnaayvcsyv3xkl
+
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+          - *apollo

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -9,6 +9,8 @@
 
   hardware.amdgpu.initrd.enable = true;
   services.xserver.videoDrivers = [ "modesetting" ];
+
+  boot.kernelParams = [ "amdgpu.sg_display=0" ];
 
   programs.steam.enable = true;
 
@@ -41,6 +43,11 @@
     security = {
       yubikey.enable = true;
       fingerprint.enable = false;
+    };
+    tailscale = {
+      enable = true;
+      acceptDns = false;
+      authKeySecret = "tailscale_apollo_authkey";
     };
   };
 

@@ -26,6 +26,9 @@ in
   config = lib.mkIf (cfg.shares != [ ]) {
     environment.systemPackages = [ pkgs.nfs-utils ];
 
+    # Force the NFS module to load at boot, preventing the lazy-load kernel panic
+    boot.supportedFilesystems = [ "nfs" ];
+
     fileSystems = lib.genAttrs cfg.shares (share: {
       device = "${nasHost}:${remoteBase}/${share}";
       fsType = "nfs";

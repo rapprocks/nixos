@@ -30,7 +30,6 @@
       yubikey.enable = true;
       fingerprint.enable = true;
     };
-    tailnet.enable = true;
     borgbackup = {
       enable = true;
       storagebox.user = "u399565-sub1"; # your Hetzner Storage Box user
