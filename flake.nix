@@ -1,22 +1,54 @@
 {
+  description = "FLAKES3000";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    import-tree.url = "github:vic/import-tree";
-    #wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
-
-    #sops-nix = {
-    #  url = "github:Mic92/sops-nix";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
-
-    sysc-greet = {
-      url = "github:Nomadcxx/sysc-greet";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixvim.url = "github:rapprocks/nixvim/main";
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixvim.url = "github:rapprocks/nixvim/main";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs =
+    { nixpkgs, ... }@inputs:
+    let
+      mkHost =
+        {
+          hostname,
+          username,
+        }:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs username; };
+          modules = [
+            {
+              nixpkgs.hostPlatform = "x86_64-linux";
+              nixpkgs.config.allowUnfree = true;
+            }
+            ./modules
+            ./machines/common.nix
+            ./machines/${hostname}/configuration.nix
+          ];
+        };
+    in
+    {
+      nixosConfigurations = {
+        nixwrk = mkHost {
+          hostname = "nixwrk";
+          username = "philip";
+        };
+        apollo = mkHost {
+          hostname = "apollo";
+          username = "earn";
+        };
+        zeus = mkHost {
+          hostname = "zeus";
+          username = "earn";
+        };
+      };
+    };
 }
