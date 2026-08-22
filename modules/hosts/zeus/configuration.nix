@@ -6,12 +6,11 @@
   };
   flake.nixosModules.zeusConfig = { pkgs, ... }: {
     imports = [
-      #self.nixosModules.zeusHardware
+      self.nixosModules.zeusHardware
       self.nixosModules.common
       #self.nixosModules.kdeniri
       self.nixosModules.slimniri
       self.nixosModules.nasMounts
-      ./hardware-configuration.nix
     ];
 
     ## ADDED BY ME ##
@@ -28,6 +27,7 @@
         ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
         ".config/swaync/config.json" = "swaync/config.json";
         ".config/rbw/config.json" = "rbw/config.json";
+        ".gitconfig" = ".gitconfig";
       };
       themedMappings = {
         ".config/alacritty/colors.toml" = {
