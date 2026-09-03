@@ -68,15 +68,13 @@
           vim = "nvim";
           vi = "nvim";
           nsp = "nix-shell -p";
-          rb = "sudo nixos-rebuild switch --flake ~/.dotfiles#";
+          rb = "sudo nixos-rebuild switch --flake ~/nixconf#";
           conf = "~/nixconf";
           ls = "eza --group-directories-first";
           ll = "eza -l --group-directories-first";
           la = "eza -a --group-directories-first";
           lt = "eza --tree --group-directories-first";
           lla = "eza -la --group-directories-first";
-          wwup = "sudo wg-quick up ~/work/wg-work.conf";
-          wwdown = "sudo wg-quick down ~/work/wg-work.conf";
         };
       };
 

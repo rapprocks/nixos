@@ -10,6 +10,19 @@
       security.polkit.enable = true;
       #security.tpm2.enable = true;
 
+      services.fprintd.enable = true;
+
+      security.pam.services = {
+        login.fprintAuth = false;
+        greetd.fprintAuth = false;
+
+        swaylock = {
+          fprintAuth = true;
+          u2fAuth = false;
+        };
+
+      };
+
       security.pam.u2f = {
         enable = true;
         settings = {

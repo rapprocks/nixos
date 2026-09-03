@@ -1,0 +1,8 @@
+keys:
+  - &earn-zeus age1ea4hdecw9hw6ae9728paskysc6hrwxs9tx5j22hmyuz5hktar3cqy0zrga
+
+creation_rules:
+  - path_regex: secrets/syncthing\.yaml$
+    key_groups:
+      - age:
+          - *earn-zeus

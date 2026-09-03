@@ -5,10 +5,10 @@
     import-tree.url = "github:vic/import-tree";
     #wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
-    #sops-nix = {
-    #  url = "github:Mic92/sops-nix";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     sysc-greet = {
       url = "github:Nomadcxx/sysc-greet";

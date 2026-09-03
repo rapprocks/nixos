@@ -13,6 +13,29 @@
       self.nixosModules.nasMounts
     ];
 
+    services.power-profiles-daemon.enable = true;
+    services.thermald.enable = true;
+    powerManagement.powertop.enable = false;
+
+    networking.networkmanager.ensureProfiles.profiles = {
+      "k69" = {
+        connection = {
+          id = "k69";
+          type = "wifi";
+        };
+        wifi = {
+          mode = "infrastructure";
+          ssid = "k69";
+        };
+        wifi-security = {
+          key-mgmt = "wpa-psk";
+          psk = "Zna7#quR4numv7#@Yx8Vu#!D!";
+        };
+        ipv4.method = "auto";
+        ipv6.method = "auto";
+      };
+    };
+
     ## ADDED BY ME ##
     services.dotfiles = {
       enable = true;
@@ -58,6 +81,12 @@
     hardware.graphics.enable = true;
     hardware.graphics.enable32Bit = true;
 
+    boot.initrd.kernelModules = [ "i915" ];
+    boot.kernelParams = [
+      "i915.force_probe=a7a1"
+    ];
+    hardware.graphics.extraPackages = [ pkgs.vpl-gpu-rt ];
+
     services.openssh.enable = true;
 
     ############################################################
@@ -67,8 +96,9 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     networking.hostName = "zeus"; # Define your hostname.
-    # Enable networking
     networking.networkmanager.enable = true;
+    networking.networkmanager.wifi.backend = "iwd";
+    networking.wireless.iwd.enable = true;
 
     environment.systemPackages = with pkgs; [
       wget

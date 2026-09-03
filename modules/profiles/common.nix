@@ -16,6 +16,8 @@
       kanshi
       rbw
       rofi-rbw-wayland
+      mpv
+      feh
     ];
 
     systemd.user.services.kanshi = {
@@ -26,6 +28,21 @@
         Type = "simple";
         ExecStart = "${pkgs.kanshi}/bin/kanshi";
       };
+    };
+
+    xdg.mime.enable = true;
+    xdg.mime.defaultApplications = {
+      "application/pdf" = "firefox.desktop";
+      "default-web-browser" = [ "firefox.desktop" ];
+      "text/html" = [ "firefox.desktop" ];
+      "text/xml" = [ "firefox.desktop" ];
+      "x-scheme-handler/http" = [ "firefox.desktop" ];
+      "x-scheme-handler/https" = [ "firefox.desktop" ];
+      "image/jpeg" = [ "feh.desktop" ];
+      "image/jpg" = [ "feh.desktop" ];
+      "image/png" = [ "feh.desktop" ];
+      "video/mp4" = [ "mpv.desktop" ];
+      "video/mkv" = [ "mpv.desktop" ];
     };
 
     ############################################

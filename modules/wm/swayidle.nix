@@ -4,7 +4,7 @@
   flake.nixosModules.swayidle =
     { lib, pkgs, ... }:
     let
-      lock = "${lib.getExe pkgs.swaylock-effects} -C /home/earn/.dotfiles/swaylock/rose-pine --clock";
+      lock = "${lib.getExe pkgs.swaylock-effects} -C /home/earn/.dotfiles/swaylock/rose-pine --clock --indicator-idle-visible";
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
     in
     {

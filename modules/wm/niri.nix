@@ -29,6 +29,8 @@
       swaynotificationcenter
       ffmpegthumbnailer
 
+      satty
+
       wl-clipboard
       waybar
       swayosd
@@ -43,11 +45,14 @@
       kdePackages.systemsettings
       kdePackages.knewstuff
 
+      kdePackages.krdc
+
       kdePackages.breeze
       kdePackages.breeze-icons
       kdePackages.kio
       kdePackages.kio-extras
       kdePackages.plasma-integration
+      kdePackages.bluedevil
       #kdePackages.kde-gtk-config
       #kdePackages.qtstyleplugin-kvantum
 
@@ -63,6 +68,13 @@
         Restart = "on-failure";
       };
       wantedBy = [ "niri.service" ];
+    };
+
+    hardware.bluetooth = {
+      enable = true;
+      settings.General = {
+        Enable = "Source,Sink,Media,Socket";
+      };
     };
 
   };
