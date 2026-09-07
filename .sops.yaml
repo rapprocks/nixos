@@ -1,6 +1,7 @@
 keys:
   - &earn-zeus age1ea4hdecw9hw6ae9728paskysc6hrwxs9tx5j22hmyuz5hktar3cqy0zrga
   - &earn age1vhd283gt45vjd69trftmakc0e8e9kff73l30p26atc6e77rn54qq44e65u
+  - &kde age1w3dyehwsp55jeegkty9dwyxs7hckrzu2mx4pxnqztcghj7a8z57s2a2msk
 
 creation_rules:
   - path_regex: secrets/secrets\.yaml$
@@ -8,3 +9,4 @@ creation_rules:
       - age:
           - *earn-zeus
           - *earn
+          - *kde
