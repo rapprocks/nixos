@@ -52,7 +52,10 @@
       kdePackages.kio
       kdePackages.kio-extras
       kdePackages.plasma-integration
+
       kdePackages.bluedevil
+      kdePackages.bluez-qt
+
       #kdePackages.kde-gtk-config
       #kdePackages.qtstyleplugin-kvantum
 

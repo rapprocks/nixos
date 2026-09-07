@@ -13,6 +13,8 @@
       self.nixosModules.nasMounts
     ];
 
+    services.syncthingSync.enable = true;
+
     ## ADDED BY ME ##
     services.dotfiles = {
       enable = true;

@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.syncthing =
     {
@@ -7,144 +7,91 @@
       ...
     }:
     let
-      cfg = config.services.customSyncthing;
-
-      # 1. Global registry of devices on your network
-      devices = {
-        "zeus" = {
-          id = "DEVICE-ID-FOR-ZEUS-AAAAAAA-BBBBBBB-...";
-          addresses = [
-            "tcp://10.100.0.X:22000"
-            "dynamic"
-          ];
-        };
-      };
-
-      # 2. Global registry of shared folders
-      # Specify which devices participate in each folder
-      allFolders = {
-        "documents" = {
-          id = "sync-documents";
-          path = "/home/${cfg.user}/Documents";
-          devices = [
-            "zeus"
-            "kde"
-            "truenas"
-          ];
-          # File versioning strategy
-          versioning = {
-            type = "staggered";
-            params = {
-              cleanInterval = "3600";
-              maxAge = "2592000"; # 30 days
-            };
-          };
-        };
-        "notes" = {
-          id = "sync-notes";
-          path = "/home/${cfg.user}/Notes";
-          devices = [
-            "zeus"
-            "kde"
-            "truenas"
-          ];
-          versioning = {
-            type = "simple";
-            params = {
-              keep = "10";
-            };
-          };
-        };
-        "projects" = {
-          id = "sync-projects";
-          path = "/home/${cfg.user}/Projects";
-          devices = [
-            "zeus"
-            "kde"
-            "truenas"
-          ];
-          ignorePerms = false;
-        };
-      };
-
-      currentHost = config.networking.hostName;
-
-      # Filter out the current device from the devices list (Syncthing requirement)
-      otherDevices = lib.filterAttrs (name: _: name != currentHost) devices;
-
-      # Filter folders to only include those relevant to this host
-      hostFolders = lib.filterAttrs (_: folder: builtins.elem currentHost folder.devices) (
-        lib.mapAttrs (
-          name: folder:
-          folder
-          // {
-            # Remove current host from the folder's device list
-            devices = builtins.filter (dev: dev != currentHost) folder.devices;
-          }
-        ) allFolders
-      );
+      cfg = config.services.syncthingSync;
     in
     {
-      imports = [
-        inputs.sops-nix.nixosModules.sops
-      ];
-
-      options.services.customSyncthing = {
+      #imports = [
+      #  inputs.sops-nix.nixosModules.sops
+      #];
+      options.services.syncthingSync = {
         enable = lib.mkEnableOption "Custom Declarative Syncthing";
         user = lib.mkOption {
           type = lib.types.str;
           default = "earn";
-          description = "User to run Syncthing under.";
-        };
-        guiAddress = lib.mkOption {
-          type = lib.types.str;
-          default = "127.0.0.1:8384";
-          description = "Address for the Web GUI.";
+          description = "User to run Syncthing as.";
         };
       };
 
       config = lib.mkIf cfg.enable {
-        # 1. Setup SOPS Secret
-        sops.defaultSopsFile = ../../secrets/syncthing.yaml;
-        sops.secrets."syncthing/gui_password" = {
+        # 1. SOPS Secret for the GUI plaintext password
+        sops.secrets."syncthing_gui_password" = {
           owner = cfg.user;
         };
 
-        # 2. Configure Native Syncthing Service
+        # 2. Native Syncthing Configuration
         services.syncthing = {
           enable = true;
           user = cfg.user;
           dataDir = "/home/${cfg.user}/.local/share/syncthing";
           configDir = "/home/${cfg.user}/.config/syncthing";
-          guiAddress = cfg.guiAddress;
-          openDefaultPorts = true; # Opens TCP/UDP 22000 and UDP 21027
 
-          # Strict declarative sync
+          # Enforce declarative state (GUI cannot deviate from Nix)
           overrideDevices = true;
           overrideFolders = true;
 
+          # Open transfer (22000) and discovery (21027) firewall ports
+          openDefaultPorts = true;
+
+          # Pass the decrypted sops secret file path.
+          # Syncthing automatically hashes this with bcrypt at service startup.
+          guiPasswordFile = config.sops.secrets."syncthing_gui_password".path;
+
           settings = {
-            devices = otherDevices;
-            folders = hostFolders;
             gui = {
-              # Use password hash from sops secret or configure via settings
-              user = "earn";
+              user = cfg.user;
             };
+
+            # Global device list
+            devices = {
+              "zeus" = {
+                id = "OL4E44O-GFP6ZSD-YH4RVOD-7QOWF75-GQG4NIG-LA3TOTI-HFXARMC-4GFBZQA";
+              };
+              #"kde" = {
+              #  id = "KDE-DEVICE-ID-HERE";
+              #};
+              #"truenas" = {
+              #  id = "TRUENAS-DEVICE-ID-HERE";
+              #  addresses = [ "tcp://10.100.0.4:22000" ];
+              #};
+            };
+
+            # Folders to sync
+            folders = {
+              #"Documents" = {
+              #  id = "sync-documents";
+              #  path = "/home/${cfg.user}/Documents";
+              #  devices = [
+              #    "zeus"
+              #    "kde"
+              #    "truenas"
+              #  ];
+              #};
+              "Notes" = {
+                id = "sync-notes";
+                path = "/home/${cfg.user}/Documents/Notes";
+                devices = [
+                  "zeus"
+                  #"kde"
+                  #"truenas"
+                ];
+              };
+            };
+
             options = {
-              urAccepted = -1; # Disable telemetry/usage reporting
-              relaysEnabled = true;
-              localAnnounceEnabled = true;
+              urAccepted = -1; # Disable anonymous usage reporting
             };
           };
         };
-
-        # 3. Ensure required directories exist with correct ownership
-        systemd.services.syncthing.preStart = lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (_: folder: ''
-            mkdir -p "${folder.path}"
-            chown -R ${cfg.user}:${config.users.users.${cfg.user}.group} "${folder.path}"
-          '') hostFolders
-        );
       };
     };
 }

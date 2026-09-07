@@ -6,9 +6,11 @@
       self.nixosModules.pipewire
       self.nixosModules.nixos
       self.nixosModules.user
+      self.nixosModules.sops
       self.nixosModules.shell
       self.nixosModules.dotfiles
       self.nixosModules.firefox
+      self.nixosModules.syncthing
     ];
 
     ## WHERE SHOULD I LIVE?

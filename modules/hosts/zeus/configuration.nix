@@ -4,7 +4,7 @@
       self.nixosModules.zeusConfig
     ];
   };
-  flake.nixosModules.zeusConfig = { pkgs, ... }: {
+  flake.nixosModules.zeusConfig = { config, pkgs, ... }: {
     imports = [
       self.nixosModules.zeusHardware
       self.nixosModules.common
@@ -13,26 +13,41 @@
       self.nixosModules.nasMounts
     ];
 
+    services.syncthingSync.enable = true;
+
+    # 1. Define the secret and the env template for NetworkManager
+    sops.secrets."wifi_k69" = { };
+    sops.templates."wifi.env" = {
+      content = ''
+        WIFI_K69_PSK=${config.sops.placeholder.wifi_k69}
+      '';
+    };
+
     services.power-profiles-daemon.enable = true;
     services.thermald.enable = true;
     powerManagement.powertop.enable = false;
 
-    networking.networkmanager.ensureProfiles.profiles = {
-      "k69" = {
-        connection = {
-          id = "k69";
-          type = "wifi";
+    networking.networkmanager.ensureProfiles = {
+      environmentFiles = [
+        config.sops.templates."wifi.env".path
+      ];
+      profiles = {
+        "k69" = {
+          connection = {
+            id = "k69";
+            type = "wifi";
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "k69";
+          };
+          wifi-security = {
+            key-mgmt = "wpa-psk";
+            psk = "$WIFI_K69_PSK";
+          };
+          ipv4.method = "auto";
+          ipv6.method = "auto";
         };
-        wifi = {
-          mode = "infrastructure";
-          ssid = "k69";
-        };
-        wifi-security = {
-          key-mgmt = "wpa-psk";
-          psk = "Zna7#quR4numv7#@Yx8Vu#!D!";
-        };
-        ipv4.method = "auto";
-        ipv6.method = "auto";
       };
     };
 

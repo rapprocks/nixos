@@ -31,6 +31,7 @@
         tree
         sops
         opencode
+        lazygit
       ];
 
       services.gnome.gcr-ssh-agent.enable = false;
