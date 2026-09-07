@@ -10,9 +10,6 @@
       cfg = config.services.syncthingSync;
     in
     {
-      #imports = [
-      #  inputs.sops-nix.nixosModules.sops
-      #];
       options.services.syncthingSync = {
         enable = lib.mkEnableOption "Custom Declarative Syncthing";
         user = lib.mkOption {
@@ -56,9 +53,9 @@
               "zeus" = {
                 id = "OL4E44O-GFP6ZSD-YH4RVOD-7QOWF75-GQG4NIG-LA3TOTI-HFXARMC-4GFBZQA";
               };
-              #"kde" = {
-              #  id = "KDE-DEVICE-ID-HERE";
-              #};
+              "kde" = {
+                id = "EIW2OA6-DL2SFFO-DE2C3OJ-EJSED25-MGEXGUL-4KLTSIC-7MQW6YY-UEVHPAI";
+              };
               #"truenas" = {
               #  id = "TRUENAS-DEVICE-ID-HERE";
               #  addresses = [ "tcp://10.100.0.4:22000" ];
@@ -81,7 +78,7 @@
                 path = "/home/${cfg.user}/Documents/Notes";
                 devices = [
                   "zeus"
-                  #"kde"
+                  "kde"
                   #"truenas"
                 ];
               };
