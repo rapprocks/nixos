@@ -3,7 +3,7 @@
     modules = [ self.nixosModules.nixworkConfig ];
   };
 
-  flake.nixosModules.nixworkConfig = { config, pkgs, ... }: {
+  flake.nixosModules.nixworkConfig = { config, ... }: {
     imports =
       with self.nixosModules;
       [
@@ -20,6 +20,8 @@
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+    boot.initrd.luks.devices."luks-e23c56ef-712d-4c70-9b40-525e09217a72".device =
+      "/dev/disk/by-uuid/e23c56ef-712d-4c70-9b40-525e09217a72";
 
     # Machine-specific graphics and power policy.
     #services.power-profiles-daemon.enable = true;

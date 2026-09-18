@@ -17,6 +17,7 @@
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+    boot.initrd.luks.devices."nixos".device = "/dev/disk/by-uuid/0a6f4373-9f5f-4e40-bea3-e953009834c3";
 
     # Machine-specific graphics and power policy.
     boot.initrd.kernelModules = [ "i915" ];
