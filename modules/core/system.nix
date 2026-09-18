@@ -1,5 +1,22 @@
 { ... }: {
-  flake.nixosModules.base = { ... }: {
+  flake.nixosModules.system = { ... }: {
+
+    nixpkgs.config.allowUnfree = true;
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1d";
+    };
+
+    users.users.earn = {
+      isNormalUser = true;
+      description = "earn";
+      extraGroups = [ "networkmanager" "wheel" ];
+    };
+
+    networking.networkmanager.enable = true;
+    services.openssh.enable = true;
 
     # Set your time zone.
     time.timeZone = "Europe/Stockholm";

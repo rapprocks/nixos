@@ -1,5 +1,0 @@
-{ ... }: {
-  flake.nixosModules.network = { pkgs, ... }: {
-
-  };
-}

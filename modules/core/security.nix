@@ -14,13 +14,6 @@
 
       security.pam.services = {
         login.fprintAuth = false;
-        greetd.fprintAuth = false;
-
-        swaylock = {
-          fprintAuth = true;
-          u2fAuth = false;
-        };
-
       };
 
       security.pam.u2f = {
@@ -38,24 +31,15 @@
         enableSSHSupport = true;
       };
 
+      services.gnome.gcr-ssh-agent.enable = false;
+      programs.zsh.interactiveShellInit = ''
+        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        export GPG_TTY=$(tty)
+      '';
+
       environment.systemPackages = with pkgs; [
         pinentry-qt
-        kdePackages.polkit-kde-agent-1
       ];
-
-      systemd.user.services.polkit-kde-agent-1 = {
-        description = "polkit-kde-agent-1";
-        wantedBy = [ "graphical-session.target" ];
-        wants = [ "graphical-session.target" ];
-        after = [ "graphical-session.target" ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-      };
 
     };
 }

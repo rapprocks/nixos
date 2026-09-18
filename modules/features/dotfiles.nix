@@ -79,7 +79,7 @@
             ".zshrc" = "zsh/.zshrc";
           };
           description = ''
-            An attribute set mapping target paths (relative to home) 
+            An attribute set mapping target paths (relative to home)
             to source paths (relative to the dotfiles repo root).
           '';
         };

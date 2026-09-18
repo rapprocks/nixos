@@ -1,52 +1,41 @@
 { self, inputs, ... }: {
   flake.nixosConfigurations.zeus = inputs.nixpkgs.lib.nixosSystem {
-    modules = [
-      self.nixosModules.zeusConfig
-    ];
+    modules = [ self.nixosModules.zeusConfig ];
   };
+
   flake.nixosModules.zeusConfig = { config, pkgs, ... }: {
-    imports = [
-      self.nixosModules.zeusHardware
-      self.nixosModules.common
-      #self.nixosModules.kdeniri
-      self.nixosModules.slimniri
-      self.nixosModules.nasMounts
+    imports = with self.nixosModules; [
+      zeusHardware
+      workstation
+      slimniri
+      firefox
+      nasMounts
     ];
 
-    services.syncthingSync = {
-      enable = true;
-      folders = {
-        "notes" = {
-          id = "notes";
-          path = "/home/earn/Documents/notes";
-          devices = [ "zeus" ];
-        };
-        "wallpapers" = {
-          id = "wallpapers";
-          path = "/home/earn/Pictures/wallpapers";
-          devices = [ "zeus" ];
-        };
-      };
-    };
+    networking.hostName = "zeus";
+    system.stateVersion = "26.05";
 
-    # 1. Define the secret and the env template for NetworkManager
-    sops.secrets."wifi_k69" = { };
-    sops.templates."wifi.env" = {
-      content = ''
-        WIFI_K69_PSK=${config.sops.placeholder.wifi_k69}
-      '';
-    };
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
 
+    # Machine-specific graphics and power policy.
+    boot.initrd.kernelModules = [ "i915" ];
+    boot.kernelParams = [ "i915.force_probe=a7a1" ];
+    hardware.graphics.extraPackages = [ pkgs.vpl-gpu-rt ];
     services.power-profiles-daemon.enable = true;
     services.thermald.enable = true;
     powerManagement.powertop.enable = false;
 
-    networking.networkmanager.ensureProfiles = {
-      environmentFiles = [
-        config.sops.templates."wifi.env".path
-      ];
-      profiles = {
-        "k69" = {
+    sops.secrets."wifi_k69" = { };
+    sops.templates."wifi.env".content = ''
+      WIFI_K69_PSK=${config.sops.placeholder.wifi_k69}
+    '';
+    networking.wireless.iwd.enable = true;
+    networking.networkmanager = {
+      wifi.backend = "iwd";
+      ensureProfiles = {
+        environmentFiles = [ config.sops.templates."wifi.env".path ];
+        profiles."k69" = {
           connection = {
             id = "k69";
             type = "wifi";
@@ -65,87 +54,32 @@
       };
     };
 
-    ## ADDED BY ME ##
+    services.syncthingSync.folders = {
+      "notes" = {
+        id = "notes";
+        path = "/home/earn/Documents/notes";
+        devices = [ "zeus" ];
+      };
+      "wallpapers" = {
+        id = "wallpapers";
+        path = "/home/earn/Pictures/wallpapers";
+        devices = [ "zeus" ];
+      };
+    };
+
+    # Additions specific to this host; shared mappings live with their features.
     services.dotfiles = {
-      enable = true;
-      user = "earn";
-      repo = "https://github.com/rapprocks/dotfiles.git";
       mappings = {
-        ".config/niri/config.kdl" = "niri/2027.kdl";
-        ".config/kanshi/config" = "kanshi/config";
-        ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
         ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
         ".config/waybar/style.css" = "waybar/2027.css";
-        ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
-        ".config/tmux/tmux.conf" = "tmux/tmux.conf";
-        ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
         ".config/herdr/config.toml" = "herdr/config.toml";
-        ".config/swaync/config.json" = "swaync/config.json";
-        ".config/swayosd/config.toml" = "swayosd/config.toml";
-        ".config/swayosd/style.css" = "swayosd/style.css";
-        ".config/rbw/config.json" = "rbw/config.json";
+        ".config/opencode/themes" = "opencode/themes";
         ".gitconfig" = ".gitconfig";
       };
-      themedMappings = {
-        ".config/alacritty/colors.toml" = {
-          dark = "alacritty/rose-pine.toml";
-          light = "alacritty/rose-pine-dawn.toml";
-        };
-        ".config/waybar/colors.css" = {
-          dark = "waybar/rose-pine.css";
-          light = "waybar/rose-pine-dawn.css";
-        };
-        ".config/fuzzel/colors.ini" = {
-          dark = "fuzzel/rose-pine.ini";
-          light = "fuzzel/rose-pine-dawn.ini";
-        };
-        ".config/tmux/colors.conf" = {
-          dark = "tmux/rose-pine.conf";
-          light = "tmux/rose-pine-dawn.conf";
-        };
-        ".config/swaync/style.css" = {
-          dark = "swaync/rose-pine.css";
-          light = "swaync/rose-pine-dawn.css";
-        };
+      themedMappings.".config/waybar/colors.css" = {
+        dark = "waybar/rose-pine.css";
+        light = "waybar/rose-pine-dawn.css";
       };
     };
-
-    fonts = {
-      packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-      ];
-    };
-
-    hardware.graphics.enable = true;
-    hardware.graphics.enable32Bit = true;
-
-    boot.initrd.kernelModules = [ "i915" ];
-    boot.kernelParams = [
-      "i915.force_probe=a7a1"
-    ];
-    hardware.graphics.extraPackages = [ pkgs.vpl-gpu-rt ];
-
-    services.openssh.enable = true;
-
-    ############################################################
-
-    # Bootloader.
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.efi.canTouchEfiVariables = true;
-
-    networking.hostName = "zeus"; # Define your hostname.
-    networking.networkmanager.enable = true;
-    networking.networkmanager.wifi.backend = "iwd";
-    networking.wireless.iwd.enable = true;
-
-    environment.systemPackages = with pkgs; [
-      wget
-      tldr
-      git
-      fastfetch
-      libnotify
-      inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
-
   };
 }

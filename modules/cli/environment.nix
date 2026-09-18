@@ -1,10 +1,21 @@
-{ ... }:
+{ inputs, ... }:
 {
-  flake.nixosModules.shell =
+  flake.nixosModules.cli =
     { pkgs, ... }:
     {
-
       users.users.earn.shell = pkgs.zsh;
+      environment.variables.EDITOR = "nvim";
+
+      services.dotfiles = {
+        mappings = {
+          ".config/tmux/tmux.conf" = "tmux/tmux.conf";
+          ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
+        };
+        themedMappings.".config/tmux/colors.conf" = {
+          dark = "tmux/rose-pine.conf";
+          light = "tmux/rose-pine-dawn.conf";
+        };
+      };
 
       # ── CORE CLI PACKAGES ──
       environment.systemPackages = with pkgs; [
@@ -33,9 +44,8 @@
         opencode
         lazygit
         herdr
+        inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
-
-      services.gnome.gcr-ssh-agent.enable = false;
 
       # ── SHELL (ZSH + Starship) ──
       programs.zsh = {
@@ -49,10 +59,6 @@
           plugins = [ "colored-man-pages" ];
         };
         shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
-        interactiveShellInit = ''
-          export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-          export GPG_TTY=$(tty)
-        '';
         shellAliases = {
           ip = "ip --color";
           cp = "rsync -ah --progress";
