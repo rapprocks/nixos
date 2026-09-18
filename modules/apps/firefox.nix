@@ -10,9 +10,14 @@
           "browser.translations.neverTranslateLanguages" = "sv";
           "browser.startup.homepage" = "http://home-pve-1.rapp.rocks:3000";
           "browser.newtabpage.enabled" = false;
+
+          "browser.tabs.inTitlebar" = 0;
+          "browser.download.autohideButton" = true;
           "sidebar.verticalTabs" = true;
           "sidebar.position_start" = false;
           "sidebar.visibility" = "always-show";
+
+          "sidebar.main.tools" = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
           "privacy.trackingprotection.enabled" = true;
           "widget.wayland.fractional-scale.enabled" = true;
           "browser.urlbar.showSearchSuggestionsFirst" = false;
@@ -61,10 +66,6 @@
             Default = "Google";
           };
 
-          # ---- EXTENSIONS ----
-          # Check about:support for extension/add-on ID strings.
-          # Valid strings for installation_mode are "allowed", "blocked",
-          # "force_installed" and "normal_installed".
           ExtensionSettings = {
             "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
             # Privacy Badger:

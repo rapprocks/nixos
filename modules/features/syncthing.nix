@@ -17,6 +17,31 @@
           default = "earn";
           description = "User to run Syncthing as.";
         };
+        folders = lib.mkOption {
+          type = lib.types.attrsOf (lib.types.submodule {
+            options = {
+              id = lib.mkOption {
+                type = lib.types.str;
+                description = "Unique Syncthing folder ID.";
+              };
+              path = lib.mkOption {
+                type = lib.types.str;
+                description = "Filesystem path to sync.";
+              };
+              devices = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                description = "List of device names to sync with.";
+              };
+              mode = lib.mkOption {
+                type = lib.types.str;
+                default = "0750";
+                description = "Directory permission mode (octal string).";
+              };
+            };
+          });
+          default = { };
+          description = "Syncthing folders to sync across devices.";
+        };
       };
 
       config = lib.mkIf cfg.enable {
@@ -25,7 +50,12 @@
           owner = cfg.user;
         };
 
-        # 2. Native Syncthing Configuration
+        # 2. Ensure synced folders exist with correct permissions before syncthing starts
+        systemd.tmpfiles.rules = lib.mapAttrsToList (
+          _: folder: "d ${folder.path} ${folder.mode} ${cfg.user} ${cfg.user} - -"
+        ) cfg.folders;
+
+        # 3. Native Syncthing Configuration
         services.syncthing = {
           enable = true;
           user = cfg.user;
@@ -62,32 +92,25 @@
               #};
             };
 
-            # Folders to sync
-            folders = {
-              #"Documents" = {
-              #  id = "sync-documents";
-              #  path = "/home/${cfg.user}/Documents";
-              #  devices = [
-              #    "zeus"
-              #    "kde"
-              #    "truenas"
-              #  ];
-              #};
-              "Notes" = {
-                id = "sync-notes";
-                path = "/home/${cfg.user}/Documents/Notes";
-                devices = [
-                  "zeus"
-                  "kde"
-                  #"truenas"
-                ];
-              };
-            };
+            # Folders to sync - generated from cfg.folders option
+            folders = lib.mapAttrs (
+              name: folder: {
+                id = folder.id;
+                path = folder.path;
+                devices = folder.devices;
+              }
+            ) cfg.folders;
 
             options = {
               urAccepted = -1; # Disable anonymous usage reporting
             };
           };
+        };
+
+        # 4. Ensure syncthing service starts after tmpfiles setup
+        systemd.services.syncthing = {
+          after = [ "systemd-tmpfiles-setup.service" ];
+          wants = [ "systemd-tmpfiles-setup.service" ];
         };
       };
     };

@@ -32,6 +32,7 @@
         sops
         opencode
         lazygit
+        herdr
       ];
 
       services.gnome.gcr-ssh-agent.enable = false;

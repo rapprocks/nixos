@@ -29,6 +29,8 @@
         ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
         ".config/swaync/config.json" = "swaync/config.json";
         ".config/rbw/config.json" = "rbw/config.json";
+        ".config/swayosd/config.toml" = "swayosd/config.toml";
+        ".config/swayosd/style.css" = "swayosd/style.css";
       };
       themedMappings = {
         ".config/alacritty/colors.toml" = {

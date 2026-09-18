@@ -10,6 +10,7 @@
       self.nixosModules.shell
       self.nixosModules.dotfiles
       self.nixosModules.firefox
+      #self.nixosModules.librewolf
       self.nixosModules.syncthing
     ];
 
@@ -19,7 +20,7 @@
       rbw
       rofi-rbw-wayland
       mpv
-      feh
+      imv
     ];
 
     systemd.user.services.kanshi = {
@@ -40,9 +41,9 @@
       "text/xml" = [ "firefox.desktop" ];
       "x-scheme-handler/http" = [ "firefox.desktop" ];
       "x-scheme-handler/https" = [ "firefox.desktop" ];
-      "image/jpeg" = [ "feh.desktop" ];
-      "image/jpg" = [ "feh.desktop" ];
-      "image/png" = [ "feh.desktop" ];
+      "image/jpeg" = [ "imv.desktop" ];
+      "image/jpg" = [ "imv.desktop" ];
+      "image/png" = [ "imv.desktop" ];
       "video/mp4" = [ "mpv.desktop" ];
       "video/mkv" = [ "mpv.desktop" ];
     };

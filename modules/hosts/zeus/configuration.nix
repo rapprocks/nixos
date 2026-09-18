@@ -13,7 +13,21 @@
       self.nixosModules.nasMounts
     ];
 
-    services.syncthingSync.enable = true;
+    services.syncthingSync = {
+      enable = true;
+      folders = {
+        "notes" = {
+          id = "notes";
+          path = "/home/earn/Documents/notes";
+          devices = [ "zeus" ];
+        };
+        "wallpapers" = {
+          id = "wallpapers";
+          path = "/home/earn/Pictures/wallpapers";
+          devices = [ "zeus" ];
+        };
+      };
+    };
 
     # 1. Define the secret and the env template for NetworkManager
     sops.secrets."wifi_k69" = { };
@@ -60,10 +74,15 @@
         ".config/niri/config.kdl" = "niri/2027.kdl";
         ".config/kanshi/config" = "kanshi/config";
         ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
+        ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
+        ".config/waybar/style.css" = "waybar/2027.css";
         ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
         ".config/tmux/tmux.conf" = "tmux/tmux.conf";
         ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
+        ".config/herdr/config.toml" = "herdr/config.toml";
         ".config/swaync/config.json" = "swaync/config.json";
+        ".config/swayosd/config.toml" = "swayosd/config.toml";
+        ".config/swayosd/style.css" = "swayosd/style.css";
         ".config/rbw/config.json" = "rbw/config.json";
         ".gitconfig" = ".gitconfig";
       };
@@ -71,6 +90,10 @@
         ".config/alacritty/colors.toml" = {
           dark = "alacritty/rose-pine.toml";
           light = "alacritty/rose-pine-dawn.toml";
+        };
+        ".config/waybar/colors.css" = {
+          dark = "waybar/rose-pine.css";
+          light = "waybar/rose-pine-dawn.css";
         };
         ".config/fuzzel/colors.ini" = {
           dark = "fuzzel/rose-pine.ini";

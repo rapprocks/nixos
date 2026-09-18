@@ -28,8 +28,11 @@
       adwaita-icon-theme
       swaynotificationcenter
       ffmpegthumbnailer
+      obsidian
+      swaybg
 
       satty
+      nirius
 
       wl-clipboard
       waybar
@@ -58,7 +61,6 @@
 
       #kdePackages.kde-gtk-config
       #kdePackages.qtstyleplugin-kvantum
-
     ];
 
     systemd.user.services.waybar = {
@@ -67,7 +69,8 @@
       after = [ "graphical-session.target" ];
       requisite = [ "graphical-session.target" ];
       serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.waybar} -c /home/earn/.dotfiles/waybar/2027.jsonc -s /home/earn/.dotfiles/waybar/2027.css";
+        ExecStart = "${lib.getExe pkgs.waybar}";
+        #ExecStart = "${lib.getExe pkgs.waybar} -c /home/earn/.dotfiles/waybar/2027.jsonc -s /home/earn/.dotfiles/waybar/2027.css";
         Restart = "on-failure";
       };
       wantedBy = [ "niri.service" ];
