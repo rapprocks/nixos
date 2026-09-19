@@ -15,8 +15,8 @@
     ++ [ inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series ];
 
     ## Bluetooth kernel fix
-    boot.kernelPackages =
-      inputs.nixpkgs-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.linuxPackages;
+    # Framework 13 AMD Bluetooth regression on newer kernels; pin to LTS until upstream fixes it.
+    boot.kernelPackages = pkgs.linuxPackages_6_12;
 
     networking.hostName = "nixwork";
     system.stateVersion = "26.05";
