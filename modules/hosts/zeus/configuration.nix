@@ -41,7 +41,10 @@
         "wallpapers" = {
           id = "wallpapers";
           path = "/home/earn/Pictures/wallpapers";
-          devices = [ "zeus" ];
+          devices = [
+            "zeus"
+            "nixwork"
+          ];
         };
       };
     };

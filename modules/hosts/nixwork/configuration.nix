@@ -34,7 +34,20 @@
       "k69"
       "work"
     ];
-    services.syncthingSync.enable = false;
+
+    services.syncthingSync = {
+      enable = true;
+      folders = {
+        "wallpapers" = {
+          id = "wallpapers";
+          path = "/home/earn/Pictures/wallpapers";
+          devices = [
+            "zeus"
+            "nixwork"
+          ];
+        };
+      };
+    };
 
     # Additions specific to this host; shared mappings live with their features.
     services.dotfiles = {

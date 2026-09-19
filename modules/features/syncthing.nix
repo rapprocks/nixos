@@ -18,27 +18,29 @@
           description = "User to run Syncthing as.";
         };
         folders = lib.mkOption {
-          type = lib.types.attrsOf (lib.types.submodule {
-            options = {
-              id = lib.mkOption {
-                type = lib.types.str;
-                description = "Unique Syncthing folder ID.";
+          type = lib.types.attrsOf (
+            lib.types.submodule {
+              options = {
+                id = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Unique Syncthing folder ID.";
+                };
+                path = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Filesystem path to sync.";
+                };
+                devices = lib.mkOption {
+                  type = lib.types.listOf lib.types.str;
+                  description = "List of device names to sync with.";
+                };
+                mode = lib.mkOption {
+                  type = lib.types.str;
+                  default = "0750";
+                  description = "Directory permission mode (octal string).";
+                };
               };
-              path = lib.mkOption {
-                type = lib.types.str;
-                description = "Filesystem path to sync.";
-              };
-              devices = lib.mkOption {
-                type = lib.types.listOf lib.types.str;
-                description = "List of device names to sync with.";
-              };
-              mode = lib.mkOption {
-                type = lib.types.str;
-                default = "0750";
-                description = "Directory permission mode (octal string).";
-              };
-            };
-          });
+            }
+          );
           default = { };
           description = "Syncthing folders to sync across devices.";
         };
@@ -83,8 +85,8 @@
               "zeus" = {
                 id = "OL4E44O-GFP6ZSD-YH4RVOD-7QOWF75-GQG4NIG-LA3TOTI-HFXARMC-4GFBZQA";
               };
-              "kde" = {
-                id = "EIW2OA6-DL2SFFO-DE2C3OJ-EJSED25-MGEXGUL-4KLTSIC-7MQW6YY-UEVHPAI";
+              "nixwork" = {
+                id = "DIDIBREAKSOMETHING";
               };
               #"truenas" = {
               #  id = "TRUENAS-DEVICE-ID-HERE";
@@ -93,13 +95,11 @@
             };
 
             # Folders to sync - generated from cfg.folders option
-            folders = lib.mapAttrs (
-              name: folder: {
-                id = folder.id;
-                path = folder.path;
-                devices = folder.devices;
-              }
-            ) cfg.folders;
+            folders = lib.mapAttrs (name: folder: {
+              id = folder.id;
+              path = folder.path;
+              devices = folder.devices;
+            }) cfg.folders;
 
             options = {
               urAccepted = -1; # Disable anonymous usage reporting
