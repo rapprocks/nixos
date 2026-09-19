@@ -86,7 +86,7 @@
                 id = "OL4E44O-GFP6ZSD-YH4RVOD-7QOWF75-GQG4NIG-LA3TOTI-HFXARMC-4GFBZQA";
               };
               "nixwork" = {
-                id = "DIDIBREAKSOMETHING";
+                id = "4UPYDTM-2UQEA52-CDPE6EE-BG2JHE7-V2FN6QP-W6U34H2-NY7VWBW-O3GJVAT";
               };
               #"truenas" = {
               #  id = "TRUENAS-DEVICE-ID-HERE";
