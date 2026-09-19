@@ -27,6 +27,7 @@
       nirius
 
       wl-clipboard
+      brightnessctl
       cliphist
       kanshi
       swayosd
