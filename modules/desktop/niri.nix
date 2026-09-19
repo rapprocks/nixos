@@ -64,8 +64,24 @@
     };
 
     # The shared external Niri configuration invokes swaylock and SwayOSD.
-    security.pam.services.swaylock = {
-      fprintAuth = true;
+    security.pam.services.swaylock = let
+      lid-guard-script = pkgs.writeShellScript "check-lid-open" ''
+        # Skip fingerprint auth if lid is closed; exit success to continue to next module.
+        if busctl get-property --quiet org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager LidClosed | grep -q "boolean true"; then
+          exit 1
+        fi
+        exit 0
+      '';
+    in {
+      rules.auth = {
+        lid-guard = {
+          enable = true;
+          order = 10; # Run before fprintd (which is at order 11400 by default)
+          control = "[success=1 default=ignore]";
+          modulePath = "${pkgs.pam}/lib/security/pam_exec.so";
+          args = [ "${lid-guard-script}" ];
+        };
+      };
       u2fAuth = false;
     };
 

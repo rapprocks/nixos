@@ -3,7 +3,7 @@
     modules = [ self.nixosModules.nixworkConfig ];
   };
 
-  flake.nixosModules.nixworkConfig = { pkgs, ... }: {
+  flake.nixosModules.nixworkConfig = { ... }: {
     imports = [
       self.nixosModules.nixworkHardware
       self.nixosModules.workstation
@@ -13,21 +13,6 @@
       self.nixosModules.network
     ]
     ++ [ inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series ];
-
-    ## Bluetooth kernel fix
-    # Framework 13 AMD Bluetooth regression on newer kernels; pin to LTS until upstream fixes it.
-    #boot.kernelPackages = pkgs.linuxPackages_6_12;
-
-    #hardware.bluetooth.settings = {
-    #  General = {
-    #    Class = "0x000100";
-    #    JustWorksRepairing = "always";
-    #  };
-
-    #  Policy = {
-    #    AutoEnable = true;
-    #  };
-    #};
 
     networking.hostName = "nixwork";
     system.stateVersion = "26.05";
@@ -39,6 +24,13 @@
 
     # Machine-specific graphics and power policy.
     powerManagement.powertop.enable = false;
+
+    # Lid-switch behavior for laptop.
+    services.logind.settings.Login = {
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitch = "suspend";
+      HandleLidSwitchExternalPower = "lock";
+    };
 
     # Enable Wi-Fi and Syncthing for this work host
     networking.enabledWifiNetworks = [
