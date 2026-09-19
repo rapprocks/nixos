@@ -72,17 +72,7 @@
         };
         mappings = lib.mkOption {
           type = lib.types.attrsOf lib.types.str;
-          default = {
-            ".config/niri/config.kdl" = "niri/2027.kdl";
-            ".config/kanshi/config" = "kanshi/config";
-            ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
-            ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
-            ".config/swayosd/config.toml" = "swayosd/config.toml";
-            ".config/swayosd/style.css" = "swayosd/style.css";
-            ".config/tmux/tmux.conf" = "tmux/tmux.conf";
-            ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
-            ".config/rbw/config.json" = "rbw/config.json";
-          };
+          default = {};
           example = {
             ".config/alacritty" = "alacritty";
             ".config/i3" = "i3";
@@ -108,7 +98,33 @@
               };
             }
           );
-          default = {
+          default = {};
+          example = {
+            ".config/alacritty/colors.toml" = {
+              dark = "alacritty/rose-pine.toml";
+              light = "alacritty/rose-pine-dawn.toml";
+            };
+          };
+          description = ''
+            An attribute set mapping target paths (relative to home)
+            to dark and light source paths (relative to dotfiles repo root).
+          '';
+        };
+      };
+      config = lib.mkIf cfg.enable {
+        services.dotfiles = {
+          mappings = {
+            ".config/niri/config.kdl" = "niri/2027.kdl";
+            ".config/kanshi/config" = "kanshi/config";
+            ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
+            ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
+            ".config/swayosd/config.toml" = "swayosd/config.toml";
+            ".config/swayosd/style.css" = "swayosd/style.css";
+            ".config/tmux/tmux.conf" = "tmux/tmux.conf";
+            ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
+            ".config/rbw/config.json" = "rbw/config.json";
+          };
+          themedMappings = {
             ".config/alacritty/colors.toml" = {
               dark = "alacritty/rose-pine.toml";
               light = "alacritty/rose-pine-dawn.toml";
@@ -126,19 +142,8 @@
               light = "swaync/rose-pine-dawn.css";
             };
           };
-          example = {
-            ".config/alacritty/colors.toml" = {
-              dark = "alacritty/rose-pine.toml";
-              light = "alacritty/rose-pine-dawn.toml";
-            };
-          };
-          description = ''
-            An attribute set mapping target paths (relative to home)
-            to dark and light source paths (relative to dotfiles repo root).
-          '';
         };
-      };
-      config = lib.mkIf cfg.enable {
+
         environment.systemPackages = [
           pkgs.git
           themeSwitcher

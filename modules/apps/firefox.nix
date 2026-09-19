@@ -6,7 +6,6 @@ let
     "browser.newtabpage.enabled" = false;
     "browser.tabs.inTitlebar" = 0;
     "browser.download.autohideButton" = true;
-    "browser.theme.toolbar-theme" = 0;
     "sidebar.verticalTabs" = true;
     "sidebar.position_start" = false;
     "sidebar.visibility" = "always-show";
