@@ -34,8 +34,9 @@
       brave
       obsidian
       kdePackages.krdc
-      kdePackages.bluedevil
-      kdePackages.bluez-qt
+      bluetui # DECIDE WHICH ONE I WANT TO USE
+      #kdePackages.bluedevil
+      #kdePackages.bluez-qt
     ];
 
     xdg.mime.enable = true;
