@@ -3,7 +3,7 @@
     modules = [ self.nixosModules.nixworkConfig ];
   };
 
-  flake.nixosModules.nixworkConfig = { ... }: {
+  flake.nixosModules.nixworkConfig = { pkgs, ... }: {
     imports = [
       self.nixosModules.nixworkHardware
       self.nixosModules.workstation
@@ -13,6 +13,10 @@
       self.nixosModules.network
     ]
     ++ [ inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series ];
+
+    ## Bluetooth kernel fix
+    boot.kernelPackages =
+      inputs.nixpkgs-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.linuxPackages;
 
     networking.hostName = "nixwork";
     system.stateVersion = "26.05";
