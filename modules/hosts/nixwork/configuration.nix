@@ -16,18 +16,18 @@
 
     ## Bluetooth kernel fix
     # Framework 13 AMD Bluetooth regression on newer kernels; pin to LTS until upstream fixes it.
-    boot.kernelPackages = pkgs.linuxPackages_6_12;
+    #boot.kernelPackages = pkgs.linuxPackages_6_12;
 
-    hardware.bluetooth.settings = {
-      General = {
-        Class = "0x000100";
-        JustWorksRepairing = "always";
-      };
+    #hardware.bluetooth.settings = {
+    #  General = {
+    #    Class = "0x000100";
+    #    JustWorksRepairing = "always";
+    #  };
 
-      Policy = {
-        AutoEnable = true;
-      };
-    };
+    #  Policy = {
+    #    AutoEnable = true;
+    #  };
+    #};
 
     networking.hostName = "nixwork";
     system.stateVersion = "26.05";
