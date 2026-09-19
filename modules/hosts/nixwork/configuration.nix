@@ -3,17 +3,16 @@
     modules = [ self.nixosModules.nixworkConfig ];
   };
 
-  flake.nixosModules.nixworkConfig = { config, ... }: {
-    imports =
-      with self.nixosModules;
-      [
-        nixworkHardware
-        workstation
-        slimniri
-        firefox
-        nasMounts
-      ]
-      ++ [ inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series ];
+  flake.nixosModules.nixworkConfig = { ... }: {
+    imports = [
+      self.nixosModules.nixworkHardware
+      self.nixosModules.workstation
+      self.nixosModules.work
+      self.nixosModules.slimniri
+      self.nixosModules.firefox
+      self.nixosModules.network
+    ]
+    ++ [ inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series ];
 
     networking.hostName = "nixwork";
     system.stateVersion = "26.05";
@@ -24,37 +23,14 @@
       "/dev/disk/by-uuid/e23c56ef-712d-4c70-9b40-525e09217a72";
 
     # Machine-specific graphics and power policy.
-    #services.power-profiles-daemon.enable = true;
-    #services.thermald.enable = true;
     powerManagement.powertop.enable = false;
 
-    sops.secrets."wifi_k69" = { };
-    sops.templates."wifi.env".content = ''
-      WIFI_K69_PSK=${config.sops.placeholder.wifi_k69}
-    '';
-    networking.wireless.iwd.enable = true;
-    networking.networkmanager = {
-      wifi.backend = "iwd";
-      ensureProfiles = {
-        environmentFiles = [ config.sops.templates."wifi.env".path ];
-        profiles."k69" = {
-          connection = {
-            id = "k69";
-            type = "wifi";
-          };
-          wifi = {
-            mode = "infrastructure";
-            ssid = "k69";
-          };
-          wifi-security = {
-            key-mgmt = "wpa-psk";
-            psk = "$WIFI_K69_PSK";
-          };
-          ipv4.method = "auto";
-          ipv6.method = "auto";
-        };
-      };
-    };
+    # Enable Wi-Fi and Syncthing for this work host
+    networking.enabledWifiNetworks = [
+      "k69"
+      "work"
+    ];
+    services.syncthingSync.enable = false;
 
     # Additions specific to this host; shared mappings live with their features.
     services.dotfiles = {

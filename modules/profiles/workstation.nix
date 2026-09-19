@@ -14,9 +14,7 @@
       enable = true;
       user = "earn";
       repo = "https://github.com/rapprocks/dotfiles.git";
-      mappings.".config/rbw/config.json" = "rbw/config.json";
     };
-    services.syncthingSync.enable = true;
 
     fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
     hardware.graphics = {

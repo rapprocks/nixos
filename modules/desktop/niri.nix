@@ -68,26 +68,5 @@
       u2fAuth = false;
     };
 
-    services.dotfiles = {
-      mappings = {
-        ".config/niri/config.kdl" = "niri/2027.kdl";
-        ".config/kanshi/config" = "kanshi/config";
-        ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
-        ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
-        ".config/swayosd/config.toml" = "swayosd/config.toml";
-        ".config/swayosd/style.css" = "swayosd/style.css";
-      };
-      themedMappings = {
-        ".config/alacritty/colors.toml" = {
-          dark = "alacritty/rose-pine.toml";
-          light = "alacritty/rose-pine-dawn.toml";
-        };
-        ".config/fuzzel/colors.ini" = {
-          dark = "fuzzel/rose-pine.ini";
-          light = "fuzzel/rose-pine-dawn.ini";
-        };
-      };
-    };
-
   };
 }

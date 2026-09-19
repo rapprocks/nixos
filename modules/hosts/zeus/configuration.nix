@@ -3,13 +3,14 @@
     modules = [ self.nixosModules.zeusConfig ];
   };
 
-  flake.nixosModules.zeusConfig = { config, pkgs, ... }: {
-    imports = with self.nixosModules; [
-      zeusHardware
-      workstation
-      slimniri
-      firefox
-      nasMounts
+  flake.nixosModules.zeusConfig = { pkgs, ... }: {
+    imports = [
+      self.nixosModules.zeusHardware
+      self.nixosModules.workstation
+      self.nixosModules.personal
+      self.nixosModules.slimniri
+      self.nixosModules.firefox
+      self.nixosModules.network
     ];
 
     networking.hostName = "zeus";
@@ -27,44 +28,21 @@
     services.thermald.enable = true;
     powerManagement.powertop.enable = false;
 
-    sops.secrets."wifi_k69" = { };
-    sops.templates."wifi.env".content = ''
-      WIFI_K69_PSK=${config.sops.placeholder.wifi_k69}
-    '';
-    networking.wireless.iwd.enable = true;
-    networking.networkmanager = {
-      wifi.backend = "iwd";
-      ensureProfiles = {
-        environmentFiles = [ config.sops.templates."wifi.env".path ];
-        profiles."k69" = {
-          connection = {
-            id = "k69";
-            type = "wifi";
-          };
-          wifi = {
-            mode = "infrastructure";
-            ssid = "k69";
-          };
-          wifi-security = {
-            key-mgmt = "wpa-psk";
-            psk = "$WIFI_K69_PSK";
-          };
-          ipv4.method = "auto";
-          ipv6.method = "auto";
+    # Enable Wi-Fi and Syncthing for this personal host
+    networking.enabledWifiNetworks = [ "k69" ];
+    services.syncthingSync = {
+      enable = true;
+      folders = {
+        "notes" = {
+          id = "notes";
+          path = "/home/earn/Documents/notes";
+          devices = [ "zeus" ];
         };
-      };
-    };
-
-    services.syncthingSync.folders = {
-      "notes" = {
-        id = "notes";
-        path = "/home/earn/Documents/notes";
-        devices = [ "zeus" ];
-      };
-      "wallpapers" = {
-        id = "wallpapers";
-        path = "/home/earn/Pictures/wallpapers";
-        devices = [ "zeus" ];
+        "wallpapers" = {
+          id = "wallpapers";
+          path = "/home/earn/Pictures/wallpapers";
+          devices = [ "zeus" ];
+        };
       };
     };
 

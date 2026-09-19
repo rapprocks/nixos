@@ -6,17 +6,6 @@
       users.users.earn.shell = pkgs.zsh;
       environment.variables.EDITOR = "nvim";
 
-      services.dotfiles = {
-        mappings = {
-          ".config/tmux/tmux.conf" = "tmux/tmux.conf";
-          ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
-        };
-        themedMappings.".config/tmux/colors.conf" = {
-          dark = "tmux/rose-pine.conf";
-          light = "tmux/rose-pine-dawn.conf";
-        };
-      };
-
       # ── CORE CLI PACKAGES ──
       environment.systemPackages = with pkgs; [
         wget

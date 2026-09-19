@@ -72,7 +72,17 @@
         };
         mappings = lib.mkOption {
           type = lib.types.attrsOf lib.types.str;
-          default = { };
+          default = {
+            ".config/niri/config.kdl" = "niri/2027.kdl";
+            ".config/kanshi/config" = "kanshi/config";
+            ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
+            ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
+            ".config/swayosd/config.toml" = "swayosd/config.toml";
+            ".config/swayosd/style.css" = "swayosd/style.css";
+            ".config/tmux/tmux.conf" = "tmux/tmux.conf";
+            ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
+            ".config/rbw/config.json" = "rbw/config.json";
+          };
           example = {
             ".config/alacritty" = "alacritty";
             ".config/i3" = "i3";
@@ -98,7 +108,24 @@
               };
             }
           );
-          default = { };
+          default = {
+            ".config/alacritty/colors.toml" = {
+              dark = "alacritty/rose-pine.toml";
+              light = "alacritty/rose-pine-dawn.toml";
+            };
+            ".config/fuzzel/colors.ini" = {
+              dark = "fuzzel/rose-pine.ini";
+              light = "fuzzel/rose-pine-dawn.ini";
+            };
+            ".config/tmux/colors.conf" = {
+              dark = "tmux/rose-pine.conf";
+              light = "tmux/rose-pine-dawn.conf";
+            };
+            ".config/swaync/style.css" = {
+              dark = "swaync/rose-pine.css";
+              light = "swaync/rose-pine-dawn.css";
+            };
+          };
           example = {
             ".config/alacritty/colors.toml" = {
               dark = "alacritty/rose-pine.toml";

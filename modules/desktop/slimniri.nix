@@ -75,15 +75,5 @@
           user = "earn";
         };
       };
-
-      services.dotfiles = {
-        mappings = {
-          ".config/swaync/config.json" = "swaync/config.json";
-        };
-        themedMappings.".config/swaync/style.css" = {
-          dark = "swaync/rose-pine.css";
-          light = "swaync/rose-pine-dawn.css";
-        };
-      };
     };
 }

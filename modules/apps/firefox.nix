@@ -52,7 +52,6 @@ let
   };
 in
 {
-  # Mutually exclusive alternatives: import exactly one, since both configure programs.firefox.
   flake.nixosModules.firefox =
     { ... }:
     {
@@ -111,46 +110,6 @@ in
         "text/xml" = [ "firefox.desktop" ];
         "x-scheme-handler/http" = [ "firefox.desktop" ];
         "x-scheme-handler/https" = [ "firefox.desktop" ];
-      };
-    };
-
-  flake.nixosModules.librewolf =
-    { pkgs, ... }:
-    {
-      programs.firefox = {
-        enable = true;
-        package = pkgs.librewolf;
-        policies = policies // {
-          Preferences = preferences // {
-            "cookiebanners.service.mode.privateBrowsing" = 2; # Block cookie banners in private browsing
-            "cookiebanners.service.mode" = 2; # Block cookie banners
-            "privacy.donottrackheader.enabled" = true;
-            "privacy.fingerprintingProtection" = true;
-            "privacy.resistFingerprinting" = true;
-            "privacy.trackingprotection.emailtracking.enabled" = true;
-            "privacy.trackingprotection.fingerprinting.enabled" = true;
-            "privacy.trackingprotection.socialtracking.enabled" = true;
-          };
-          ExtensionSettings = extensions // {
-            "uBlock0@raymondhill.net" = {
-              install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-              installation_mode = "force_installed";
-            };
-          };
-          SearchEngines = searchEngines;
-        };
-      };
-      environment.etc."firefox/policies/policies.json".target = "librewolf/policies/policies.json";
-
-      environment.variables.BROWSER = "librewolf";
-      xdg.mime.enable = true;
-      xdg.mime.defaultApplications = {
-        "application/pdf" = "librewolf.desktop";
-        "default-web-browser" = [ "librewolf.desktop" ];
-        "text/html" = [ "librewolf.desktop" ];
-        "text/xml" = [ "librewolf.desktop" ];
-        "x-scheme-handler/http" = [ "librewolf.desktop" ];
-        "x-scheme-handler/https" = [ "librewolf.desktop" ];
       };
     };
 }
