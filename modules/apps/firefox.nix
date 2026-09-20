@@ -1,6 +1,6 @@
 { ... }:
 let
-  preferences = {
+  basePreferences = {
     "browser.translations.neverTranslateLanguages" = "sv";
     "browser.startup.homepage" = "http://home-pve-1.rapp.rocks:3000";
     "browser.newtabpage.enabled" = false;
@@ -21,20 +21,29 @@ let
     SearchBar = "unified"; # alternative: "separate"
   };
 
-  extensions = {
+  baseExtensions = {
     # Privacy Badger
     "jid1-MnnxcxisBPnSXQ@jetpack" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/privacy-badger17/latest.xpi";
       installation_mode = "force_installed";
     };
-    # Bitwarden
+    # Dark reader
+    "addon@darkreader.org" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/addon@darkreader.org/latest.xpi";
+      installation_mode = "force_installed";
+    };
+  };
+
+  bitwardenExtension = {
     "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/{446900e4-71c2-419f-a6a7-df9c091e268b}/latest.xpi";
       installation_mode = "force_installed";
     };
-    # Dark reader
-    "addon@darkreader.org" = {
-      install_url = "https://addons.mozilla.org/firefox/downloads/latest/addon@darkreader.org/latest.xpi";
+  };
+
+  keeperExtension = {
+    "KeeperFFStoreExtension@KeeperSecurityInc" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/file/4969396/keeper_password_manager-18.1.1.xpi";
       installation_mode = "force_installed";
     };
   };
@@ -52,15 +61,33 @@ let
 in
 {
   flake.nixosModules.firefox =
-    { ... }:
+    { config, ... }:
+    let
+      isWork = config.networking.hostName == "nixwork";
+
+      # Select Keeper for work host, Bitwarden for personal/all others
+      passwordManagerExtension = if isWork then keeperExtension else bitwardenExtension;
+
+      # Only add Bitwarden sidebar preference if not on work host
+      sidebarPreferences =
+        if isWork then
+          { "sidebar.main.tools" = "KeeperFFStoreExtension@KeeperSecurityInc"; }
+        else
+          {
+            "sidebar.main.tools" = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
+          };
+    in
     {
       programs.firefox = {
         enable = true;
-        preferences = preferences // {
-          "widget.wayland.fractional-scale.enabled" = true;
-          "browser.urlbar.showSearchSuggestionsFirst" = false;
-          "widget.use-xdg-desktop-portal.file-picker" = 1;
-        };
+        preferences =
+          basePreferences
+          // sidebarPreferences
+          // {
+            "widget.wayland.fractional-scale.enabled" = true;
+            "browser.urlbar.showSearchSuggestionsFirst" = false;
+            "widget.use-xdg-desktop-portal.file-picker" = 1;
+          };
 
         policies = policies // {
           EnableTrackingProtection = {
@@ -89,14 +116,17 @@ in
             Default = "Google";
           };
 
-          ExtensionSettings = extensions // {
-            "*".installation_mode = "blocked"; # blocks all addons except the ones specified here
-            # Adguard adblocker
-            "adguardadblocker@adguard.com" = {
-              install_url = "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi";
-              installation_mode = "force_installed";
+          ExtensionSettings =
+            baseExtensions
+            // passwordManagerExtension
+            // {
+              "*".installation_mode = "blocked"; # blocks all addons except the ones specified here
+              # Adguard adblocker
+              "adguardadblocker@adguard.com" = {
+                install_url = "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi";
+                installation_mode = "force_installed";
+              };
             };
-          };
         };
       };
 

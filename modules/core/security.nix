@@ -14,7 +14,10 @@
 
       security.pam.services = {
         login.fprintAuth = false;
+        sudo.u2fAuth = true; # OPTIONIZE ME
       };
+
+      services.pcscd.enable = true; # OPTIONIZE ME
 
       security.pam.u2f = {
         enable = true;
@@ -23,6 +26,16 @@
           pinverification = 1;
         };
       };
+
+      # OPTIONIZE ME
+      services.udev.packages = with pkgs; [
+        libfido2
+        yubikey-personalization
+      ];
+
+      users.groups.plugdev = { };
+
+      ###
 
       # Unified GPG Agent configuration for all hosts
       programs.gnupg.agent = {
@@ -39,6 +52,9 @@
 
       environment.systemPackages = with pkgs; [
         pinentry-qt
+        yubikey-manager
+        libfido2
+        yubioath-flutter
       ];
 
     };
