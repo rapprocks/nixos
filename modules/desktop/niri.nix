@@ -25,6 +25,8 @@
 
       signal-desktop
 
+      wireguard-tools
+
       satty
       nirius
 
@@ -44,6 +46,7 @@
       kdePackages.dolphin
       kdePackages.systemsettings
       kdePackages.knewstuff
+      kdePackages.kamoso
 
       kdePackages.breeze
       kdePackages.breeze-icons
@@ -59,6 +62,8 @@
       enable = true;
       description = "Kanshi monitor service";
       bindsTo = [ "graphical-session.target" ];
+      wantedBy = [ "graphical-session.target" ]; # Adds it to the target's startup list
+      after = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.kanshi}/bin/kanshi";

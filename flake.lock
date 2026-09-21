@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "fingerprint-lid-guard": {
+      "locked": {
+        "lastModified": 1780550716,
+        "narHash": "sha256-qmcelndLiUCyBnoJyGnoRiG44/moWcrOqt6q7IOynOE=",
+        "owner": "timp4w",
+        "repo": "nix-fingerprint-lid-guard",
+        "rev": "c1dd32ae32a932d7aa8cecc6869ae83aefdbd133",
+        "type": "github"
+      },
+      "original": {
+        "owner": "timp4w",
+        "repo": "nix-fingerprint-lid-guard",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -269,6 +284,7 @@
     },
     "root": {
       "inputs": {
+        "fingerprint-lid-guard": "fingerprint-lid-guard",
         "flake-parts": "flake-parts",
         "import-tree": "import-tree",
         "nixos-hardware": "nixos-hardware",

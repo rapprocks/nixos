@@ -6,6 +6,7 @@
       "nix-command"
       "flakes"
     ];
+
     nix.gc = {
       automatic = true;
       dates = "weekly";
@@ -21,6 +22,8 @@
         "plugdev"
       ];
     };
+
+    programs.nix-ld.enable = true;
 
     networking.networkmanager.enable = true;
     services.openssh.enable = true;

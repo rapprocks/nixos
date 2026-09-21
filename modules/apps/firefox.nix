@@ -56,6 +56,11 @@ let
           "https://search.nixos.org/options?channel=unstable&include_modular_service_options=1&include_nixos_options=1&query={searchTerms}";
         "Alias" = "nixo";
       }
+      {
+        "Name" = "Akind Building Floorplan";
+        "URLTemplate" = "https://floor-plan.akind.tech/index.html?room={searchTerms}";
+        "Alias" = "fp";
+      }
     ];
   };
 in

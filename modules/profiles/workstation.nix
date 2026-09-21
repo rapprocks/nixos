@@ -8,6 +8,7 @@
       cli
       dotfiles
       syncthing
+      virtualisation
     ];
 
     services.dotfiles = {

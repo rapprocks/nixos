@@ -12,7 +12,10 @@
       self.nixosModules.firefox
       self.nixosModules.network
     ]
-    ++ [ inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series ];
+    ++ [
+      inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
+      inputs.fingerprint-lid-guard.nixosModules.default
+    ];
 
     networking.hostName = "nixwork";
     system.stateVersion = "26.05";
@@ -32,11 +35,32 @@
       HandleLidSwitchExternalPower = "lock";
     };
 
+    services.fprintd.lid-guard = {
+      enable = true;
+      # lidPath = "LID0"; # override if your ACPI device has a different name
+      # pamServices = [...]; # override if you want to choose the PAM services selectively
+      extraPamServices = [
+        "swaylock" # or any other PAM services not in the default list
+      ];
+    };
+
+    programs.zsh.shellInit = ''
+      export PATH="$HOME/.local/bin:$PATH"
+      eval "$(aw autocomplete:script zsh)"
+    '';
+
     # Enable Wi-Fi and Syncthing for this work host
     networking.enabledWifiNetworks = [
       "k69"
       "work"
     ];
+
+    services.virtualisation.enable = true;
+    services.docker.enable = true;
+    services.dm.greetd = {
+      enable = true;
+      autoLogin = true;
+    };
 
     services.syncthingSync = {
       enable = true;

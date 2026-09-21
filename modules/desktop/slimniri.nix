@@ -1,5 +1,6 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.slimniri = { lib, pkgs, ... }:
+{ self, ... }: {
+  flake.nixosModules.slimniri =
+    { lib, pkgs, ... }:
     let
       lock = "${lib.getExe pkgs.swaylock-effects} -C /home/earn/.dotfiles/swaylock/rose-pine --clock --indicator-idle-visible";
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
@@ -7,7 +8,8 @@
     {
       imports = [
         self.nixosModules.niri
-        inputs.sysc-greet.nixosModules.default
+        self.nixosModules.displayManager
+        #inputs.sysc-greet.nixosModules.default
       ];
 
       environment.systemPackages = with pkgs; [
@@ -49,32 +51,32 @@
         wantedBy = [ "graphical-session.target" ];
       };
 
-       systemd.user.services.polkit-kde-agent-1 = {
-         description = "PolicyKit Authentication Agent";
-         after = [ "graphical-session.target" ];
-         partOf = [ "graphical-session.target" ];
-         wantedBy = [ "graphical-session.target" ];
-         serviceConfig = {
-           Type = "simple";
-           ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
-           BusName = "org.kde.polkit-kde-authentication-agent-1";
-           Slice = "background.slice";
-           Restart = "on-failure";
-           TimeoutStopSec = 5;
-         };
-       };
+      systemd.user.services.polkit-kde-agent-1 = {
+        description = "PolicyKit Authentication Agent";
+        after = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
+          BusName = "org.kde.polkit-kde-authentication-agent-1";
+          Slice = "background.slice";
+          Restart = "on-failure";
+          TimeoutStopSec = 5;
+        };
+      };
 
       security.pam.services = {
         greetd.fprintAuth = false;
       };
 
-      services.sysc-greet = {
-        enable = true;
-        compositor = "niri";
-        settings.initial_session = {
-          command = "niri";
-          user = "earn";
-        };
-      };
+      #services.sysc-greet = {
+      #  enable = true;
+      #  compositor = "niri";
+      #  settings.initial_session = {
+      #    command = "niri";
+      #    user = "earn";
+      #  };
+      #};
     };
 }
