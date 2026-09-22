@@ -41,6 +41,7 @@
       # pamServices = [...]; # override if you want to choose the PAM services selectively
       extraPamServices = [
         "swaylock" # or any other PAM services not in the default list
+        "hyprlock" # or any other PAM services not in the default list
       ];
     };
 
@@ -84,6 +85,9 @@
         ".config/herdr/config.toml" = "herdr/config.toml";
         ".config/opencode/themes" = "opencode/themes";
         ".gitconfig" = ".gitconfig";
+
+        ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
+        ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
       };
       themedMappings.".config/waybar/colors.css" = {
         dark = "waybar/rose-pine.css";

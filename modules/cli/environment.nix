@@ -49,8 +49,8 @@
         };
         shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
         interactiveShellInit = ''
-          eval "$(${pkgs.fzf}/bin/fzf --zsh)"
-        ''; # source ${pkgs.fzf}/share/fzf/completion.zsh
+          source <(${pkgs.fzf}/bin/fzf --zsh)
+        ''; # source ${pkgs.fzf}/share/fzf/completion.zsh | eval "$(${pkgs.fzf}/bin/fzf --zsh)"
         shellAliases = {
           ip = "ip --color";
           cp = "rsync -ah --progress";
