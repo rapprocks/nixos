@@ -42,6 +42,8 @@
 
       gsettings-desktop-schemas
 
+      qt6.qtimageformats
+
       kdePackages.plasma-workspace
       kdePackages.dolphin
       kdePackages.systemsettings

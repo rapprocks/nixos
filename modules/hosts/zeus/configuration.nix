@@ -28,6 +28,11 @@
     services.thermald.enable = true;
     powerManagement.powertop.enable = false;
 
+    services.dm.greetd = {
+      enable = true;
+      autoLogin = true;
+    };
+
     # Enable Wi-Fi and Syncthing for this personal host
     networking.enabledWifiNetworks = [ "k69" ];
     services.syncthingSync = {
@@ -36,13 +41,17 @@
         "notes" = {
           id = "notes";
           path = "/home/earn/Documents/notes";
-          devices = [ "zeus" ];
+          devices = [
+            "zeus"
+            "truenas"
+          ];
         };
         "wallpapers" = {
           id = "wallpapers";
           path = "/home/earn/Pictures/wallpapers";
           devices = [
             "zeus"
+            "truenas"
             "nixwork"
           ];
         };
@@ -57,6 +66,9 @@
         ".config/herdr/config.toml" = "herdr/config.toml";
         ".config/opencode/themes" = "opencode/themes";
         ".gitconfig" = ".gitconfig";
+
+        ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
+        ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
       };
       themedMappings.".config/waybar/colors.css" = {
         dark = "waybar/rose-pine.css";

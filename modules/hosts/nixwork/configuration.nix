@@ -40,7 +40,6 @@
       # lidPath = "LID0"; # override if your ACPI device has a different name
       # pamServices = [...]; # override if you want to choose the PAM services selectively
       extraPamServices = [
-        "swaylock" # or any other PAM services not in the default list
         "hyprlock" # or any other PAM services not in the default list
       ];
     };

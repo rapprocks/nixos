@@ -88,10 +88,10 @@
               "nixwork" = {
                 id = "4UPYDTM-2UQEA52-CDPE6EE-BG2JHE7-V2FN6QP-W6U34H2-NY7VWBW-O3GJVAT";
               };
-              #"truenas" = {
-              #  id = "TRUENAS-DEVICE-ID-HERE";
-              #  addresses = [ "tcp://10.100.0.4:22000" ];
-              #};
+              "truenas" = {
+                id = "6KETVV7-J3HRFXX-UZ3UE5X-4ORVPJZ-OY4TY4U-QIDWD5R-QUNN4ZX-EFNYSQG";
+                #addresses = [ "tcp://10.100.0.4:22000" ];
+              };
             };
 
             # Folders to sync - generated from cfg.folders option
