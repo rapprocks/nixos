@@ -41,6 +41,7 @@
       ## THEMING
 
       gsettings-desktop-schemas
+      glib
 
       qt6.qtimageformats
 

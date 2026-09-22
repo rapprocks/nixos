@@ -3,7 +3,7 @@
     modules = [ self.nixosModules.nixworkConfig ];
   };
 
-  flake.nixosModules.nixworkConfig = { ... }: {
+  flake.nixosModules.nixworkConfig = { pkgs, ... }: {
     imports = [
       self.nixosModules.nixworkHardware
       self.nixosModules.workstation
@@ -15,6 +15,10 @@
     ++ [
       inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
       inputs.fingerprint-lid-guard.nixosModules.default
+    ];
+
+    environment.systemPackages = with pkgs; [
+      ngrok
     ];
 
     networking.hostName = "nixwork";

@@ -33,6 +33,7 @@
         opencode
         lazygit
         herdr
+        devenv
         inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
