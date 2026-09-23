@@ -34,6 +34,7 @@
         lazygit
         herdr
         devenv
+        hunk
         inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 

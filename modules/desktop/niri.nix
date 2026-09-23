@@ -8,11 +8,18 @@
       "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
     };
 
+    ## Needed for theme-switcher.sh
+    environment.sessionVariables.XDG_DATA_DIRS = [
+      "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
+    ];
+
     qt = {
       enable = true;
       platformTheme = "kde";
       style = "breeze";
     };
+
+    programs.dconf.enable = true;
 
     environment.systemPackages = with pkgs; [
       xwayland-satellite
@@ -22,6 +29,8 @@
       adwaita-icon-theme
       ffmpegthumbnailer
       swaybg
+
+      xdg-utils
 
       signal-desktop
 
