@@ -37,6 +37,7 @@
       wireguard-tools
 
       satty
+      ueberzugpp
       nirius
 
       wl-clipboard

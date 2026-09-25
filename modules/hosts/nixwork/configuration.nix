@@ -1,4 +1,9 @@
-{ self, inputs, ... }: {
+{
+  self,
+  inputs,
+  ...
+}:
+{
   flake.nixosConfigurations.nixwork = inputs.nixpkgs.lib.nixosSystem {
     modules = [ self.nixosModules.nixworkConfig ];
   };
@@ -52,6 +57,20 @@
       export PATH="$HOME/.local/bin:$PATH"
       eval "$(aw autocomplete:script zsh)"
     '';
+
+    ### Custom NixOS options ###
+
+    services.desktopApps."spotify" = {
+      enable = true;
+      sourcePath = "~/.dotfiles/apps/spotify.desktop";
+      iconPath = "~/.dotfiles/apps/icons/spotify.png";
+    };
+
+    services.desktopApps."google-chat" = {
+      enable = true;
+      sourcePath = "~/.dotfiles/apps/google-chat.desktop";
+      iconPath = "~/.dotfiles/apps/icons/google-chat.png";
+    };
 
     # Enable Wi-Fi and Syncthing for this work host
     networking.enabledWifiNetworks = [

@@ -7,6 +7,7 @@
       sops
       cli
       dotfiles
+      desktopApps
       syncthing
       virtualisation
     ];
