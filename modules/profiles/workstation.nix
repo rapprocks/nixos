@@ -10,6 +10,7 @@
       desktopApps
       syncthing
       virtualisation
+      agentic
     ];
 
     services.dotfiles = {
@@ -34,6 +35,7 @@
       mpv
       imv
       brave
+      chromium
       obsidian
       kdePackages.krdc
       bluetui # DECIDE WHICH ONE I WANT TO USE

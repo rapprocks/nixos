@@ -31,6 +31,7 @@
         tree
         sops
         opencode
+        pi-coding-agent
         lazygit
         herdr
         devenv
@@ -60,7 +61,8 @@
           dev = "cd ~/Development";
           tree = "tree -C";
           weather = "curl -S 'https://wttr.in/Stockholm?1F'";
-          cat = "bat --style plain";
+          cat = "bat";
+          #cat = "bat --style plain";
           ga = "git add";
           gst = "git status";
           gcm = "git commit -m";

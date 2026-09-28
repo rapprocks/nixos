@@ -72,7 +72,7 @@
         };
         mappings = lib.mkOption {
           type = lib.types.attrsOf lib.types.str;
-          default = {};
+          default = { };
           example = {
             ".config/alacritty" = "alacritty";
             ".config/i3" = "i3";
@@ -98,7 +98,7 @@
               };
             }
           );
-          default = {};
+          default = { };
           example = {
             ".config/alacritty/colors.toml" = {
               dark = "alacritty/rose-pine.toml";
@@ -123,6 +123,8 @@
             ".config/tmux/tmux.conf" = "tmux/tmux.conf";
             ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
             ".config/rbw/config.json" = "rbw/config.json";
+            ".config/opencode/themes" = "opencode/themes";
+            ".config/opencode/opencode.json" = "opencode/opencode.json";
           };
           themedMappings = {
             ".config/alacritty/colors.toml" = {

@@ -7,6 +7,8 @@
     #wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     #nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
+    #laya.url = "github:NandhaKishorM/laya";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     fingerprint-lid-guard.url = "github:timp4w/nix-fingerprint-lid-guard";
 
