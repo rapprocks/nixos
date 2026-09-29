@@ -11,6 +11,7 @@ let
     "sidebar.visibility" = "always-show";
     "sidebar.main.tools" = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
     "privacy.trackingprotection.enabled" = true;
+    "media.eme.enabled" = true;
   };
 
   policies = {

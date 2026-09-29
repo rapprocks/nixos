@@ -13,6 +13,14 @@
       self.nixosModules.network
     ];
 
+    environment.systemPackages = with pkgs; [
+      blender
+      orca-slicer
+      gimp
+      freecad
+
+    ];
+
     networking.hostName = "zeus";
     system.stateVersion = "26.05";
 
@@ -58,11 +66,24 @@
       };
     };
 
+    services.desktopApps."feedly" = {
+      enable = true;
+      sourcePath = "~/.dotfiles/apps/feedly.desktop";
+      iconPath = "~/.dotfiles/apps/icons/feedly.png";
+    };
+
+    services.desktopApps."x" = {
+      enable = true;
+      sourcePath = "~/.dotfiles/apps/x.desktop";
+      iconPath = "~/.dotfiles/apps/icons/x.png";
+    };
+
     # Additions specific to this host; shared mappings live with their features.
     services.dotfiles = {
       mappings = {
         ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
         ".config/waybar/style.css" = "waybar/2027.css";
+        ".config/waybar/group-center.jsonc" = "waybar/group-center.jsonc";
         ".config/herdr/config.toml" = "herdr/config.toml";
         ".config/opencode/themes" = "opencode/themes";
         ".gitconfig" = ".gitconfig";

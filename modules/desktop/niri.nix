@@ -30,9 +30,12 @@
       ffmpegthumbnailer
       swaybg
 
+      unzip
+
       xdg-utils
 
       signal-desktop
+      chromium
 
       wireguard-tools
 
