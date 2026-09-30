@@ -20,6 +20,7 @@
         "networkmanager"
         "wheel"
         "plugdev"
+        "video"
       ];
     };
 

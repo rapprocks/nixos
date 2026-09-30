@@ -58,9 +58,19 @@ let
         "Alias" = "nixo";
       }
       {
+        "Name" = "NixOS Packages";
+        "URLTemplate" = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
+        "Alias" = "nixp";
+      }
+      {
         "Name" = "Akind Building Floorplan";
         "URLTemplate" = "https://floor-plan.akind.tech/index.html?room={searchTerms}";
         "Alias" = "fp";
+      }
+      {
+        "Name" = "Akind Github repos search";
+        "URLTemplate" = "https://github.com/orgs/akindgroup/repositories?q={searchTerms}";
+        "Alias" = "gita";
       }
     ];
   };

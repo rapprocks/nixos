@@ -39,6 +39,7 @@
       obsidian
       kdePackages.krdc
       bluetui # DECIDE WHICH ONE I WANT TO USE
+      cameractrls-gtk4
       #kdePackages.bluedevil
       #kdePackages.bluez-qt
     ];

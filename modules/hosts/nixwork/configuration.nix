@@ -133,8 +133,9 @@
         ".gitconfig" = ".gitconfig";
         ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
         ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
-        ".pi/agent/settings.json" = "pi/agent/settings.json";
-        ".pi/agent/extensions" = "pi/agent/extensions";
+        #".pi/agent/settings.json" = "pi/agent/settings.json";
+        #".pi/agent/extensions" = "pi/agent/extensions";
+        ".pi/agent" = "pi/agent";
       };
       themedMappings.".config/waybar/colors.css" = {
         dark = "waybar/rose-pine.css";
