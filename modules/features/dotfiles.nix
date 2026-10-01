@@ -125,6 +125,9 @@
             ".config/rbw/config.json" = "rbw/config.json";
             ".config/opencode/themes" = "opencode/themes";
             ".config/opencode/opencode.json" = "opencode/opencode.json";
+            ".config/yazi/yazi.toml" = "yazi/yazi.toml";
+            ".config/yazi/flavors" = "yazi/flavors";
+            ".config/yazi/theme.toml" = "yazi/theme.toml";
           };
           themedMappings = {
             ".config/alacritty/colors.toml" = {

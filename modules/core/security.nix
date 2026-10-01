@@ -41,12 +41,24 @@
       programs.gnupg.agent = {
         enable = true;
         pinentryPackage = pkgs.pinentry-qt;
-        enableSSHSupport = true;
+        enableSSHSupport = false;
+      };
+
+      programs.ssh = {
+        startAgent = true;
+        enableAskPassword = true;
+        askPassword = "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+        extraConfig = ''
+          Host *
+            AddKeysToAgent yes
+            IdentityFile ~/.ssh/git-zeus
+        '';
       };
 
       services.gnome.gcr-ssh-agent.enable = false;
+
+      # export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
       programs.zsh.interactiveShellInit = ''
-        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
         export GPG_TTY=$(tty)
       '';
 

@@ -3,7 +3,7 @@
     modules = [ self.nixosModules.zeusConfig ];
   };
 
-  flake.nixosModules.zeusConfig = { pkgs, ... }: {
+  flake.nixosModules.zeusConfig = { pkgs, config, ... }: {
     imports = [
       self.nixosModules.zeusHardware
       self.nixosModules.workstation
@@ -20,6 +20,35 @@
       freecad
 
     ];
+
+    services.fprintd.enable = true;
+
+    # only try fingerprint reader if the lid is open
+    security.pam.services.hyprlock.rules.auth = {
+      fprintd-only-if-lid-open = {
+        enable = true;
+        order = config.security.pam.services.hyprlock.rules.auth.fprintd.order - 1; # go immediately before fprintd
+        control = "[success=ok default=1]";
+        modulePath = "${config.security.pam.package}/lib/security/pam_exec.so";
+        args = [
+          "quiet"
+          "quiet_log"
+          "${pkgs.writeShellScript "is-lid-open" ''
+            # this script exits with exit code 1 if anything goes wrong or the lid is closed; returns 0 if lid is open
+
+            set -eoui pipefail
+            lidstate="$(${config.systemd.package}/bin/busctl get-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager LidClosed 2>/dev/null)"
+
+            if [ "''${lidstate}" = "b false" ]; then
+              exit 0
+            fi
+
+            exit 1
+
+          ''}"
+        ];
+      };
+    };
 
     networking.hostName = "zeus";
     system.stateVersion = "26.05";
