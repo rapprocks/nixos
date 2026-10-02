@@ -6,6 +6,9 @@ let
     "browser.newtabpage.enabled" = false;
     "browser.tabs.inTitlebar" = 0;
     "browser.download.autohideButton" = true;
+    "browser.theme.content-theme" = 0;
+    "browser.theme.native-theme" = false;
+    "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
     "sidebar.verticalTabs" = true;
     "sidebar.position_start" = false;
     "sidebar.visibility" = "always-show";
