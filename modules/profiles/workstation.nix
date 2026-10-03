@@ -11,6 +11,7 @@
       syncthing
       virtualisation
       agentic
+      fonts
     ];
 
     services.dotfiles = {
@@ -19,7 +20,6 @@
       repo = "https://github.com/rapprocks/dotfiles.git";
     };
 
-    fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
     hardware.graphics = {
       enable = true;
       enable32Bit = true;

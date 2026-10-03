@@ -6,9 +6,9 @@ let
     "browser.newtabpage.enabled" = false;
     "browser.tabs.inTitlebar" = 0;
     "browser.download.autohideButton" = true;
-    "browser.theme.content-theme" = 0;
+    "browser.theme.content-theme" = 2;
     "browser.theme.native-theme" = false;
-    "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
+    "extensions.activeThemeID" = "{99c277af-d778-4a0b-9faa-b1d8165f0a55}";
     "sidebar.verticalTabs" = true;
     "sidebar.position_start" = false;
     "sidebar.visibility" = "always-show";
@@ -140,6 +140,12 @@ in
             // passwordManagerExtension
             // {
               "*".installation_mode = "blocked"; # blocks all addons except the ones specified here
+
+              # Dark theme
+              "{99c277af-d778-4a0b-9faa-b1d8165f0a55}" = {
+                install_url = "https://addons.mozilla.org/firefox/downloads/latest/{99c277af-d778-4a0b-9faa-b1d8165f0a55}/latest.xpi";
+                installation_mode = "force_installed";
+              };
               # Adguard adblocker
               "adguardadblocker@adguard.com" = {
                 install_url = "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi";

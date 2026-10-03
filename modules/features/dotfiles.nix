@@ -118,12 +118,14 @@
             ".config/kanshi/config" = "kanshi/config";
             ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
             ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
+            ".config/rofi/config.rasi" = "rofi/rose-pine.rasi";
             ".config/swayosd/config.toml" = "swayosd/config.toml";
             ".config/swayosd/style.css" = "swayosd/style.css";
             ".config/tmux/tmux.conf" = "tmux/tmux.conf";
             ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
             ".config/rbw/config.json" = "rbw/config.json";
             ".config/opencode/themes" = "opencode/themes";
+            ".config/opencode/skills" = "opencode/skills";
             ".config/opencode/opencode.json" = "opencode/opencode.json";
             ".config/yazi/yazi.toml" = "yazi/yazi.toml";
             ".config/yazi/flavors" = "yazi/flavors";

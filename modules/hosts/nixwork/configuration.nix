@@ -20,22 +20,8 @@
     ++ [
       inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
       inputs.fingerprint-lid-guard.nixosModules.default
-      #inputs.laya.nixosModules.default
     ];
 
-    # services.laya-serve = {
-    #   enable = true;
-    #   host = "0.0.0.0"; # or bind to the Tailscale/LAN address
-    #   openFirewall = true;
-    #   device = "cpu";
-    #   models = [
-    #     "english"
-    #     "multilingual"
-    #     "typed-decisions"
-    #   ];
-    #   # apiKeyFile = config.age.secrets.laya-api-key.path;  # optional bearer auth
-    # };
-    #
     environment.systemPackages = with pkgs; [
       ngrok
       amdtop
@@ -75,16 +61,27 @@
 
     ### Custom NixOS options ###
 
-    services.desktopApps."spotify" = {
-      enable = true;
-      sourcePath = "~/.dotfiles/apps/spotify.desktop";
-      iconPath = "~/.dotfiles/apps/icons/spotify.png";
-    };
-
-    services.desktopApps."google-chat" = {
-      enable = true;
-      sourcePath = "~/.dotfiles/apps/google-chat.desktop";
-      iconPath = "~/.dotfiles/apps/icons/google-chat.png";
+    services.desktopApps = {
+      "google-chat" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/google-chat.desktop";
+        iconPath = "~/.dotfiles/apps/icons/google-chat.png";
+      };
+      "spotify" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/spotify.desktop";
+        iconPath = "~/.dotfiles/apps/icons/spotify.png";
+      };
+      "theme" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/theme.desktop";
+        iconPath = "~/.dotfiles/apps/icons/theme.png";
+      };
+      "bluetui" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/bluetui.desktop";
+        iconPath = "~/.dotfiles/apps/icons/bluetui.png";
+      };
     };
 
     # Enable Wi-Fi and Syncthing for this work host

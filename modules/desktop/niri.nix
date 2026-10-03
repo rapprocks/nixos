@@ -1,5 +1,6 @@
 { ... }: {
   flake.nixosModules.niri = { pkgs, ... }: {
+
     programs.niri.enable = true;
 
     xdg.portal.enable = true;
@@ -21,10 +22,13 @@
 
     programs.dconf.enable = true;
 
+    programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ]; # Fix for svg icons in Rofi
+
     environment.systemPackages = with pkgs; [
       xwayland-satellite
       alacritty
       fuzzel
+      rofi-unwrapped
       nwg-look
       adwaita-icon-theme
       ffmpegthumbnailer
@@ -35,11 +39,13 @@
       xdg-utils
 
       signal-desktop
-      chromium
+      (chromium.override { enableWideVine = true; })
 
       wireguard-tools
 
       satty
+      slurp
+      wf-recorder
       ueberzugpp
       nirius
 
