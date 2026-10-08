@@ -21,6 +21,7 @@
         "wheel"
         "plugdev"
         "video"
+        "keys"
       ];
     };
 

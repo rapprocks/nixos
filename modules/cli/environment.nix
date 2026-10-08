@@ -51,9 +51,6 @@
           plugins = [ "colored-man-pages" ];
         };
         shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
-        interactiveShellInit = ''
-          source <(${pkgs.fzf}/bin/fzf --zsh)
-        ''; # source ${pkgs.fzf}/share/fzf/completion.zsh | eval "$(${pkgs.fzf}/bin/fzf --zsh)"
         shellAliases = {
           ip = "ip --color";
           cp = "rsync -ah --progress";
@@ -79,7 +76,13 @@
           la = "eza -a --group-directories-first";
           lt = "eza --tree --group-directories-first";
           lla = "eza -la --group-directories-first";
+          dv = "devenv";
         };
+      };
+
+      programs.fzf = {
+        keybindings = true;
+        fuzzyCompletion = true;
       };
 
       programs.starship = {

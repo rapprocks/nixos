@@ -22,6 +22,11 @@
       inputs.fingerprint-lid-guard.nixosModules.default
     ];
 
+    sops.secrets.librenms_api_token = {
+      owner = "earn";
+      mode = "0400";
+    };
+
     environment.systemPackages = with pkgs; [
       ngrok
       amdtop
@@ -81,6 +86,10 @@
         enable = true;
         sourcePath = "~/.dotfiles/apps/bluetui.desktop";
         iconPath = "~/.dotfiles/apps/icons/bluetui.png";
+      };
+      "libre" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/libre.desktop";
       };
     };
 
