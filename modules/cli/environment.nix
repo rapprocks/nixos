@@ -19,6 +19,7 @@
         tldr
         jq
         ripgrep
+        lsof
         yazi
         htop
         btop

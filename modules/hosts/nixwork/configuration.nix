@@ -72,6 +72,11 @@
         sourcePath = "~/.dotfiles/apps/google-chat.desktop";
         iconPath = "~/.dotfiles/apps/icons/google-chat.png";
       };
+      "google-gemini" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/gemini.desktop";
+        iconPath = "~/.dotfiles/apps/icons/google-gemini.png";
+      };
       "spotify" = {
         enable = true;
         sourcePath = "~/.dotfiles/apps/spotify.desktop";
