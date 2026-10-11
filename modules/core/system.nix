@@ -13,18 +13,6 @@
       options = "--delete-older-than 1d";
     };
 
-    users.users.earn = {
-      isNormalUser = true;
-      description = "earn";
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-        "plugdev"
-        "video"
-        "keys"
-      ];
-    };
-
     programs.nix-ld.enable = true;
 
     networking.networkmanager.enable = true;
