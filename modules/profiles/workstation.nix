@@ -2,6 +2,7 @@
   flake.nixosModules.workstation = { pkgs, ... }: {
     imports = with self.nixosModules; [
       system
+      userEarn
       security
       pipewire
       sops
@@ -16,7 +17,6 @@
 
     services.dotfiles = {
       enable = true;
-      user = "earn";
       repo = "https://github.com/rapprocks/dotfiles.git";
     };
 

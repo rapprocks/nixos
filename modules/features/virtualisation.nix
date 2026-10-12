@@ -29,11 +29,6 @@
             qemu.swtpm.enable = true;
           };
 
-          users.users.earn.extraGroups = [
-            "libvirtd"
-            "kvm"
-          ];
-
           programs.virt-manager.enable = true;
           virtualisation.spiceUSBRedirection.enable = true;
         })
@@ -51,9 +46,6 @@
               setSocketVariable = true;
             };
           };
-
-          # Add your user to the docker group so you can run docker without sudo
-          users.users.earn.extraGroups = [ "docker" ];
 
           # Useful CLI tools for working with containers
           environment.systemPackages = with pkgs; [
