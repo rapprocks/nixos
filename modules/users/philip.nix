@@ -11,7 +11,6 @@
       users.users.philip = {
         isNormalUser = true;
         description = "Philip";
-        initialPassword = "sommartorp1";
         extraGroups = [
           "wheel"
           "networkmanager"
