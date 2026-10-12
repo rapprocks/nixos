@@ -10,7 +10,8 @@
       cfg = config.services.desktopApps;
       enabledApps = lib.filterAttrs (_: app: app.enable) cfg;
       # Create directories as the user so ownership of ~/.local stays correct.
-      runAsUser = ''${pkgs.util-linux}/bin/runuser -u "$U" --'';
+      #runAsUser = ''${pkgs.util-linux}/bin/runuser -u "$U" --'';
+      runAsUser = ''${pkgs.util-linux}/bin/setpriv --reuid="$U" --regid="$U_GROUP" --init-groups --'';
 
       # Paths are resolved at activation time against each user's own home,
       # so every user gets entries pointing into their own dotfiles clone.
@@ -70,9 +71,7 @@
       config = lib.mkIf (enabledApps != { }) {
         system.activationScripts.desktopAppsLink = {
           deps = [ "dotfilesSync" ];
-          text = lib.concatStringsSep "\n" (
-            map linkForUser (lib.attrNames config.services.dotfiles.users)
-          );
+          text = lib.concatStringsSep "\n" (map linkForUser (lib.attrNames config.services.dotfiles.users));
         };
       };
     };
