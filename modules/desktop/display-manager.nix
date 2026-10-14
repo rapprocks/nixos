@@ -18,9 +18,23 @@
           default = false;
           description = "Auto-login to Niri (for LUKS-encrypted hosts that already authenticated at boot)";
         };
+        autoLoginUser = lib.mkOption {
+          type = lib.types.str;
+          default = "earn";
+          description = "Username to automatically log into when autoLogin is enabled.";
+        };
       };
 
       config = lib.mkIf config.services.dm.greetd.enable {
+        assertions = [
+          {
+            assertion =
+              !cfg.autoLogin
+              || lib.length (lib.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users)) <= 1;
+            message = "services.dm.greetd.autoLogin must be false on hosts with more than one user.";
+          }
+        ];
+
         services.greetd = {
           enable = true;
           settings = {
@@ -32,7 +46,7 @@
           // lib.optionalAttrs cfg.autoLogin {
             initial_session = {
               command = "niri-session";
-              user = "earn";
+              user = cfg.autoLoginUser;
             };
           };
         };

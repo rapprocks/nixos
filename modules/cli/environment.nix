@@ -3,7 +3,7 @@
   flake.nixosModules.cli =
     { pkgs, ... }:
     {
-      users.users.earn.shell = pkgs.zsh;
+      users.defaultUserShell = pkgs.zsh;
       environment.variables.EDITOR = "nvim";
 
       # ── CORE CLI PACKAGES ──
@@ -19,6 +19,7 @@
         tldr
         jq
         ripgrep
+        lsof
         yazi
         htop
         btop

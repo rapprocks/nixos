@@ -12,6 +12,7 @@
     imports = [
       self.nixosModules.nixworkHardware
       self.nixosModules.workstation
+      self.nixosModules.userPhilip
       self.nixosModules.work
       self.nixosModules.slimniri
       self.nixosModules.firefox
@@ -72,6 +73,11 @@
         sourcePath = "~/.dotfiles/apps/google-chat.desktop";
         iconPath = "~/.dotfiles/apps/icons/google-chat.png";
       };
+      "google-gemini" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/gemini.desktop";
+        iconPath = "~/.dotfiles/apps/icons/google-gemini.png";
+      };
       "spotify" = {
         enable = true;
         sourcePath = "~/.dotfiles/apps/spotify.desktop";
@@ -101,9 +107,10 @@
 
     services.virtualisation.enable = true;
     services.docker.enable = true;
+    # Multiple users on this host: no auto-login, greetd shows the login prompt.
     services.dm.greetd = {
       enable = true;
-      autoLogin = true;
+      autoLogin = false;
     };
 
     services.agentic = {
