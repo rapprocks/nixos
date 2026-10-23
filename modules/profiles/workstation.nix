@@ -13,6 +13,7 @@
       virtualisation
       agentic
       fonts
+      userSwitch
     ];
 
     services.dotfiles = {
@@ -28,6 +29,13 @@
       enable = true;
       settings.General.Enable = "Source,Sink,Media,Socket";
     };
+
+    # Shared directory
+    users.groups.drop = { };
+    systemd.tmpfiles.rules = [
+      # Type  Path            Mode User  Group       Age Argument
+      "d      /mnt/drop     2770 root  drop -   -"
+    ];
 
     environment.systemPackages = with pkgs; [
       rbw

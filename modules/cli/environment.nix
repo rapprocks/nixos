@@ -37,6 +37,7 @@
         herdr
         devenv
         hunk
+        agent-browser
         inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 

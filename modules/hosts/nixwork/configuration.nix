@@ -62,7 +62,6 @@
 
     programs.zsh.shellInit = ''
       export PATH="$HOME/.local/bin:$PATH"
-      eval "$(aw autocomplete:script zsh)"
     '';
 
     ### Custom NixOS options ###
@@ -93,9 +92,15 @@
         sourcePath = "~/.dotfiles/apps/bluetui.desktop";
         iconPath = "~/.dotfiles/apps/icons/bluetui.png";
       };
-      "libre" = {
+      "librenms" = {
         enable = true;
         sourcePath = "~/.dotfiles/apps/libre.desktop";
+        iconPath = "~/.dotfiles/apps/icons/librenms.png";
+      };
+      "wireguard" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/wg-work.desktop";
+        iconPath = "~/.dotfiles/apps/icons/wireguard.png";
       };
     };
 
@@ -148,6 +153,7 @@
         ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
         ".pi/agent/settings.json" = "pi/agent/settings.json";
         ".pi/agent/extensions" = "pi/agent/extensions";
+        ".pi/agent/themes" = "pi/agent/themes";
       };
       themedMappings.".config/waybar/colors.css" = {
         dark = "waybar/rose-pine.css";

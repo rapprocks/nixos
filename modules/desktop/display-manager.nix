@@ -23,6 +23,13 @@
           default = "earn";
           description = "Username to automatically log into when autoLogin is enabled.";
         };
+        # Shared greeter command, so every login screen (tty1, tty2) looks the same.
+        greeterCommand = lib.mkOption {
+          type = lib.types.str;
+          readOnly = true;
+          default = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
+          description = "Command that starts the login greeter.";
+        };
       };
 
       config = lib.mkIf config.services.dm.greetd.enable {
@@ -39,7 +46,7 @@
           enable = true;
           settings = {
             default_session = {
-              command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
+              command = cfg.greeterCommand;
               user = "greeter";
             };
           }

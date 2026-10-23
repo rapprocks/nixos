@@ -17,6 +17,7 @@
           "video"
           "plugdev"
           "keys"
+          "drop"
         ]
         ++ lib.optional (config.virtualisation.libvirtd.enable or false) "libvirtd"
         ++ lib.optional (config.virtualisation.libvirtd.enable or false) "kvm"
