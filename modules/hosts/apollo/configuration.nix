@@ -5,7 +5,7 @@
 
   flake.nixosModules.apolloConfig = { ... }: {
     imports = [
-      #self.nixosModules.apolloHardware
+      self.nixosModules.apolloHardware
       self.nixosModules.workstation
       self.nixosModules.personal
       self.nixosModules.slimniri

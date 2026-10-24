@@ -7,6 +7,15 @@
         nasMounts
       ];
 
+      nixpkgs.overlays = [
+        (final: prev: {
+          # Work around nixpkgs regression (fixed upstream) where vtk_9_5
+          # renamed VTK::pegtl -> VTK::vtkpegtl in postPatch while still passing
+          # -DVTK_MODULE_USE_EXTERNAL_VTK_pegtl=FALSE.
+          vtk_9_5 = prev.vtk_9_5.overrideAttrs { postPatch = ""; };
+        })
+      ];
+
       environment.systemPackages = with pkgs; [
         blender
         orca-slicer

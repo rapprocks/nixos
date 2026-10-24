@@ -18,6 +18,7 @@
         bat
         tldr
         jq
+        uv
         ripgrep
         lsof
         yazi

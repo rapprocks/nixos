@@ -51,84 +51,82 @@
 
       # Per-user activation snippet. Links shared + host-specific mappings
       # (cfg.mappings) plus this user's own mappings, from the user's own clone.
-      syncForUser =
-        u: userCfg:
-        ''
-          if id "${u}" >/dev/null 2>&1; then
-            U_HOME="$(getent passwd "${u}" | cut -d: -f6)"
-            U_GROUP="$(id -gn "${u}")"
-            U_DOTFILES="$U_HOME/.dotfiles"
+      syncForUser = u: userCfg: ''
+        if id "${u}" >/dev/null 2>&1; then
+          U_HOME="$(getent passwd "${u}" | cut -d: -f6)"
+          U_GROUP="$(id -gn "${u}")"
+          U_DOTFILES="$U_HOME/.dotfiles"
 
-            echo "Syncing dotfiles for ${u} ($U_HOME)..."
+          echo "Syncing dotfiles for ${u} ($U_HOME)..."
 
-            # 1. Clone repo if missing
-            if [ ! -d "$U_DOTFILES" ]; then
-              echo "Cloning repo to $U_DOTFILES..."
-              ${pkgs.git}/bin/git clone "${cfg.repo}" "$U_DOTFILES"
-              chown -R "${u}:$U_GROUP" "$U_DOTFILES"
-            fi
-
-            # 2. Make repo theme-switcher script executable if present
-            if [ -f "$U_DOTFILES/scripts/theme-switcher.sh" ]; then
-              chmod +x "$U_DOTFILES/scripts/theme-switcher.sh"
-              chown "${u}:$U_GROUP" "$U_DOTFILES/scripts/theme-switcher.sh"
-            fi
-
-            # 3. Process static mappings
-            ${lib.concatStringsSep "\n" (
-              lib.mapAttrsToList (target: source: ''
-                TARGET_PATH="$U_HOME/${target}"
-                SOURCE_PATH="$U_DOTFILES/${source}"
-                mkdir -p "$(dirname "$TARGET_PATH")"
-                chown "${u}:$U_GROUP" "$(dirname "$TARGET_PATH")"
-                if [ "$(readlink "$TARGET_PATH")" != "$SOURCE_PATH" ]; then
-                  echo "Linking $TARGET_PATH -> $SOURCE_PATH"
-                  if [ -e "$TARGET_PATH" ] && [ ! -L "$TARGET_PATH" ]; then
-                    mv "$TARGET_PATH" "$TARGET_PATH.bak"
-                  fi
-                  ln -sf "$SOURCE_PATH" "$TARGET_PATH"
-                  chown -h "${u}:$U_GROUP" "$TARGET_PATH"
-                fi
-              '') (cfg.mappings // userCfg.mappings)
-            )}
-
-            # 4. Process themed mappings based on saved or default mode
-            THEME_STATE_FILE="$U_HOME/.config/theme_mode"
-            mkdir -p "$U_HOME/.config"
-            chown "${u}:$U_GROUP" "$U_HOME/.config"
-            CURRENT_THEME="${cfg.defaultTheme}"
-            if [ -f "$THEME_STATE_FILE" ]; then
-              SAVED_THEME="$(cat "$THEME_STATE_FILE" | tr -d ' \n\r')"
-              if [ "$SAVED_THEME" = "dark" ] || [ "$SAVED_THEME" = "light" ]; then
-                CURRENT_THEME="$SAVED_THEME"
-              fi
-            else
-              echo "$CURRENT_THEME" > "$THEME_STATE_FILE"
-              chown "${u}:$U_GROUP" "$THEME_STATE_FILE"
-            fi
-            echo "Applying $CURRENT_THEME theme mappings for ${u}..."
-            ${lib.concatStringsSep "\n" (
-              lib.mapAttrsToList (target: themeSources: ''
-                TARGET_PATH="$U_HOME/${target}"
-                if [ "$CURRENT_THEME" = "light" ]; then
-                  SOURCE_PATH="$U_DOTFILES/${themeSources.light}"
-                else
-                  SOURCE_PATH="$U_DOTFILES/${themeSources.dark}"
-                fi
-                mkdir -p "$(dirname "$TARGET_PATH")"
-                chown "${u}:$U_GROUP" "$(dirname "$TARGET_PATH")"
-                if [ "$(readlink "$TARGET_PATH")" != "$SOURCE_PATH" ]; then
-                  echo "Linking $TARGET_PATH -> $SOURCE_PATH ($CURRENT_THEME mode)"
-                  if [ -e "$TARGET_PATH" ] && [ ! -L "$TARGET_PATH" ]; then
-                    mv "$TARGET_PATH" "$TARGET_PATH.bak"
-                  fi
-                  ln -sf "$SOURCE_PATH" "$TARGET_PATH"
-                  chown -h "${u}:$U_GROUP" "$TARGET_PATH"
-                fi
-              '') cfg.themedMappings
-            )}
+          # 1. Clone repo if missing
+          if [ ! -d "$U_DOTFILES" ]; then
+            echo "Cloning repo to $U_DOTFILES..."
+            ${pkgs.git}/bin/git clone "${cfg.repo}" "$U_DOTFILES"
+            chown -R "${u}:$U_GROUP" "$U_DOTFILES"
           fi
-        '';
+
+          # 2. Make repo theme-switcher script executable if present
+          if [ -f "$U_DOTFILES/scripts/theme-switcher.sh" ]; then
+            chmod +x "$U_DOTFILES/scripts/theme-switcher.sh"
+            chown "${u}:$U_GROUP" "$U_DOTFILES/scripts/theme-switcher.sh"
+          fi
+
+          # 3. Process static mappings
+          ${lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (target: source: ''
+              TARGET_PATH="$U_HOME/${target}"
+              SOURCE_PATH="$U_DOTFILES/${source}"
+              mkdir -p "$(dirname "$TARGET_PATH")"
+              chown "${u}:$U_GROUP" "$(dirname "$TARGET_PATH")"
+              if [ "$(readlink "$TARGET_PATH")" != "$SOURCE_PATH" ]; then
+                echo "Linking $TARGET_PATH -> $SOURCE_PATH"
+                if [ -e "$TARGET_PATH" ] && [ ! -L "$TARGET_PATH" ]; then
+                  mv "$TARGET_PATH" "$TARGET_PATH.bak"
+                fi
+                ln -sf "$SOURCE_PATH" "$TARGET_PATH"
+                chown -h "${u}:$U_GROUP" "$TARGET_PATH"
+              fi
+            '') (cfg.mappings // userCfg.mappings)
+          )}
+
+          # 4. Process themed mappings based on saved or default mode
+          THEME_STATE_FILE="$U_HOME/.config/theme_mode"
+          mkdir -p "$U_HOME/.config"
+          chown "${u}:$U_GROUP" "$U_HOME/.config"
+          CURRENT_THEME="${cfg.defaultTheme}"
+          if [ -f "$THEME_STATE_FILE" ]; then
+            SAVED_THEME="$(cat "$THEME_STATE_FILE" | tr -d ' \n\r')"
+            if [ "$SAVED_THEME" = "dark" ] || [ "$SAVED_THEME" = "light" ]; then
+              CURRENT_THEME="$SAVED_THEME"
+            fi
+          else
+            echo "$CURRENT_THEME" > "$THEME_STATE_FILE"
+            chown "${u}:$U_GROUP" "$THEME_STATE_FILE"
+          fi
+          echo "Applying $CURRENT_THEME theme mappings for ${u}..."
+          ${lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (target: themeSources: ''
+              TARGET_PATH="$U_HOME/${target}"
+              if [ "$CURRENT_THEME" = "light" ]; then
+                SOURCE_PATH="$U_DOTFILES/${themeSources.light}"
+              else
+                SOURCE_PATH="$U_DOTFILES/${themeSources.dark}"
+              fi
+              mkdir -p "$(dirname "$TARGET_PATH")"
+              chown "${u}:$U_GROUP" "$(dirname "$TARGET_PATH")"
+              if [ "$(readlink "$TARGET_PATH")" != "$SOURCE_PATH" ]; then
+                echo "Linking $TARGET_PATH -> $SOURCE_PATH ($CURRENT_THEME mode)"
+                if [ -e "$TARGET_PATH" ] && [ ! -L "$TARGET_PATH" ]; then
+                  mv "$TARGET_PATH" "$TARGET_PATH.bak"
+                fi
+                ln -sf "$SOURCE_PATH" "$TARGET_PATH"
+                chown -h "${u}:$U_GROUP" "$TARGET_PATH"
+              fi
+            '') cfg.themedMappings
+          )}
+        fi
+      '';
     in
     {
       options.services.dotfiles = {
@@ -229,6 +227,7 @@
             ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
             ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
             ".pi/agent/settings.json" = "pi/agent/settings.json";
+            ".pi/agent/mcp.json" = "pi/agent/mcp.json";
             ".pi/agent/extensions" = "pi/agent/extensions";
             ".pi/agent/themes" = "pi/agent/themes";
           };
