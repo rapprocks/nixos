@@ -35,6 +35,7 @@
           id = "notes";
           path = "/home/earn/Documents/notes";
           devices = [
+            "apollo"
             "zeus"
             "truenas"
           ];
@@ -43,6 +44,7 @@
           id = "wallpapers";
           path = "/home/earn/Pictures/wallpapers";
           devices = [
+            "apollo"
             "zeus"
             "truenas"
             "nixwork"

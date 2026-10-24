@@ -25,31 +25,27 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    # Enable Wi-Fi and Syncthing for this personal host after initial rebuild and SOPS setup
-    #networking.enabledWifiNetworks = [ "k69" ];
-    #services.syncthingSync = {
-    #  enable = true;
-    #  folders = {
-    #    "notes" = {
-    #      id = "notes";
-    #      path = "/home/earn/Documents/notes";
-    #      devices = [
-    #        "apollo"
-    #        "zeus"
-    #        "truenas"
-    #      ];
-    #    };
-    #    "wallpapers" = {
-    #      id = "wallpapers";
-    #      path = "/home/earn/Pictures/wallpapers";
-    #      devices = [
-    #        "apollo"
-    #        "zeus"
-    #        "truenas"
-    #        "nixwork"
-    #      ];
-    #    };
-    #  };
-    #};
+    services.syncthingSync = {
+      enable = true;
+      folders = {
+        "notes" = {
+          id = "notes";
+          path = "/home/earn/Documents/notes";
+          devices = [
+            "zeus"
+            "truenas"
+          ];
+        };
+        "wallpapers" = {
+          id = "wallpapers";
+          path = "/home/earn/Pictures/wallpapers";
+          devices = [
+            "zeus"
+            "truenas"
+            "nixwork"
+          ];
+        };
+      };
+    };
   };
 }

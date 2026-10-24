@@ -111,6 +111,7 @@
           id = "wallpapers";
           path = "/home/earn/Pictures/wallpapers";
           devices = [
+            "apollo"
             "zeus"
             "nixwork"
           ];

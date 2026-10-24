@@ -85,9 +85,9 @@
               "zeus" = {
                 id = "OL4E44O-GFP6ZSD-YH4RVOD-7QOWF75-GQG4NIG-LA3TOTI-HFXARMC-4GFBZQA";
               };
-              #"apollo" = {
-              #  id = "REPLACE-WITH-APOLLO-SYNCTHING-DEVICE-ID";
-              #};
+              "apollo" = {
+                id = "3UWG7EV-JZLYKLG-T4QDUFG-KTKZ25U-ZUVOKPB-J7DPLK6-MXKRROO-QUZKDQV";
+              };
               "nixwork" = {
                 id = "4UPYDTM-2UQEA52-CDPE6EE-BG2JHE7-V2FN6QP-W6U34H2-NY7VWBW-O3GJVAT";
               };
