@@ -19,7 +19,7 @@
       sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
       # Or if you're using an age key file:
-      # sops.age.keyFile = "/home/earn/.config/sops/age/keys.txt";
+      sops.age.keyFile = "/home/earn/.config/sops/age/keys.txt";
 
       # Generates key from ssh host key if needed
       sops.age.generateKey = false;
