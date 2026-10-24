@@ -222,6 +222,15 @@
             ".config/yazi/yazi.toml" = "yazi/yazi.toml";
             ".config/yazi/flavors" = "yazi/flavors";
             ".config/yazi/theme.toml" = "yazi/theme.toml";
+            ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
+            ".config/waybar/style.css" = "waybar/2027.css";
+            ".config/herdr/config.toml" = "herdr/config.toml";
+            ".gitconfig" = ".gitconfig";
+            ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
+            ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
+            ".pi/agent/settings.json" = "pi/agent/settings.json";
+            ".pi/agent/extensions" = "pi/agent/extensions";
+            ".pi/agent/themes" = "pi/agent/themes";
           };
           themedMappings = {
             ".config/alacritty/colors.toml" = {
@@ -239,6 +248,10 @@
             ".config/swaync/style.css" = {
               dark = "swaync/rose-pine.css";
               light = "swaync/rose-pine-dawn.css";
+            };
+            ".config/waybar/colors.css" = {
+              dark = "waybar/rose-pine.css";
+              light = "waybar/rose-pine-dawn.css";
             };
           };
         };

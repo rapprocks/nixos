@@ -52,7 +52,9 @@
           enable = true;
           plugins = [ "colored-man-pages" ];
         };
-        shellInit = ''export PATH="$HOME/.npm-global/bin:$PATH"'';
+        shellInit = ''
+          export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+        '';
         shellAliases = {
           ip = "ip --color";
           cp = "rsync -ah --progress";

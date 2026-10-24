@@ -9,6 +9,7 @@
       cli
       dotfiles
       desktopApps
+      displayManager
       syncthing
       virtualisation
       agentic
@@ -43,7 +44,7 @@
       mpv
       imv
       brave
-      chromium
+      (chromium.override { enableWideVine = true; })
       obsidian
       kdePackages.krdc
       bluetui # DECIDE WHICH ONE I WANT TO USE

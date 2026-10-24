@@ -39,7 +39,6 @@
       xdg-utils
 
       signal-desktop
-      (chromium.override { enableWideVine = true; })
 
       wireguard-tools
 

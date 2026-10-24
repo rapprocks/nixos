@@ -2,16 +2,13 @@
   flake.nixosModules.kdniri = { pkgs, lib, ... }: {
     imports = [ self.nixosModules.niri ];
 
+    services.dm.greetd.enable = lib.mkForce false;
     services.displayManager.dms-greeter = {
       enable = true;
       compositor.name = "niri";
     };
     programs.dms-shell = {
       enable = true;
-      enableCalendarEvents = false;
-      enableAudioWavelength = false;
-      enableDynamicTheming = false;
-      enableSystemMonitoring = false;
     };
 
     security.pam.services.greetd.fprintAuth = false;

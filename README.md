@@ -1,6 +1,6 @@
 # NixOS Configuration
 
-Both `zeus` (personal desktop) and `nixwork` (personal laptop) use the `slimniri` session and Firefox.
+`zeus` (personal laptop), `apollo` (personal desktop), and `nixwork` (work laptop) use the `slimniri` session and Firefox.
 The `kdniri` KDE/DMS session remains a selectable alternative.
 
 ## Structure And Ownership
@@ -12,21 +12,21 @@ select modules through `self.nixosModules`.
 
 ```text
 modules/
-  hosts/{zeus,nixwork}/
+  hosts/{zeus,apollo,nixwork}/
     configuration.nix       Host registration, selections, identity and exceptions
     hardware.nix            Machine-specific hardware and storage
   profiles/
     workstation.nix         Shared composition, applications, fonts and graphics
-    personal.nix            Personal-only features (NAS mounts)
+    personal.nix            Personal-only features (NAS mounts, creative apps, greetd autologin)
     work.nix                Work-only features (scaffolded Wi-Fi profile)
   core/
     system.nix              Locale, Nix policy, account, NetworkManager and SSH
-    security.nix            Fingerprint/U2F and GPG-backed SSH integration
+    security.nix            U2F and GPG-backed SSH integration
     sops.nix                Secret-decryption infrastructure
   cli/environment.nix      Shell, CLI/development tools, editor
   desktop/
     niri.nix                Shared compositor, portals, visual integration
-    slimniri.nix            Sysc-greet, Waybar, notifications, idle and Polkit agent
+    slimniri.nix            Greetd, Waybar, notifications, idle and Polkit agent
     kdniri.nix              DMS greeter/shell and Plasma integration
     pipewire.nix            Audio and its supporting configuration
   apps/firefox.nix          Firefox policies and desktop defaults
@@ -83,7 +83,7 @@ nix eval --option allow-import-from-derivation false --raw .#nixosConfigurations
 nix eval --impure --option allow-import-from-derivation false --json --file tests/evaluate.nix
 ```
 
-The matrix evaluates both hosts with both sessions, checks selection invariants, and
+The matrix evaluates all hosts (`zeus`, `apollo`, `nixwork`) with both sessions, checks selection invariants, and
 verifies that the active combination matches each real host.
 These commands do not build or activate systems. Disabling import-from-derivation
 also prevents evaluation from triggering builds.

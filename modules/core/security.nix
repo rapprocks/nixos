@@ -10,8 +10,6 @@
       security.polkit.enable = true;
       #security.tpm2.enable = true;
 
-      services.fprintd.enable = true;
-
       security.pam.services = {
         login.fprintAuth = false;
         sudo.u2fAuth = true; # OPTIONIZE ME

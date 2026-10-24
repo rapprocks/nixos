@@ -17,10 +17,7 @@
       self.nixosModules.slimniri
       self.nixosModules.firefox
       self.nixosModules.network
-    ]
-    ++ [
       inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
-      inputs.fingerprint-lid-guard.nixosModules.default
     ];
 
     sops.secrets.librenms_api_token = {
@@ -41,28 +38,7 @@
     boot.initrd.luks.devices."luks-e23c56ef-712d-4c70-9b40-525e09217a72".device =
       "/dev/disk/by-uuid/e23c56ef-712d-4c70-9b40-525e09217a72";
 
-    # Machine-specific graphics and power policy.
-    powerManagement.powertop.enable = false;
-
-    # Lid-switch behavior for laptop.
-    services.logind.settings.Login = {
-      HandleLidSwitchDocked = "ignore";
-      HandleLidSwitch = "suspend";
-      HandleLidSwitchExternalPower = "lock";
-    };
-
-    services.fprintd.lid-guard = {
-      enable = true;
-      # lidPath = "LID0"; # override if your ACPI device has a different name
-      # pamServices = [...]; # override if you want to choose the PAM services selectively
-      extraPamServices = [
-        "hyprlock" # or any other PAM services not in the default list
-      ];
-    };
-
-    programs.zsh.shellInit = ''
-      export PATH="$HOME/.local/bin:$PATH"
-    '';
+    hardware.laptop.enable = true;
 
     ### Custom NixOS options ###
 
@@ -139,25 +115,6 @@
             "nixwork"
           ];
         };
-      };
-    };
-
-    # Additions specific to this host; shared mappings live with their features.
-    services.dotfiles = {
-      mappings = {
-        ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
-        ".config/waybar/style.css" = "waybar/2027.css";
-        ".config/herdr/config.toml" = "herdr/config.toml";
-        ".gitconfig" = ".gitconfig";
-        ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
-        ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
-        ".pi/agent/settings.json" = "pi/agent/settings.json";
-        ".pi/agent/extensions" = "pi/agent/extensions";
-        ".pi/agent/themes" = "pi/agent/themes";
-      };
-      themedMappings.".config/waybar/colors.css" = {
-        dark = "waybar/rose-pine.css";
-        light = "waybar/rose-pine-dawn.css";
       };
     };
   };

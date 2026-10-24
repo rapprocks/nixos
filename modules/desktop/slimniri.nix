@@ -4,7 +4,6 @@
     {
       imports = [
         self.nixosModules.niri
-        self.nixosModules.displayManager
       ];
 
       environment.systemPackages = with pkgs; [

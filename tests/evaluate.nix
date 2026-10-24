@@ -3,8 +3,17 @@ let
   flake = builtins.getFlake ("path:" + toString ../.);
   lib = flake.inputs.nixpkgs.lib;
   modules = flake.nixosModules;
+
+  # Fallback stub for hosts whose hardware.nix has not been generated yet.
+  stubHardware = {
+    fileSystems."/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "ext4";
+    };
+    nixpkgs.hostPlatform = "x86_64-linux";
+  };
 in
-lib.genAttrs [ "zeus" "nixwork" ] (host:
+lib.genAttrs [ "zeus" "apollo" "nixwork" ] (host:
   lib.genAttrs [ "slimniri" "kdniri" ] (session:
     let
       # Keep real host policy, replacing only the profile selection imports.
@@ -13,10 +22,11 @@ lib.genAttrs [ "zeus" "nixwork" ] (host:
         inputs = flake.inputs;
       }).flake.nixosModules.${host + "Config"};
       # Determine which profile module to use based on host
-      profileModule = if host == "zeus" then modules.personal else modules.work;
+      profileModule = if host == "nixwork" then modules.work else modules.personal;
+      hardwareModule = modules.${host + "Hardware"} or stubHardware;
       system = flake.inputs.nixpkgs.lib.nixosSystem {
         modules = [
-          modules.${host + "Hardware"}
+          hardwareModule
           modules.workstation
           profileModule
           modules.network
@@ -24,25 +34,51 @@ lib.genAttrs [ "zeus" "nixwork" ] (host:
           modules.firefox
           ({ config, pkgs, ... }:
             builtins.removeAttrs (hostModule { inherit config pkgs; }) [ "imports" ])
+        ]
+        ++ lib.optionals (host == "nixwork") [
+          modules.userPhilip
+          flake.inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
+        ]
+        ++ lib.optionals (host == "apollo") [
+          flake.inputs.nixos-hardware.nixosModules.common-pc
+          flake.inputs.nixos-hardware.nixosModules.common-pc-ssd
+          flake.inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+          flake.inputs.nixos-hardware.nixosModules.common-gpu-amd
         ];
       };
       config = system.config;
       dotfilesCfg = config.services.dotfiles;
 
-      # Expected shared static mappings (9 total)
+      # Expected shared static mappings
       expectedSharedMappings = {
         ".config/niri/config.kdl" = "niri/2027.kdl";
         ".config/kanshi/config" = "kanshi/config";
         ".config/alacritty/alacritty.toml" = "alacritty/alacritty.toml";
         ".config/fuzzel/fuzzel.ini" = "fuzzel/fuzzel.ini";
+        ".config/rofi/config.rasi" = "rofi/rose-pine.rasi";
         ".config/swayosd/config.toml" = "swayosd/config.toml";
         ".config/swayosd/style.css" = "swayosd/style.css";
         ".config/tmux/tmux.conf" = "tmux/tmux.conf";
         ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
         ".config/rbw/config.json" = "rbw/config.json";
+        ".config/opencode/themes" = "opencode/themes";
+        ".config/opencode/skills" = "opencode/skills";
+        ".config/opencode/opencode.json" = "opencode/opencode.json";
+        ".config/yazi/yazi.toml" = "yazi/yazi.toml";
+        ".config/yazi/flavors" = "yazi/flavors";
+        ".config/yazi/theme.toml" = "yazi/theme.toml";
+        ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
+        ".config/waybar/style.css" = "waybar/2027.css";
+        ".config/herdr/config.toml" = "herdr/config.toml";
+        ".gitconfig" = ".gitconfig";
+        ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";
+        ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
+        ".pi/agent/settings.json" = "pi/agent/settings.json";
+        ".pi/agent/extensions" = "pi/agent/extensions";
+        ".pi/agent/themes" = "pi/agent/themes";
       };
 
-      # Expected shared themed mappings (4 total)
+      # Expected shared themed mappings (5 total)
       expectedSharedThemedMappings = {
         ".config/alacritty/colors.toml" = {
           dark = "alacritty/rose-pine.toml";
@@ -60,6 +96,10 @@ lib.genAttrs [ "zeus" "nixwork" ] (host:
           dark = "swaync/rose-pine.css";
           light = "swaync/rose-pine-dawn.css";
         };
+        ".config/waybar/colors.css" = {
+          dark = "waybar/rose-pine.css";
+          light = "waybar/rose-pine-dawn.css";
+        };
       };
 
       # Verify all shared static mappings are present
@@ -75,19 +115,17 @@ lib.genAttrs [ "zeus" "nixwork" ] (host:
         )
         (builtins.attrNames expectedSharedThemedMappings);
 
-      # Verify Waybar themed mapping (host-specific)
-      waybarThemedPresent =
-        dotfilesCfg.themedMappings.".config/waybar/colors.css".dark == "waybar/rose-pine.css" &&
-        dotfilesCfg.themedMappings.".config/waybar/colors.css".light == "waybar/rose-pine-dawn.css";
-
     in
     assert config.environment.variables.BROWSER == "firefox";
     assert config.xdg.mime.defaultApplications."x-scheme-handler/https" == "firefox.desktop";
     assert (builtins.hasAttr "waybar" config.systemd.user.services) == (session == "slimniri");
     assert config.programs.dms-shell.enable == (session == "kdniri");
+    assert config.services.fprintd.enable == (host != "apollo");
+    assert config.services.fprintd.lid-guard.enable == (host != "apollo");
+    assert config.hardware.laptop.enable == (host != "apollo");
+    assert config.services.thermald.enable == (host == "zeus");
     assert sharedMappingsPresent || abort "Missing shared static mappings for ${host}/${session}";
     assert sharedThemedMappingsPresent || abort "Missing shared themed mappings for ${host}/${session}";
-    assert waybarThemedPresent || abort "Missing Waybar themed mapping for ${host}/${session}";
     # Firefox toolbar-theme preference must not be locked to force system theme selection
     assert !(builtins.hasAttr "browser.theme.toolbar-theme" config.programs.firefox.policies.Preferences) || abort "Firefox toolbar-theme must not be locked; remove to allow system theme";
     # Note: full drv path match removed; drv paths may differ after adding new modules to test matrix

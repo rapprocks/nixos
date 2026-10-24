@@ -11,7 +11,7 @@
     }:
     let
       normalUsers = lib.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
-      enabled = lib.length normalUsers > 1;
+      enabled = lib.length normalUsers > 1 && config.services.dm.greetd.enable;
       loginVt = 2;
       greeterSock = "/run/greetd-tty2.sock";
       handoffFile = "/run/switch-user/next";
