@@ -1,6 +1,8 @@
 { ... }:
 {
   flake.nixosModules.work = { ... }: {
+    preferences.host.isWork = true;
+
     # Add work-only Wi-Fi network to the catalog
     networking.wifiNetworks.work = {
       ssid = "AW-BYOD";

@@ -121,6 +121,22 @@ lib.genAttrs [ "zeus" "apollo" "nixwork" ] (
       ) (builtins.attrNames expectedSharedThemedMappings);
 
     in
+    assert config.preferences.host.name == host;
+    assert config.networking.hostName == host;
+    assert config.preferences.user.name == "earn";
+    assert config.preferences.host.isWork == (host == "nixwork");
+    assert
+      (host != "nixwork")
+      || (
+        builtins.hasAttr "earn" config.users.users
+        && builtins.hasAttr "philip" config.users.users
+        && builtins.hasAttr "earn" config.services.dotfiles.users
+        && builtins.hasAttr "philip" config.services.dotfiles.users
+      );
+    assert lib.hasInfix "~/.ssh/git-${host}" config.programs.ssh.extraConfig;
+    assert
+      config.services.syncthing.settings.folders.wallpapers.path
+      == "/home/${config.preferences.user.name}/Pictures/wallpapers";
     assert config.environment.variables.BROWSER == "firefox";
     assert config.xdg.mime.defaultApplications."x-scheme-handler/https" == "firefox.desktop";
     assert (builtins.hasAttr "waybar" config.systemd.user.services) == (session == "slimniri");

@@ -24,7 +24,7 @@
       inputs.nixos-hardware.nixosModules.common-gpu-amd
     ];
 
-    networking.hostName = "apollo";
+    preferences.host.name = "apollo";
     system.stateVersion = "26.05";
 
     boot.loader.systemd-boot.enable = true;
@@ -46,7 +46,7 @@
       folders = {
         "notes" = {
           id = "notes";
-          path = "/home/earn/Documents/notes";
+          path = "~/Documents/notes";
           devices = [
             "zeus"
             "truenas"
@@ -54,7 +54,7 @@
         };
         "wallpapers" = {
           id = "wallpapers";
-          path = "/home/earn/Pictures/wallpapers";
+          path = "~/Pictures/wallpapers";
           devices = [
             "zeus"
             "truenas"

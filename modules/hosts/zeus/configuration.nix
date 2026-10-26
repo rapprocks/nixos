@@ -13,7 +13,7 @@
       self.nixosModules.network
     ];
 
-    networking.hostName = "zeus";
+    preferences.host.name = "zeus";
     system.stateVersion = "26.05";
 
     boot.loader.systemd-boot.enable = true;
@@ -33,7 +33,7 @@
       folders = {
         "notes" = {
           id = "notes";
-          path = "/home/earn/Documents/notes";
+          path = "~/Documents/notes";
           devices = [
             "apollo"
             "zeus"
@@ -42,7 +42,7 @@
         };
         "wallpapers" = {
           id = "wallpapers";
-          path = "/home/earn/Pictures/wallpapers";
+          path = "~/Pictures/wallpapers";
           devices = [
             "apollo"
             "zeus"

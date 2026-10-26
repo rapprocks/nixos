@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.nixosModules.security =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       # ──────────────────────────────────────────────────────────────
       # CORE SECURITY
@@ -49,7 +49,7 @@
         extraConfig = ''
           Host *
             AddKeysToAgent yes
-            IdentityFile ~/.ssh/git-zeus
+            IdentityFile ~/.ssh/git-${config.preferences.host.name}
         '';
       };
 

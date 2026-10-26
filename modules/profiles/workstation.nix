@@ -1,6 +1,7 @@
 { self, ... }: {
   flake.nixosModules.workstation = { pkgs, ... }: {
     imports = with self.nixosModules; [
+      preferences
       system
       userEarn
       security

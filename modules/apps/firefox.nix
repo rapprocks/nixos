@@ -82,7 +82,7 @@ in
   flake.nixosModules.firefox =
     { config, ... }:
     let
-      isWork = config.networking.hostName == "nixwork";
+      isWork = config.preferences.host.isWork;
 
       # Select Keeper for work host, Bitwarden for personal/all others
       passwordManagerExtension = if isWork then keeperExtension else bitwardenExtension;

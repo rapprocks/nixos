@@ -20,7 +20,7 @@
         };
         autoLoginUser = lib.mkOption {
           type = lib.types.str;
-          default = "earn";
+          default = config.preferences.user.name;
           description = "Username to automatically log into when autoLogin is enabled.";
         };
         # Shared greeter command, so every login screen (tty1, tty2) looks the same.

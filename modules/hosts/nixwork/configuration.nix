@@ -8,7 +8,7 @@
     modules = [ self.nixosModules.nixworkConfig ];
   };
 
-  flake.nixosModules.nixworkConfig = { pkgs, ... }: {
+  flake.nixosModules.nixworkConfig = { config, pkgs, ... }: {
     imports = [
       self.nixosModules.nixworkHardware
       self.nixosModules.workstation
@@ -20,9 +20,16 @@
       inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
     ];
 
+    preferences = {
+      host.name = "nixwork";
+      user.name = "earn";
+      user.extraUsers = [ "philip" ];
+    };
+
     sops.secrets.librenms_api_token = {
-      owner = "earn";
-      mode = "0400";
+      owner = config.preferences.user.name;
+      group = "keys";
+      mode = "0440";
     };
 
     environment.systemPackages = with pkgs; [
@@ -30,7 +37,6 @@
       amdtop
     ];
 
-    networking.hostName = "nixwork";
     system.stateVersion = "26.05";
 
     boot.loader.systemd-boot.enable = true;
@@ -109,7 +115,7 @@
       folders = {
         "wallpapers" = {
           id = "wallpapers";
-          path = "/home/earn/Pictures/wallpapers";
+          path = "~/Pictures/wallpapers";
           devices = [
             "apollo"
             "zeus"

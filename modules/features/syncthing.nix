@@ -8,13 +8,16 @@
     }:
     let
       cfg = config.services.syncthingSync;
+      userHome = config.users.users.${cfg.user}.home;
+      expandHome =
+        path: if lib.hasPrefix "~/" path then "${userHome}/" + lib.removePrefix "~/" path else path;
     in
     {
       options.services.syncthingSync = {
         enable = lib.mkEnableOption "Custom Declarative Syncthing";
         user = lib.mkOption {
           type = lib.types.str;
-          default = "earn";
+          default = config.preferences.user.name;
           description = "User to run Syncthing as.";
         };
         folders = lib.mkOption {
@@ -54,15 +57,15 @@
 
         # 2. Ensure synced folders exist with correct permissions before syncthing starts
         systemd.tmpfiles.rules = lib.mapAttrsToList (
-          _: folder: "d ${folder.path} ${folder.mode} ${cfg.user} ${cfg.user} - -"
+          _: folder: "d ${expandHome folder.path} ${folder.mode} ${cfg.user} ${cfg.user} - -"
         ) cfg.folders;
 
         # 3. Native Syncthing Configuration
         services.syncthing = {
           enable = true;
           user = cfg.user;
-          dataDir = "/home/${cfg.user}/.local/share/syncthing";
-          configDir = "/home/${cfg.user}/.config/syncthing";
+          dataDir = "${userHome}/.local/share/syncthing";
+          configDir = "${userHome}/.config/syncthing";
 
           # Enforce declarative state (GUI cannot deviate from Nix)
           overrideDevices = true;
@@ -100,7 +103,7 @@
             # Folders to sync - generated from cfg.folders option
             folders = lib.mapAttrs (name: folder: {
               id = folder.id;
-              path = folder.path;
+              path = expandHome folder.path;
               devices = folder.devices;
             }) cfg.folders;
 
