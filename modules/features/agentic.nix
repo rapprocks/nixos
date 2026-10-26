@@ -85,15 +85,19 @@
         };
 
         # Export OLLAMA_MODELS system-wide so user CLI reads from system service folder
-        environment.variables = {
-          OLLAMA_MODELS = "/var/lib/ollama/models";
-        };
+        # environment.variables = {
+        #   OLLAMA_MODELS = "/var/lib/ollama/models";
+        # };
 
         # Fix permissions so normal users can list/read models in /var/lib/ollama/models
-        system.activationScripts.fixOllamaPermissions = ''
-          chmod 755 /var/lib/ollama
-          chmod -R 755 /var/lib/ollama/models
-        '';
+        # systemd.services.ollama-model-loader.postStart = ''
+        #   chmod 755 /var/lib/ollama
+        #   chmod -R 755 /var/lib/ollama/models
+        # '';
+        # system.activationScripts.fixOllamaPermissions = ''
+        #   chmod 755 /var/lib/ollama
+        #   chmod -R 755 /var/lib/ollama/models
+        # '';
 
         # 3. Expose CLI tooling system-wide
         environment.systemPackages = [

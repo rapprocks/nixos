@@ -1,4 +1,9 @@
-{ self, inputs, ... }: {
+{
+  self,
+  inputs,
+  ...
+}:
+{
   flake.nixosConfigurations.apollo = inputs.nixpkgs.lib.nixosSystem {
     modules = [ self.nixosModules.apolloConfig ];
   };
@@ -24,6 +29,17 @@
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+
+    services.agentic = {
+      enable = true;
+      acceleration = "rocm";
+      gfxVersion = "10.3.0"; # Overrides ROCm for Radeon 890M iGPU
+      models = [
+        "qwen3-coder:30b"
+        "deepseek-r1:1.5b"
+        "deepseek-r1:8b"
+      ];
+    };
 
     services.syncthingSync = {
       enable = true;

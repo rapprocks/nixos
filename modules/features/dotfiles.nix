@@ -228,6 +228,7 @@
             ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
             ".pi/agent/settings.json" = "pi/agent/settings.json";
             ".pi/agent/mcp.json" = "pi/agent/mcp.json";
+            ".pi/agent/models.json" = "pi/agent/models.json";
             ".pi/agent/extensions" = "pi/agent/extensions";
             ".pi/agent/themes" = "pi/agent/themes";
           };

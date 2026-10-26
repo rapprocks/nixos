@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   flake.nixosModules.personal =
     { pkgs, ... }:
@@ -21,6 +21,7 @@
         orca-slicer
         gimp
         freecad
+        inputs.solidcraft.packages.${pkgs.stdenv.hostPlatform.system}.solidcraft
       ];
 
       services.dm.greetd = {

@@ -6,6 +6,7 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     fingerprint-lid-guard.url = "github:timp4w/nix-fingerprint-lid-guard";
+    solidcraft.url = "github:tangency-labs/solidcraft";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
