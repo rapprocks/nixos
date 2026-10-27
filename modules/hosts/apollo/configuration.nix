@@ -34,11 +34,11 @@
       enable = true;
       acceleration = "rocm";
       gfxVersion = "10.3.0"; # Overrides ROCm for Radeon 890M iGPU
-      models = [
-        "qwen3-coder:30b"
-        "deepseek-r1:1.5b"
-        "deepseek-r1:8b"
-      ];
+      models = {
+        "qwen3-coder-30b" = "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M";
+        "deepseek-r1-1.5b" = "unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF:Q4_K_M";
+        "deepseek-r1-8b" = "unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF:Q4_K_M";
+      };
     };
 
     services.syncthingSync = {

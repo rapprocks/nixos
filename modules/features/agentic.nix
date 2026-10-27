@@ -11,20 +11,25 @@
     let
       cfg = config.services.agentic;
 
-      # Standard Nix conditional logic for package selection
-      ollamaPackage =
+      llamaPackage =
         if cfg.acceleration == "rocm" then
-          pkgs.ollama-rocm
+          pkgs.llama-cpp-rocm
         else if cfg.acceleration == "cuda" then
-          pkgs.ollama-cuda
+          pkgs.llama-cpp-cuda
         else if cfg.acceleration == "vulkan" then
-          pkgs.ollama-vulkan
+          pkgs.llama-cpp-vulkan
         else
-          pkgs.ollama-cpu;
+          pkgs.llama-cpp;
+
+      # Router-mode preset: one INI section per model name, with the Hugging Face
+      # GGUF spec ("repo:quant") as `hf-repo`.
+      modelsPreset = (pkgs.formats.ini { }).generate "llama-models-preset.ini" (
+        lib.mapAttrs (_: spec: { "hf-repo" = spec; }) cfg.models
+      );
     in
     {
       options.services.agentic = {
-        enable = lib.mkEnableOption "Agentic workflow stack (Ollama + OpenCode)";
+        enable = lib.mkEnableOption "Agentic workflow stack (llama.cpp + OpenCode)";
 
         acceleration = lib.mkOption {
           type = lib.types.enum [
@@ -35,8 +40,8 @@
           ];
           default = "none";
           description = ''
-            Hardware acceleration mechanism for Ollama.
-            Selects the appropriate pkgs.ollama package variant under NixOS unstable.
+            Hardware acceleration backend for llama.cpp.
+            Selects the matching pkgs.llama-cpp* package variant.
           '';
         };
 
@@ -45,20 +50,22 @@
           default = null;
           example = "11.0.0";
           description = ''
-            ROCm's HSA_OVERRIDE_GFX_VERSION string. 
-            Crucial for newer AMD APUs like Ryzen AI 9 HX 370 (Radeon 890M / RDNA3.5).
+            ROCm's HSA_OVERRIDE_GFX_VERSION string. Only used when acceleration = "rocm".
           '';
         };
 
         models = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          default = [ "qwen2.5-coder:7b" ];
-          example = [
-            "qwen2.5-coder:7b"
-            "qwen2.5-coder:14b"
-            "deepseek-r1:14b"
-          ];
-          description = "List of local Ollama models to ensure are downloaded and ready for agents.";
+          type = lib.types.attrsOf lib.types.str;
+          default = { };
+          example = {
+            "qwen2.5-coder-14b" = "unsloth/Qwen2.5-Coder-14B-Instruct-GGUF:Q4_K_M";
+            "deepseek-r1-8b" = "unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF:Q4_K_M";
+          };
+          description = ''
+            Models served by llama-server in router mode, keyed by the name clients request.
+            Values are Hugging Face GGUF specs (`repo[:quant]`), downloaded on first use
+            into /var/cache/llama-cpp and loaded on demand.
+          '';
         };
 
         package = lib.mkOption {
@@ -69,40 +76,36 @@
       };
 
       config = lib.mkIf cfg.enable {
-        # 1. Configure Hardware Graphics acceleration conditionally
+        # 1. Configure hardware graphics (Mesa/Vulkan ICDs, ROCm runtime hooks)
         hardware.graphics = lib.mkIf (cfg.acceleration != "none") {
           enable = true;
           enable32Bit = true;
         };
 
-        # 2. Configure Ollama natively
-        services.ollama = {
+        # 2. Configure llama.cpp server in router mode
+        services.llama-cpp = {
           enable = true;
-          package = ollamaPackage;
-          loadModels = cfg.models;
-          rocmOverrideGfx = lib.mkIf (cfg.acceleration == "rocm" && cfg.gfxVersion != null) cfg.gfxVersion;
-          modelsDir = "/var/lib/ollama/models"; # Explicitly set model store
+          package = llamaPackage;
+          settings.models-preset = toString modelsPreset;
         };
 
-        # Export OLLAMA_MODELS system-wide so user CLI reads from system service folder
-        # environment.variables = {
-        #   OLLAMA_MODELS = "/var/lib/ollama/models";
-        # };
+        systemd.services.llama-cpp = {
+          # The upstream unit runs with DynamicUser and no device groups; GPU
+          # device nodes (/dev/kfd, /dev/dri/renderD*) are group render/video.
+          serviceConfig.SupplementaryGroups = lib.mkIf (cfg.acceleration != "none") [
+            "render"
+            "video"
+          ];
 
-        # Fix permissions so normal users can list/read models in /var/lib/ollama/models
-        # systemd.services.ollama-model-loader.postStart = ''
-        #   chmod 755 /var/lib/ollama
-        #   chmod -R 755 /var/lib/ollama/models
-        # '';
-        # system.activationScripts.fixOllamaPermissions = ''
-        #   chmod 755 /var/lib/ollama
-        #   chmod -R 755 /var/lib/ollama/models
-        # '';
+          environment = lib.mkIf (cfg.acceleration == "rocm" && cfg.gfxVersion != null) {
+            HSA_OVERRIDE_GFX_VERSION = cfg.gfxVersion;
+          };
+        };
 
         # 3. Expose CLI tooling system-wide
         environment.systemPackages = [
           cfg.package
-          ollamaPackage
+          llamaPackage
           pkgs.gh
         ]
         ++ lib.optionals (cfg.acceleration == "rocm") [

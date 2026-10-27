@@ -102,12 +102,11 @@
 
     services.agentic = {
       enable = true;
-      acceleration = "rocm";
-      gfxVersion = "11.0.0"; # Overrides ROCm for Radeon 890M iGPU
-      models = [
-        "qwen3-coder:30b"
-        "deepseek-r1:14b"
-      ];
+      acceleration = "vulkan"; # Radeon 890M iGPU via Mesa RADV
+      models = {
+        "qwen2.5-coder-14b" = "unsloth/Qwen2.5-Coder-14B-Instruct-GGUF:Q4_K_M";
+        "deepseek-r1-8b" = "unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF:Q4_K_M";
+      };
     };
 
     services.syncthingSync = {
