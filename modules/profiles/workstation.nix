@@ -45,7 +45,15 @@
       mpv
       imv
       brave
-      (chromium.override { enableWideVine = true; })
+      (chromium.override {
+        enableWideVine = true;
+        commandLineArgs = [
+          "--disable-background-timer-throttling"
+          "--disable-renderer-backgrounding"
+          "--disable-backgrounding-occluded-windows"
+          "--disable-features=IntensiveWakeUpThrottling,NotificationPortal"
+        ];
+      })
       obsidian
       kdePackages.krdc
       bluetui # DECIDE WHICH ONE I WANT TO USE
