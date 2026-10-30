@@ -42,6 +42,21 @@
         };
       };
 
+      services.syncthingSync = {
+        enable = true;
+        folders = {
+          "vault" = {
+            id = "vault";
+            path = "~/vault";
+            devices = [
+              "apollo"
+              "zeus"
+              "truenas"
+            ];
+          };
+        };
+      };
+
       services.dotfiles.mappings = {
         ".config/waybar/group-center.jsonc" = "waybar/group-center.jsonc";
       };

@@ -222,7 +222,6 @@
             ".config/yazi/theme.toml" = "yazi/theme.toml";
             ".config/waybar/config.jsonc" = "waybar/2027.jsonc";
             ".config/waybar/style.css" = "waybar/2027.css";
-            ".config/waybar/nixwork.jsonc" = "waybar/nixwork.jsonc";
             ".config/herdr/config.toml" = "herdr/config.toml";
             ".gitconfig" = ".gitconfig";
             ".config/hypr/hypridle.conf" = "hypr/hypridle.conf";

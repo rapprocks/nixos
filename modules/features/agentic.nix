@@ -86,7 +86,11 @@
         services.llama-cpp = {
           enable = true;
           package = llamaPackage;
-          settings.models-preset = toString modelsPreset;
+          settings = {
+            models-preset = toString modelsPreset;
+            ctx-size = 32768;
+            jinja = true;
+          };
         };
 
         systemd.services.llama-cpp = {

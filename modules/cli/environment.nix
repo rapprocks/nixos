@@ -30,10 +30,13 @@
         typescript
         nodejs
         temporal-cli
+        terraform
+        ansible
         tree
         sops
         opencode
         pi-coding-agent
+        claude-code
         lazygit
         herdr
         devenv
@@ -74,7 +77,7 @@
           vim = "nvim";
           vi = "nvim";
           nsp = "nix-shell -p";
-          rb = "sudo nixos-rebuild switch --flake ~/nixconf#";
+          rb = ''sudo nixos-rebuild switch --flake "/home/$USER/nixconf#$HOST"'';
           conf = "~/nixconf";
           ls = "eza --group-directories-first";
           ll = "eza -l --group-directories-first";

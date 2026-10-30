@@ -24,6 +24,8 @@
       inputs.nixos-hardware.nixosModules.common-gpu-amd
     ];
 
+    programs.steam.enable = true;
+
     preferences.host.name = "apollo";
     system.stateVersion = "26.05";
 
@@ -33,10 +35,9 @@
     services.agentic = {
       enable = true;
       acceleration = "rocm";
-      gfxVersion = "10.3.0"; # Overrides ROCm for Radeon 890M iGPU
+      gfxVersion = "10.3.0";
       models = {
-        "qwen3-coder-30b" = "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M";
-        "deepseek-r1-1.5b" = "unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF:Q4_K_M";
+        "qwen2.5-coder-14b" = "unsloth/Qwen2.5-Coder-14B-Instruct-GGUF:Q4_K_M";
         "deepseek-r1-8b" = "unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF:Q4_K_M";
       };
     };
