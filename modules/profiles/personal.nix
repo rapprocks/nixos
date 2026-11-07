@@ -59,6 +59,8 @@
 
       services.dotfiles.mappings = {
         ".config/waybar/group-center.jsonc" = "waybar/group-center.jsonc";
+        ".pi/agent/APPEND_SYSTEM.md" = "pi/agent/APPEND_SYSTEM.md";
+        ".claude/settings.json" = "claude/settings.json";
       };
     };
 }

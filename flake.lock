@@ -272,11 +272,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1793338020,
-        "narHash": "sha256-Ni0z/PKmaK6i1NeTiwQIe5oLPATwN3zmNbWfkkH7AbY=",
+        "lastModified": 1793935450,
+        "narHash": "sha256-OM85SbsdNSo7VOErKNB57zGSN4LE/QpIrq7xZTjrC/g=",
         "owner": "tangency-labs",
         "repo": "solidcraft",
-        "rev": "d9aa73b597e210e544e32f9084d5307912994200",
+        "rev": "c4e1a3a756f639b659e0bc899201097009df50b6",
         "type": "github"
       },
       "original": {
