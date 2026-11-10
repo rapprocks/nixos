@@ -7,6 +7,12 @@
       preferences.user.extraUsers = [ "philip" ];
       users.users.philip.description = "Philip";
 
+      programs.zsh.interactiveShellInit = ''
+        if [[ "$USER" == "philip" ]] && command -v aw >/dev/null 2>&1; then
+          eval "$(aw autocomplete:script zsh)"
+        fi
+      '';
+
       # User-specific dotfiles: target (relative to home) = source (relative to ~/.dotfiles).
       services.dotfiles.users.philip.mappings = { };
     };

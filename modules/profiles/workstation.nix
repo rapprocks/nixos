@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.nixosModules.workstation = { pkgs, ... }: {
+  flake.nixosModules.workstation = { config, lib, pkgs, ... }: {
     imports = with self.nixosModules; [
       preferences
       system
@@ -32,14 +32,10 @@
       settings.General.Enable = "Source,Sink,Media,Socket";
     };
 
-    # Shared directory
+    # Shared directory (/mnt/drop) with per-user bindfs mounts at ~/drop
     users.groups.drop = { };
-    systemd.tmpfiles.rules = [
-      # Type  Path            Mode User  Group       Age Argument
-      "d      /mnt/drop     2770 root  drop -   -"
-    ];
-
     environment.systemPackages = with pkgs; [
+      bindfs
       rbw
       rofi-rbw-wayland
       mpv
@@ -61,6 +57,34 @@
       #kdePackages.bluedevil
       #kdePackages.bluez-qt
     ];
+
+    systemd.tmpfiles.rules =
+      [
+        # Type  Path            Mode User  Group       Age Argument
+        "d      /mnt/drop       2770 root  drop        -   -"
+      ]
+      ++ map (
+        u: "d ${config.users.users.${u}.home}/drop 0750 ${u} users - -"
+      ) config.preferences.user.allUsers;
+
+    fileSystems = lib.listToAttrs (
+      map (u: {
+        name = "${config.users.users.${u}.home}/drop";
+        value = {
+          device = "/mnt/drop";
+          fsType = "fuse.bindfs";
+          options = [
+            "force-user=${u}"
+            "force-group=users"
+            "create-for-user=root"
+            "create-for-group=drop"
+            "create-with-perms=0660:a+X"
+            "perms=0660:a+X"
+            "nofail"
+          ];
+        };
+      }) config.preferences.user.allUsers
+    );
 
     xdg.mime.enable = true;
     xdg.mime.defaultApplications = {
