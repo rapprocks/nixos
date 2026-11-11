@@ -254,6 +254,10 @@
               dark = "waybar/rose-pine.css";
               light = "waybar/rose-pine-dawn.css";
             };
+            ".config/swayosd/colors.css" = {
+              dark = "swayosd/rose-pine.css";
+              light = "swayosd/rose-pine-dawn.css";
+            };
           };
         };
 
