@@ -9,10 +9,5 @@
       secretName = "wifi_work";
       #security.keyMgmt = "sae";
     };
-
-    # TODO: Add work-specific settings here as needed (VPN client, corporate certs, work browser profile, etc.)
-    services.dotfiles.mappings = {
-      ".config/waybar/nixwork.jsonc" = "waybar/nixwork.jsonc";
-    };
   };
 }

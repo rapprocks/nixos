@@ -12,6 +12,8 @@
     in
     {
       users.users.${user}.description = lib.mkDefault user;
-      services.dotfiles.users.${user}.mappings = { };
+      services.dotfiles.users.${user}.mappings = {
+        ".pi/agent/models.json" = "pi/agent/models.json";
+      };
     };
 }

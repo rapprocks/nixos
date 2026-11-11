@@ -23,6 +23,10 @@
         partOf = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
         requisite = [ "graphical-session.target" ];
+        path = [
+          "/run/wrappers"
+          "/run/current-system/sw"
+        ];
         serviceConfig = {
           ExecStart = "${lib.getExe pkgs.waybar}";
           Restart = "on-failure";

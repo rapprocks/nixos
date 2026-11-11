@@ -2,7 +2,10 @@
 {
   # Additional user: import in a host's configuration to add philip there.
   flake.nixosModules.userPhilip =
-    { ... }:
+    { config, ... }:
+    let
+      user = config.preferences.user.name;
+    in
     {
       preferences.user.extraUsers = [ "philip" ];
       users.users.philip.description = "Philip";
@@ -13,7 +16,10 @@
         fi
       '';
 
-      # User-specific dotfiles: target (relative to home) = source (relative to ~/.dotfiles).
-      services.dotfiles.users.philip.mappings = { };
+      # TODO: Add work-specific settings here as needed (VPN client, corporate certs, work browser profile, etc.)
+
+      services.dotfiles.users.${user}.mappings = {
+        ".config/waybar/nixwork.jsonc" = "waybar/nixwork.jsonc";
+      };
     };
 }

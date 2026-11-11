@@ -9,10 +9,13 @@
       "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
     };
 
-    ## Needed for theme-switcher.sh
-    environment.sessionVariables.XDG_DATA_DIRS = [
-      "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
-    ];
+    environment.sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      ## Needed for theme-switcher.sh
+      XDG_DATA_DIRS = [
+        "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
+      ];
+    };
 
     qt = {
       enable = true;

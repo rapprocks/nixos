@@ -211,6 +211,7 @@
             ".config/rofi/config.rasi" = "rofi/rose-pine.rasi";
             ".config/swayosd/config.toml" = "swayosd/config.toml";
             ".config/swayosd/style.css" = "swayosd/style.css";
+            ".config/swaync/config.json" = "swaync/config.json";
             ".config/tmux/tmux.conf" = "tmux/tmux.conf";
             ".config/tmux/dotbar.tmux" = "tmux/dotbar.tmux";
             ".config/rbw/config.json" = "rbw/config.json";
@@ -229,7 +230,6 @@
             ".config/hypr/hyprlock.conf" = "hypr/hyprlock.conf";
             ".pi/agent/settings.json" = "pi/agent/settings.json";
             ".pi/agent/mcp.json" = "pi/agent/mcp.json";
-            ".pi/agent/models.json" = "pi/agent/models.json";
             ".pi/agent/extensions" = "pi/agent/extensions";
             ".pi/agent/themes" = "pi/agent/themes";
           };
