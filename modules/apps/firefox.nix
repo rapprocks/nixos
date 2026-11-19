@@ -30,11 +30,13 @@ let
     "jid1-MnnxcxisBPnSXQ@jetpack" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/privacy-badger17/latest.xpi";
       installation_mode = "force_installed";
+      private_browsing = true;
     };
     # Dark reader
     "addon@darkreader.org" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/addon@darkreader.org/latest.xpi";
       installation_mode = "force_installed";
+      private_browsing = true;
     };
   };
 
@@ -42,6 +44,7 @@ let
     "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/{446900e4-71c2-419f-a6a7-df9c091e268b}/latest.xpi";
       installation_mode = "force_installed";
+      private_browsing = true;
     };
   };
 
@@ -49,6 +52,7 @@ let
     "KeeperFFStoreExtension@KeeperSecurityInc" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/file/4969396/keeper_password_manager-18.1.1.xpi";
       installation_mode = "force_installed";
+      private_browsing = true;
     };
   };
 
@@ -150,6 +154,7 @@ in
               "adguardadblocker@adguard.com" = {
                 install_url = "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi";
                 installation_mode = "force_installed";
+                private_browsing = true;
               };
             };
         };
