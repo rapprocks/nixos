@@ -2,13 +2,17 @@
 {
   # Additional user: import in a host's configuration to add philip there.
   flake.nixosModules.userPhilip =
-    { config, ... }:
+    { config, pkgs, ... }:
     let
       user = config.preferences.user.name;
     in
     {
       preferences.user.extraUsers = [ "philip" ];
       users.users.philip.description = "Philip";
+
+      environment.systemPackages = with pkgs; [
+        gam
+      ];
 
       programs.zsh.interactiveShellInit = ''
         if [[ "$USER" == "philip" ]] && command -v aw >/dev/null 2>&1; then

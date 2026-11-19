@@ -71,6 +71,7 @@
           ga = "git add";
           gst = "git status";
           gcm = "git commit -m";
+          gp = "git push";
           gpum = "git push -u origin main";
           oc = "opencode";
           ta = "tmux attach";

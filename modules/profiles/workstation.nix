@@ -61,6 +61,7 @@
         kdePackages.krdc
         bluetui # DECIDE WHICH ONE I WANT TO USE
         cameractrls-gtk4
+        herdr-desktop
         #kdePackages.bluedevil
         #kdePackages.bluez-qt
       ];
