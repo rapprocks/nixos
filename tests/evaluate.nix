@@ -82,6 +82,7 @@ lib.genAttrs [ "zeus" "apollo" "nixwork" ] (
         ".pi/agent/mcp.json" = "pi/agent/mcp.json";
         ".pi/agent/extensions" = "pi/agent/extensions";
         ".pi/agent/themes" = "pi/agent/themes";
+        ".pi/agent/agents" = "pi/agent/agents";
       };
 
       # Expected shared themed mappings (5 total)

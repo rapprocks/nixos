@@ -232,6 +232,7 @@
             ".pi/agent/mcp.json" = "pi/agent/mcp.json";
             ".pi/agent/extensions" = "pi/agent/extensions";
             ".pi/agent/themes" = "pi/agent/themes";
+            ".pi/agent/agents" = "pi/agent/agents";
           };
           themedMappings = {
             ".config/alacritty/colors.toml" = {
