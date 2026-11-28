@@ -45,6 +45,7 @@
         bindfs
         rbw
         rofi-rbw-wayland
+        rofimoji
         mpv
         imv
         #brave

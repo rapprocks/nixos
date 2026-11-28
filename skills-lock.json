@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "skills": {
+    "nix-dendritic-flake": {
+      "source": "kusold/agent-skills",
+      "commit": "8dbbcc35bdb5e890679648d3162733095ca32277",
+      "sourceType": "github",
+      "skillPath": "skills/languages/nix/nix-dendritic-flake/SKILL.md",
+      "computedHash": "56c1f5c9147ecabae6e506ff47fd9dcd1d866696abb8be3f9957df9631224807"
+    }
+  }
+}

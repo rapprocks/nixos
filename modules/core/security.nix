@@ -55,8 +55,8 @@
 
       services.gnome.gcr-ssh-agent.enable = false;
 
-      # export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
       programs.zsh.interactiveShellInit = ''
+        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
         export GPG_TTY=$(tty)
       '';
 

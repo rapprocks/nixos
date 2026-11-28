@@ -42,6 +42,14 @@
       };
     };
 
+    services.desktopApps = {
+      "facebook-messenger" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/messenger.desktop";
+        iconPath = "~/.dotfiles/apps/icons/facebook-messenger.png";
+      };
+    };
+
     services.syncthingSync = {
       enable = true;
       folders = {
