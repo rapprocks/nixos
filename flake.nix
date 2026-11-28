@@ -5,7 +5,6 @@
     import-tree.url = "github:vic/import-tree";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    fingerprint-lid-guard.url = "github:timp4w/nix-fingerprint-lid-guard";
     solidcraft.url = "github:tangency-labs/solidcraft";
 
     sops-nix = {

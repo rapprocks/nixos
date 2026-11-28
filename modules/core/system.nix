@@ -1,10 +1,6 @@
-{ inputs, ... }: {
+{ ... }: {
   flake.nixosModules.system = { config, lib, ... }: {
-    imports = [
-      inputs.fingerprint-lid-guard.nixosModules.default
-    ];
-
-    options.hardware.laptop.enable = lib.mkEnableOption "laptop power management, lid-switch handling, and fingerprint reader with lid guard";
+    options.hardware.laptop.enable = lib.mkEnableOption "laptop power management, lid-switch handling, and fingerprint reader";
 
     config = lib.mkMerge [
       {
@@ -64,12 +60,28 @@
           HandleLidSwitchExternalPower = "lock";
         };
 
-        services.fprintd = {
-          enable = true;
-          lid-guard = {
-            enable = true;
-            extraPamServices = [ "hyprlock" ];
-          };
+        services.fprintd.enable = true;
+
+        # The Goodix MOC sensor (27c6:609c) is runtime-autosuspended after 2s by
+        # libfprint's hwdb entry. After s2idle resume the first verify then hits a
+        # sleeping sensor and fails with "transfer timed out", which makes
+        # hyprlock print "Fingerprint auth disabled (unknown error)" for that lock.
+        # Keep the sensor powered. Runs after 60-autosuspend.rules, so it wins.
+        services.udev.extraRules = ''
+          ACTION=="add|change", SUBSYSTEM=="usb", ATTR{idVendor}=="27c6", ATTR{idProduct}=="609c", ATTR{power/control}="on"
+        '';
+
+        # fprintd is normally D-Bus activated by hyprlock, which hypridle starts
+        # from before_sleep_cmd *after* logind has begun suspending. fprintd then
+        # cannot take its sleep delay inhibitor ("OperationInProgress"), never
+        # suspends/resumes the Goodix sensor cleanly, and leaves a stale claim.
+        # Keeping it running from boot makes it hold the inhibitor before sleep.
+        systemd.services.fprintd = {
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig.ExecStart = [
+            ""
+            "${config.services.fprintd.package}/libexec/fprintd --no-timeout"
+          ];
         };
       })
     ];

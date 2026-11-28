@@ -233,6 +233,9 @@
             ".pi/agent/extensions" = "pi/agent/extensions";
             ".pi/agent/themes" = "pi/agent/themes";
             ".pi/agent/agents" = "pi/agent/agents";
+            ".claude/settings.json" = "claude/settings.json";
+            ".claude/themes" = "claude/themes";
+
           };
           themedMappings = {
             ".config/alacritty/colors.toml" = {

@@ -120,6 +120,11 @@
         sourcePath = "~/.dotfiles/apps/wg-work.desktop";
         iconPath = "~/.dotfiles/apps/icons/wireguard.png";
       };
+      "keeper" = {
+        enable = true;
+        sourcePath = "~/.dotfiles/apps/keeper.desktop";
+        iconPath = "~/.dotfiles/apps/icons/keeper.png";
+      };
     };
 
     # Enable Wi-Fi and Syncthing for this work host

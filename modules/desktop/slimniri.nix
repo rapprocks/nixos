@@ -51,6 +51,9 @@
 
       security.pam.services = {
         greetd.fprintAuth = false;
+        # hyprlock talks to fprintd itself (auth:fingerprint in hyprlock.conf).
+        # A second pam_fprintd in its PAM stack competes for the same device.
+        hyprlock.fprintAuth = false;
       };
 
     };

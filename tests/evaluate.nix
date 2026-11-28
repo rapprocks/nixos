@@ -143,7 +143,8 @@ lib.genAttrs [ "zeus" "apollo" "nixwork" ] (
     assert (builtins.hasAttr "waybar" config.systemd.user.services) == (session == "slimniri");
     assert config.programs.dms-shell.enable == (session == "kdniri");
     assert config.services.fprintd.enable == (host != "apollo");
-    assert config.services.fprintd.lid-guard.enable == (host != "apollo");
+    assert (host == "apollo") || config.systemd.services.fprintd.wantedBy == [ "multi-user.target" ];
+    assert (host == "apollo") || (session != "slimniri") || !(config.security.pam.services.hyprlock.fprintAuth);
     assert config.hardware.laptop.enable == (host != "apollo");
     assert config.services.thermald.enable == (host == "zeus");
     assert sharedMappingsPresent || abort "Missing shared static mappings for ${host}/${session}";
